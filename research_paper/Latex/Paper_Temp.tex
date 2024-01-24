@@ -1,0 +1,89 @@
+\documentclass[journal]{IEEEtran}
+
+%\usepackage[pass,letterpaper]{geometry}              %This package needs to be enaled when dvi--->ps----->PDF
+\usepackage{stmaryrd, amsfonts, mathptmx, mathtools, array, siunitx, subfigure, graphicx,balance }
+\usepackage{multirow, indentfirst, cite, verbatim, keyval, textcomp, enumerate, calc, microtype}
+
+
+
+\usepackage[colorlinks,linktocpage]{hyperref}
+\hypersetup{
+   colorlinks   = true,                               %Colours links instead of ugly boxes
+   urlcolor     = blue,                               %Colour for external hyper links
+   linkcolor    = blue,                               %Colour of internal links
+   citecolor    = red,                                %Colour of citations
+   setpagesize  = false,
+   linktocpage  = true,
+}
+
+\IEEEoverridecommandlockouts
+
+\begin{document}
+\raggedbottom
+
+\title{\ \\ \LARGE\bf Title of the paper \thanks{Amir Jafari and Martin Hagan are with the School of Electrical and Computer Engineering, Oklahoma State University, Stillwater, OK 74078, USA (email: \{amir.h.jafari@okstate.edu).}}
+
+\author{Amir Jafari}
+\markboth{Journal of \LaTeX\ Class Files,~Vol.~xx, No.~xx, May~2016}%
+{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+\maketitle
+
+%*********************************************************************************************************************************************************************************************************************
+\begin{abstract}
+This electronic document is a “live” template. The various components of your paper [title, text, heads, etc.] are already defined on the style sheet, as illustrated by the portions given in this document. DO NOT USE SPECIAL CHARACTERS, SYMBOLS, OR MATH IN YOUR TITLE OR ABSTRACT. (Abstract)
+\end{abstract}
+%*********************************************************************************************************************************************************************************************************************
+\section{INRODUCTION}
+
+All manuscripts must be in English. These guidelines include complete descriptions of the fonts, spacing, and related information for producing your proceedings manuscripts. Please follow them and if you have any questions, direct them to the production editor in charge of your proceedings (see author-kit message for contact info).
+This template provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. PLEASE DO NOT RE-ADJUST THESE MARGINS. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+%*********************************************************************************************************************************************************************************************************************
+\section{TYPE STYLE AND FONTS}
+
+Wherever Times is specified, Times Roman or Times New Roman may be used. If neither is available on your word processor, please use the font closest in appearance to Times. Avoid using bit-mapped fonts. True Type 1 or Open Type fonts are required. Please embed all fonts, in particular symbol fonts, as well, for math, etc. training segment.
+%*********************************************************************************************************************************************************************************************************************
+
+\section{EASE OF USE}
+
+The template is used to format your paper and style the text. All margins, column widths, line spaces, and text fonts are prescribed; please do not alter them. You may note peculiarities. For example, the head margin in this template measures proportionately more than is customary. This measurement and others are deliberate, using specifications that anticipate your paper as one part of the entire proceedings, and not as an independent document. Please do not revise any of the current designations.
+%*********************************************************************************************************************************************************************************************************************
+\section{PREPARE YOUR PAPER BEFORE STYLING}
+
+Before you begin to format your paper, first write and save the content as a separate text file. Keep your text and graphic files separate until after the text has been formatted and styled. Do not use hard tabs, and limit use of hard returns to only one return at the end of a paragraph. Do not add any kind of pagination anywhere in the paper. Do not number text heads—the template will do that for you.
+Finally, complete content and organizational editing before formatting. Please take note of the following items when proofreading spelling and grammar.
+
+\subsection{Abbreviations and Acronyms }
+
+Define abbreviations and acronyms the first time they are used in the text, even after they have been defined in the abstract. Abbreviations such as IEEE and SI do not have to be defined. Do not use abbreviations in the title or heads unless they are unavoidable.
+
+\begin{figure}[t]
+	\centerline{\includegraphics[width=\columnwidth]{Fig/narxnet1.eps}}
+	\caption{Network}
+	\label{fig:1}
+\end{figure}
+
+
+\subsection{Units}
+
+Use either SI or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as 3.5-inch disk drive.
+
+Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation
+
+
+%*********************************************************************************************************************************************************************************************************************
+\section{COPYRIGHT FORMS}
+
+You must submit the IEEE Electronic Copyright Form (ECF) as described in your author-kit message. THIS FORM MUST BE SUBMITTED IN ORDER TO PUBLISH YOUR PAPER.
+%*********************************************************************************************************************************************************************************************************************
+\section{ACKNOWLEDGMENT}
+
+The preferred spelling of the word “acknowledgment” in America is without an “e” after the “g”. Avoid the stilted expression, “One of us (R. B. G.) thanks . . .”  Instead, try
+“R. B. G. thanks”. Put applicable sponsor acknowledgments here; DO NOT place them on the first page of your paper or as a footnote.
+
+
+%\bibliographystyle{IEEEtran}
+%\balance
+%\bibliography{mybib}
+\end{document}
+
+
