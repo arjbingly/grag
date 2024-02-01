@@ -65,5 +65,5 @@ The key challenges for this project are:
 ## Contact
 
 - Author: Amir Jafari
-- Email: [ajafari@gmail.com](Email)
-- GitHub: [https://github.com/arjbingly/Capstone_5] (Git Hub repo)
+- Email: [Email](ajafari@gmail.com)
+- GitHub: [GitHub Repo](https://github.com/arjbingly/Capstone_5)https://github.com/arjbingly/Capstone_5)
