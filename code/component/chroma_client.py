@@ -1,6 +1,7 @@
 from typing import List
 import asyncio
 from tqdm import tqdm
+from tqdm.asyncio import tqdm_asyncio
 
 import chromadb
 from langchain_community.vectorstores import Chroma
@@ -31,9 +32,12 @@ class ChromaClient:
         else:
             print(f'Connection to {self.host}/{self.port} is not alive !!')
 
-    async def aadd_docs(self,docs: List[Document], ):
+    async def aadd_docs(self,docs: List[Document], verbose=True):
         tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
-        await asyncio.gather(*tasks)
+        if verbose:
+            await tqdm_asyncio.gather(*tasks)
+        else:
+            await asyncio.gather(*tasks)
 
     def add_docs(self,docs: List[Document], verbose=True):
         for doc in (tqdm(docs, desc='Adding Documents:') if verbose else docs):

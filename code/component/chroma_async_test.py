@@ -27,7 +27,7 @@ def main():
 
     for step in tqdm(range(n_steps), desc='Sync test'):
         start = time.perf_counter()
-        client.add_docs(docs[step:n_docs * step], verbose=False)
+        client.add_docs(docs[step:n_docs * step])
         sync_times.append(time.perf_counter() - start)
 
     print(f'Avg Sync times {np.mean(sync_times)}')
