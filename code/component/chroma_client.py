@@ -34,12 +34,12 @@ class ChromaClient:
     async def aadd_docs(self,docs: List[Document], verbose=True):
         tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
         if verbose:
-            await tqdm_asyncio.gather(*tasks)
+            await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
         else:
             await asyncio.gather(*tasks)
 
     def add_docs(self,docs: List[Document], verbose=True):
-        for doc in (tqdm(docs, desc='Adding Documents:') if verbose else docs):
+        for doc in (tqdm(docs, desc=f'Adding to {self.collection_name}:') if verbose else docs):
             _id = self.langchain_chroma.add_documents([doc])
 
 
