@@ -11,7 +11,8 @@ import uuid
 from typing import List
 import asyncio
 
-#%%
+
+# %%
 
 class Retriever:
     def __init__(self, top_k=1):
@@ -20,21 +21,20 @@ class Retriever:
         self.client = ChromaClient()
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
-                        vectorstore=self.client.langchain_chroma,
-                        byte_store=self.store,
-                        id_key=self.id_key,
-                        )
+            vectorstore=self.client.langchain_chroma,
+            byte_store=self.store,
+            id_key=self.id_key,
+        )
         self.splitter = TextSplitter()
         self.top_k = top_k
 
-
     @staticmethod
-    def id_gen(self,doc: Document):
+    def id_gen(doc: Document):
         return uuid.uuid5(multivec_retriever_conf['namespace'], doc.metadata['source']).hex
 
     @staticmethod
-    def gen_doc_ids(self, docs: List[Document]):
-        return [self.id_gen(doc) for doc in docs]
+    def gen_doc_ids(docs: List[Document]):
+        return [__class__.id_gen(doc) for doc in docs]
 
     def split_docs(self, docs: List[Document]):
         chunks = []
@@ -46,7 +46,7 @@ class Retriever:
             chunks.extend(_sub_docs)
         return chunks
 
-    def add_docs(self, docs: List[Document], asynchronous= True):
+    def add_docs(self, docs: List[Document], asynchronous=True):
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
         if asynchronous:
