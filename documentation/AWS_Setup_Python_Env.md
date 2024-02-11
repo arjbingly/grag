@@ -37,7 +37,8 @@ We first need to create a bash file on the AWS instance, I have created the belo
 	source ~/miniconda3/bin/activate Capstone5
 	python "$@"
 	
-Give executable permission: `chmod +x ~/activate_Capstone5`
+If it gives an error related to the python when you select the environment in pycharm then use `python3 "$@"` instead.  
+Give executable permission: `chmod +x ~/activate_Capstone5`  
 
 Then point to this file while creating a remote interpreter on PyCharm.
 
