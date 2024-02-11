@@ -1,4 +1,5 @@
 #!/bin/bash
+conda init bash
 conda activate Capstone5
 cd ..
 cd ..
