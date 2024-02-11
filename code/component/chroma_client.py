@@ -8,16 +8,15 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 from langchain_core.documents import Document
 
-from config import chroma
-
+from config import chroma_conf
 
 # %%
 class ChromaClient:
     def __init__(self):
-        self.host = chroma['host']
-        self.port = chroma['port']
-        self.embedding_model = chroma['embedding_model']
-        self.collection_name = chroma['collection_name']
+        self.host = chroma_conf['host']
+        self.port = chroma_conf['port']
+        self.embedding_model = chroma_conf['embedding_model']
+        self.collection_name = chroma_conf['collection_name']
 
         self.embedding_function = SentenceTransformerEmbeddings(model_name=self.embedding_model)
         self.chroma_client = chromadb.HttpClient(host=self.host, port=self.port)
