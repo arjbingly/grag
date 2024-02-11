@@ -10,7 +10,7 @@ chroma_conf = {
 }
 
 text_splitter_conf = {
-    'chunk_size': 10000,
+    'chunk_size': 5000,
     'chunk_overlap': 400,
 }
 
