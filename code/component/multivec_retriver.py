@@ -4,7 +4,7 @@ from langchain_core.documents import Document
 
 from chroma_client import ChromaClient
 from text_splitter import TextSplitter
-from config import multivec_retriver_conf
+from config import multivec_retriever_conf
 
 import os
 import uuid
@@ -13,10 +13,10 @@ import asyncio
 
 #%%
 
-class Retriver:
+class Retriever:
     def __init__(self, top_k=1):
-        self.store_path = multivec_retriver_conf['store_path']
-        self.id_key = multivec_retriver_conf['id_key']
+        self.store_path = multivec_retriever_conf['store_path']
+        self.id_key = multivec_retriever_conf['id_key']
         self.client = ChromaClient()
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
@@ -30,7 +30,7 @@ class Retriver:
 
     @staticmethod
     def id_gen(self,doc: Document):
-        return uuid.uuid5(multivec_retriver_conf['namespace'], doc.metadata['source']).hex
+        return uuid.uuid5(multivec_retriever_conf['namespace'], doc.metadata['source']).hex
 
     @staticmethod
     def gen_doc_ids(self, docs: List[Document]):
