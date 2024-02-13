@@ -25,6 +25,7 @@ def load_split_PDF(pdf_path, mode="single", strategy="hi_res", splitter=None):
         # Handle or log the exception
         print(f"An error occurred: {e}")
         return None
+    
 #%%
 # test cases
 load_split_PDF("C:\College\DSCI CAPSTONE\ocr_pdf1.pdf")
