@@ -7,12 +7,12 @@ def load_split_PDF(pdf_path, mode="single", strategy="hi_res", splitter=None):
     
     Parameters:
         pdf_path (str): Path to the PDF file.
-        mode (str): Loading mode, "elements" for elements split or "single" to get a single langchain document.
+        mode (str): Loading mode, "single" to get a single langchain document or "elements" for elements split (such as Title or Narrative Text).
         strategy (str): Strategy for loading, "hi_res" for high resolution or "fast" for quicker loading.
-        splitter: Splitter instance to use for text splitting. Defaults to None, which uses the RecursiveCharacterTextSplitter.
+        splitter: Splitter instance to use for text splitting. Defaults to None, which uses RecursiveCharacterTextSplitter.
     
     Returns:
-        pdf_doc: The split text data from the PDF.
+        pdf_doc: The split Documents from the PDF.
     """
     try:
         # Initiating PDF loader
