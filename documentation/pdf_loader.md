@@ -23,3 +23,7 @@ From (https://api.python.langchain.com/en/latest/document_loaders/langchain_comm
 #### Overview
 
 Langchain class; loads and extracts data from PDF files using Unstructured.
+
+### 4. Notes
+
+Slow for scanned PDF files. Accuracy is decent, but dependent on scan/image quality.
