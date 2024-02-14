@@ -12,7 +12,6 @@ from components.multivec_retriever import Retriever
 # data_path = "data/pdf/9809"
 data_path = Path(os.getcwd()).parents[1]/'data'/'Gutenberg'/'txt' #"data/Gutenberg/txt"
 # %%
-# init multi vector retriever
 retriever = Retriever(top_k=3)
 
 new_docs = True
