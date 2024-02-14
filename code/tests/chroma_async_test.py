@@ -9,7 +9,6 @@ from pathlib import Path
 import sys
 sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
-
 from utils.txt_data_ingest import load_split_dir
 from components.chroma_client import ChromaClient
 
