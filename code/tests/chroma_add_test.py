@@ -3,10 +3,17 @@ import numpy as np
 import asyncio
 from tqdm import tqdm
 
-from txt_data_ingest import load_split_dir
-from chroma_client import ChromaClient
+# add code folder to sys path
+import os
+from pathlib import Path
+import sys
+sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
-data_path = "data/Gutenberg/txt"
+
+from utils.txt_data_ingest import load_split_dir
+from components.chroma_client import ChromaClient
+
+data_path = Path(os.getcwd()).parents[1]/'data'/'Gutenberg'/'txt' #"data/Gutenberg/txt"
 
 def main():
     docs = load_split_dir(data_path)
@@ -48,6 +55,7 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
 
 

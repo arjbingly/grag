@@ -1,18 +1,14 @@
-from langchain.retrievers.multi_vector import MultiVectorRetriever
-from langchain.storage import LocalFileStore
-from langchain_core.documents import Document
-
-from chroma_client import ChromaClient
-from text_splitter import TextSplitter
-from config import multivec_retriever_conf
-
-import os
 import uuid
 from typing import List
 import asyncio
 
+from langchain.retrievers.multi_vector import MultiVectorRetriever
+from langchain.storage import LocalFileStore
+from langchain_core.documents import Document
 
-# %%
+from .chroma_client import ChromaClient
+from .text_splitter import TextSplitter
+from .config import multivec_retriever_conf
 
 class Retriever:
     def __init__(self, top_k=1):
@@ -27,6 +23,7 @@ class Retriever:
         )
         self.splitter = TextSplitter()
         self.top_k = top_k
+        self.retriever.search_kwargs = {'k': self.top_k}
 
     @staticmethod
     def id_gen(doc: Document):
@@ -46,7 +43,7 @@ class Retriever:
             chunks.extend(_sub_docs)
         return chunks
 
-    def add_docs(self, docs: List[Document], asynchronous=True):
+    def add_docs(self, docs: List[Document], asynchronous=False):
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
         if asynchronous:
@@ -55,25 +52,23 @@ class Retriever:
             self.client.add_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
-    def get_chunk(self, query: str, top_k=None, with_score=False):
-        if top_k is None:
-            top_k = self.top_k
+    def get_chunk(self, query: str, with_score=False):
         if with_score:
-            return self.client.langchain_chroma.similarity_search_with_relevance_scores(query=query, k=top_k)
+            return self.client.langchain_chroma.similarity_search_with_relevance_scores(query=query, **self.retriever.search_kwargs)
         else:
-            return self.client.langchain_chroma.similarity_search(query=query, k=top_k)
+            return self.client.langchain_chroma.similarity_search(query=query, **self.retriever.search_kwargs)
 
-    def aget_chunk(self, query: str, top_k=None, with_score=False):
+    def aget_chunk(self, query: str, with_score=False):
         if top_k is None:
             top_k = self.top_k
 
         if with_score:
-            return self.client.langchain_chroma.asimilarity_search_with_relevance_scores(query=query, k=top_k)
+            return self.client.langchain_chroma.asimilarity_search_with_relevance_scores(query=query, **self.retriever.search_kwargs)
         else:
-            return self.client.langchain_chroma.asimilarity_search(query=query, k=top_k)
+            return self.client.langchain_chroma.asimilarity_search(query=query, **self.retriever.search_kwargs)
 
     def get_doc(self, query: str):
-        return self.client.langchain_chroma.similarity_search(query=query)
+        return self.retriever.get_relevant_documents(query=query)
 
     def aget_doc(self, query: str):
         return self.retriever.aget_relevant_documents(query=query)

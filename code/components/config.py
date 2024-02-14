@@ -3,8 +3,11 @@ from uuid import UUID
 chroma_conf = {
     'host' : 'localhost',
     'port' : 8000,
-    'collection_name' : "gutenberg",
-    'embedding_model' : "all-mpnet-base-v2",
+    'collection_name' : "arxiv",
+    # 'embedding_type' : 'sentence-transformers',
+    # 'embedding_model' : "all-mpnet-base-v2",
+    'embedding_type' : 'instructor-embedding',
+    'embedding_model' : 'hkunlp/instructor-xl',
     'store_path' : "data/vectordb",
     'allow_reset': True
 }
