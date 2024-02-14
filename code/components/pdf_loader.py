@@ -29,3 +29,4 @@ def load_split_PDF(pdf_path, mode="single", strategy="hi_res", splitter=None):
 # test cases
 load_split_PDF("C:\College\DSCI CAPSTONE\FL.1942.10.pdf", mode="single")
 
+# %%
