@@ -47,6 +47,11 @@ query_vector = embedding.embedding_function.embed_query(query)
 similarity_scores = [cosine_similarity(query_vector, doc_vector) for doc_vector in docs_vector]
 print(f'Similairty Scores: {similarity_scores}')
 
+if similarity_scores[1] > similarity_scores[0]:
+    print('Test Passed')
+else:
+    print('Test Failed')
+
 # testing second config
 print(f'Testing: {embedding_configs[1]}')
 
@@ -57,3 +62,8 @@ query_vector = embedding.embedding_function.embed_query(query)
 similarity_scores = [cosine_similarity(query_vector, doc_vector) for doc_vector in docs_vector]
 
 print(f'Similairty Scores: {similarity_scores}')
+if similarity_scores[1] > similarity_scores[0]:
+    print('Test Passed')
+else:
+    print('Test Failed')
+
