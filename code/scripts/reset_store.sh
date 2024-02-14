@@ -1,8 +1,6 @@
 #!/bin/bash
-conda init bash
-conda activate Capstone5
+CURR_PATH=$(pwd)
 cd ..
 cd ..
-cd data/docs
-rm -r *
-
+rm data/docs/*
+cd $CURR_PATH

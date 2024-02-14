@@ -1,9 +1,8 @@
 #!/bin/bash
-conda init bash
-conda activate Capstone5
+CURR_PATH=$(pwd)
 cd ..
 cd ..
 rm chroma.log
-cd data/vectordb
-rm -r *
+rm -r data/vectordb/*
+cd $CURR_PATH
 
