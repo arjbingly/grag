@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from pathlib import Path
 import os
 from huggingface_hub import login
 import torch
@@ -17,6 +18,8 @@ print("CUDA: ", torch.cuda.is_available())
 class LLM:
     def __init__(self):
         self.llm_model = llm_conf["model_path"]
+        base_dir = Path(__file__).resolve().parent.parent
+        self.model_path = base_dir / 'models' / self.llm_model / f'ggml-model-{llm_conf["quantization"]}.gguf'
         self.device_map = llm_conf["device_map"]
         self.task = llm_conf["task"]
         self.max_new_tokens = llm_conf["max_new_tokens"]
@@ -35,10 +38,10 @@ class LLM:
                 raise ValueError("Authentication token not provided.")
             login(token=auth_token)
 
-            tokenizer = AutoTokenizer.from_pretrained(self.llm_model,
+            tokenizer = AutoTokenizer.from_pretrained(self.model_path,
                                                       token=True)
 
-            model = AutoModelForCausalLM.from_pretrained(self.llm_model,
+            model = AutoModelForCausalLM.from_pretrained(self.model_path,
                                                          device_map=self.device_map,
                                                          torch_dtype=torch.float16,
                                                          token=True)
@@ -64,7 +67,7 @@ class LLM:
     def llama_cpp(self):
         # https://stackoverflow.com/a/77734908/13808323
         llm = LlamaCpp(
-            model_path=self.llm_model,
+            model_path=self.model_path,
             max_tokens=self.max_new_tokens,
             temperature=self.temperature,
             n_gpu_layers=self.n_gpu_layers,
