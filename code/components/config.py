@@ -1,13 +1,13 @@
 llm_conf = {
-    'model_name': 'Llama-2-70b-chat',  # 'meta-llama/Llama-2-70b-chat-hf',
-    'quantization': 'Q4_K_M',
+    'model_name': 'Llama-2-13b-chat',  # 'meta-llama/Llama-2-70b-chat-hf',
+    'quantization': 'Q5_K_M',
     'device_map': 'auto',
     'task': 'text-generation',
     'max_new_tokens': 512,
     'temperature': 0.1,
     'n_batch_gpu_cpp': 512,
     'n_ctx_cpp': 4096,
-    'n_gpu_layers_cpp': 16,  # The number of layers to put on the GPU.
+    'n_gpu_layers_cpp': 24,  # The number of layers to put on the GPU.
 
 }
 from uuid import UUID

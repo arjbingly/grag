@@ -13,7 +13,7 @@ from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 
 from components.llm import LLM
 from components.utils import process_llm_response
-from components.config import llm_conf
+# from components.config import llm_conf
 
 
 loader = DirectoryLoader("../components/new_papers", glob="./*.pdf", loader_cls=PyPDFLoader)
@@ -29,17 +29,15 @@ embedding_function = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor
                                                    model_kwargs={"device": "cuda"})
 embedding_function.embed_instruction = embedding_instruction
 
-persist_directory = 'db'
-
 vectordb = Chroma.from_documents(documents=texts,
-                                 embedding=embedding_function,
-                                 persist_directory=persist_directory)
+                                 embedding=embedding_function,)
 
 retriever = vectordb.as_retriever(search_kwargs={"k": 5})
 
-llm_ = LLM(llm_conf)
+llm_ = LLM()
+llm_model = llm_.load_model()
 
-qa_chain = RetrievalQA.from_chain_type(llm=llm_.llama_cpp(),
+qa_chain = RetrievalQA.from_chain_type(llm=llm_model,
                                        chain_type="stuff",
                                        retriever=retriever,
                                        return_source_documents=True)
