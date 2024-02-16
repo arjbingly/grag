@@ -1,12 +1,12 @@
 llm_conf = {
-    'model_path': 'Llama-2-13b-chat',  # 'meta-llama/Llama-2-70b-chat-hf',
-    'quantization': 'Q5_K_M',
+    'model_name': 'Llama-2-70b-chat',  # 'meta-llama/Llama-2-70b-chat-hf',
+    'quantization': 'Q4_K_M',
     'device_map': 'auto',
     'task': 'text-generation',
-    'max_new_tokens': 1024,
-    'temperature': 0,
-    'n_batch_gpu_cpp': 1024,
-    'n_ctx_cpp': 1536,
+    'max_new_tokens': 512,
+    'temperature': 0.1,
+    'n_batch_gpu_cpp': 512,
+    'n_ctx_cpp': 4096,
     'n_gpu_layers_cpp': 16,  # The number of layers to put on the GPU.
 
 }

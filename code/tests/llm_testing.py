@@ -1,13 +1,19 @@
+import os
+from pathlib import Path
+import sys
+
+sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
+
 from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains import RetrievalQA
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 
-from llm import LLM
+from components.llm import LLM
 from components.utils import process_llm_response
+from components.config import llm_conf
 
 
 loader = DirectoryLoader("../components/new_papers", glob="./*.pdf", loader_cls=PyPDFLoader)
@@ -31,7 +37,7 @@ vectordb = Chroma.from_documents(documents=texts,
 
 retriever = vectordb.as_retriever(search_kwargs={"k": 5})
 
-llm_ = LLM()
+llm_ = LLM(llm_conf)
 
 qa_chain = RetrievalQA.from_chain_type(llm=llm_.llama_cpp(),
                                        chain_type="stuff",
