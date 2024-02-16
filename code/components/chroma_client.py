@@ -59,7 +59,7 @@ class ChromaClient:
         self.embedding_type: str = embedding_type
         self.embedding_model: str = embedding_model
 
-        self.embedding_function = Embedding(embedding_model=self.embedding_modelname,
+        self.embedding_function = Embedding(embedding_model=self.embedding_model,
                                             embedding_type=self.embedding_type).embedding_function
 
         self.chroma_client = chromadb.HttpClient(host=self.host, port=self.port)
