@@ -8,14 +8,14 @@ class ParsePDF:
     Parsing and partitioning PDF documents into Text, Table or Image elements.
     
     Attributes:
+        single_text_out (bool): Whether to combine all text elements into a single output document.
         strategy (str): The strategy for PDF partitioning; default is "hi_res" for better accuracy.
         extract_image_block_types (list): Elements to be extracted as image blocks.
         infer_table_structure (bool): Whether to extract tables during partitioning.
         extract_images (bool): Whether to extract images. 
-        add_captions_to_text (bool): Whether to include figure captions in text output.
-        add_captions_to_blocks (bool): Whether to add captions to table and image blocks.
         image_output_dir (str): Directory to save extracted images, if any.
-        single_text_out (bool): Whether to combine all text elements into a single output document.
+        add_captions_to_text (bool): Whether to include figure captions in text output. Default is True.
+        add_captions_to_blocks (bool): Whether to add captions to table and image blocks. Default is True.
         add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. Default is True.
     """
     def __init__(self,
@@ -64,7 +64,8 @@ class ParsePDF:
 
     def classify(self, partitions):
         """
-        Classifies the partitioned elements into Text, Tables, and Images.
+        Classifies the partitioned elements into Text, Tables, and Images list in a dictionary. 
+        Add captions for each element (if available).
 
         Parameters:
             partitions (list): The list of partitioned elements from the PDF document.
@@ -78,10 +79,10 @@ class ParsePDF:
             'Tables': [],
             'Images': []
         }
-        
+
         for i, element in enumerate(partitions):
-            if element.category == "Table":
-                if self.add_captions_to_blocks:
+            if element.category == "Table": 
+                if self.add_captions_to_blocks: 
                     if partitions[i + 1].category == "FigureCaption":  # check for caption
                         caption_element = partitions[i + 1]
                     else:
@@ -132,7 +133,7 @@ class ParsePDF:
 
     def process_tables(self, elements):
         """
-        Processes table elements into documents, including handling of captions if specified.
+        Processes table elements into Documents, including handling of captions if specified.
 
         Parameters:
             elements (list): The list of table elements (and optional captions) to be processed.
@@ -157,7 +158,7 @@ class ParsePDF:
 
     def process_images(self, elements):
         """
-        Processes image elements into documents, including handling of captions if specified.
+        Processes image elements into Documents, including handling of captions if specified.
 
         Parameters:
             elements (list): The list of image elements (and optional captions) to be processed.
@@ -182,7 +183,7 @@ class ParsePDF:
 
     def load_file(self, path):
         """
-        Loads a PDF file, partitions and classifies its elements, and processes these elements into structured documents.
+        Loads a PDF file, partitions and classifies its elements, and processes these elements into Documents.
 
         Parameters:
             path (str): The file path of the PDF document to be loaded and processed.
