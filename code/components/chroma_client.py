@@ -10,7 +10,7 @@ from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
 from .config import chroma_conf
-from .embedding import  Embedding
+from .embedding import Embedding
 
 
 class ChromaClient:
@@ -67,55 +67,51 @@ class ChromaClient:
         self.langchain_chroma = Chroma(client=self.chroma_client,
                                        collection_name=self.collection_name,
                                        embedding_function=self.embedding_function, )
+    def test_connection(self, verbose=True):
+        '''
+        Tests connection with Chroma Vectorstore
 
+        Args:
+            verbose: if True, prints connection status
 
-def test_connection(self, verbose=True):
-    '''
-    Tests connection with Chroma Vectorstore
+        Returns:
+            A random integer if connection is alive else None
+        '''
+        response = self.chroma_client.heartbeat()
+        if verbose:
+            if response:
+                print(f'Connection to {self.host}/{self.port} is alive..')
+            else:
+                print(f'Connection to {self.host}/{self.port} is not alive !!')
+        return response
 
-    Args:
-        verbose: if True, prints connection status
+    async def aadd_docs(self, docs: List[Document], verbose=True):
+        '''
+        Asynchronously adds documents to chroma vectorstore
 
-    Returns:
-        A random integer if connection is alive else None
-    '''
-    response = self.chroma_client.heartbeat()
-    if verbose:
-        if response:
-            print(f'Connection to {self.host}/{self.port} is alive..')
+        Args:
+            docs: List of Documents
+            verbose: Show progress bar
+
+        Returns:
+            None
+        '''
+        tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
+        if verbose:
+            await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
         else:
-            print(f'Connection to {self.host}/{self.port} is not alive !!')
-    return response
+            await asyncio.gather(*tasks)
 
+    def add_docs(self, docs: List[Document], verbose=True):
+        '''
+        Adds documents to chroma vectorstore
 
-async def aadd_docs(self, docs: List[Document], verbose=True):
-    '''
-    Asynchronously adds documents to chroma vectorstore
+         Args:
+            docs: List of Documents
+            verbose: Show progress bar
 
-    Args:
-        docs: List of Documents
-        verbose: Show progress bar
-
-    Returns:
-        None
-    '''
-    tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
-    if verbose:
-        await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
-    else:
-        await asyncio.gather(*tasks)
-
-
-def add_docs(self, docs: List[Document], verbose=True):
-    '''
-    Adds documents to chroma vectorstore
-
-     Args:
-        docs: List of Documents
-        verbose: Show progress bar
-
-    Returns:
-        None
-    '''
-    for doc in (tqdm(docs, desc=f'Adding to {self.collection_name}:') if verbose else docs):
-        _id = self.langchain_chroma.add_documents([doc])
+        Returns:
+            None
+        '''
+        for doc in (tqdm(docs, desc=f'Adding to {self.collection_name}:') if verbose else docs):
+            _id = self.langchain_chroma.add_documents([doc])
