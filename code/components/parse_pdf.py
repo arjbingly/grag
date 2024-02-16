@@ -127,9 +127,10 @@ class ParsePDF:
     def load_file(self, path):
         partitions = self.partition(path)
         classified_elements = self.classify(partitions)
-        docs = []
-        docs.extend(self.process_text(classified_elements['Text']))
-        docs.extend(self.process_tables(classified_elements['Tables']))
-        docs.extend(self.process_tables(classified_elements['Images']))
-        return docs
+        text_docs = self.process_text(classified_elements['Text'])
+        table_docs = self.process_tables(classified_elements['Tables'])
+        image_docs = self.process_tables(classified_elements['Images'])
+        return {'Text': text_docs,
+                'Tables': table_docs,
+                'Images': image_docs}
 # %%
