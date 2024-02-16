@@ -161,3 +161,6 @@ cython_debug/
 
 # MacOS
 *.DS_Store
+
+code/others
+.idea

@@ -28,6 +28,8 @@ conda install conda-forge::langchain
 
 Deps for unstructured 
 conda install libmagic-dev poppler-utils tesseract-ocr libreoffice pandoc tesseract-lang
+conda install sentence-transformers
+
 
 # Setup Remote Interpreter - PyCharm
 Since PyCharm does not support Remote Conda envionments out of the box. 
