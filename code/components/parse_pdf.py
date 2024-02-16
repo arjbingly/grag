@@ -4,8 +4,22 @@ import os
 
 
 class ParsePDF:
+    """
+    Parsing and partitioning PDF documents into Text, Table or Image elements.
+    
+    Attributes:
+        strategy (str): The strategy for PDF partitioning; default is "hi_res" for better accuracy.
+        extract_image_block_types (list): Elements to be extracted as image blocks.
+        infer_table_structure (bool): Whether to extract tables during partitioning.
+        extract_images (bool): Whether to extract images. 
+        add_captions_to_text (bool): Whether to include figure captions in text output.
+        add_captions_to_blocks (bool): Whether to add captions to table and image blocks.
+        image_output_dir (str): Directory to save extracted images, if any.
+        single_text_out (bool): Whether to combine all text elements into a single output document.
+        add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. Default is True.
+    """
     def __init__(self,
-                 single_text_out=True,
+                 single_text_out=True, 
                  strategy="hi_res",
                  infer_table_structure=True,
                  extract_images=True,
@@ -13,11 +27,12 @@ class ParsePDF:
                  add_captions_to_text=True,
                  add_captions_to_blocks=True,
                  ):
+        # Instantialize instance variables with parameters
         self.strategy = strategy
-        if extract_images:
-            self.extract_image_block_types = ["Image", "Table"]
+        if extract_images: # by default always extract Table
+            self.extract_image_block_types = ["Image", "Table"] # extracting Image and Table as image blocks
         else:
-            self.extract_image_block_types = ["Table"]
+            self.extract_image_block_types = ["Table"] 
         self.infer_table_structure = infer_table_structure
         self.add_captions_to_text = add_captions_to_text
         self.add_captions_to_blocks = add_captions_to_blocks
@@ -27,14 +42,19 @@ class ParsePDF:
 
     def partition(self, path):
         """
-        Parse and partition a PDF document into elements.
+        Partitions a PDF document into elements based on the instance's configuration.
 
+        Parameters:
+            path (str): The file path of the PDF document to be parsed and partitioned.
+
+        Returns:
+            list: A list of partitioned elements from the PDF document.
         """
         self.file_path = path
         partitions = partition_pdf(
             filename=self.file_path,
             strategy=self.strategy,
-            extract_images_in_pdf=True,  # Test if required
+            # extract_images_in_pdf=True,  # Not required if specifies extract_image_block_type
             extract_image_block_types=self.extract_image_block_types,
             infer_table_structure=self.infer_table_structure,
             extract_image_block_to_payload=False,
@@ -43,13 +63,22 @@ class ParsePDF:
         return partitions
 
     def classify(self, partitions):
+        """
+        Classifies the partitioned elements into Text, Tables, and Images.
+
+        Parameters:
+            partitions (list): The list of partitioned elements from the PDF document.
+
+        Returns:
+            dict: A dictionary with keys 'Text', 'Tables', and 'Images', each containing a list of corresponding elements.
+        """
         # Initialize lists for each type of element
         classified_elements = {
             'Text': [],
             'Tables': [],
             'Images': []
         }
-
+        
         for i, element in enumerate(partitions):
             if element.category == "Table":
                 if self.add_captions_to_blocks:
@@ -79,6 +108,15 @@ class ParsePDF:
         return classified_elements
 
     def process_text(self, elements):
+        """
+        Processes text elements into langchain Documents.
+
+        Parameters:
+            elements (list): The list of text elements to be processed.
+
+        Returns:
+            list: A list of Document instances created from the text elements.
+        """
         if self.single_text_out:
             metadata = {'source': self.file_path} # Check for more metadata
             text = "\n\n".join([str(el) for el in elements])
@@ -93,6 +131,15 @@ class ParsePDF:
         return docs
 
     def process_tables(self, elements):
+        """
+        Processes table elements into documents, including handling of captions if specified.
+
+        Parameters:
+            elements (list): The list of table elements (and optional captions) to be processed.
+
+        Returns:
+            list: A list of Document instances created from the table elements.
+        """
         docs = []
         for block_element, caption_element in elements:
             metadata = {'source': self.file_path,
@@ -109,6 +156,15 @@ class ParsePDF:
         return docs
 
     def process_images(self, elements):
+        """
+        Processes image elements into documents, including handling of captions if specified.
+
+        Parameters:
+            elements (list): The list of image elements (and optional captions) to be processed.
+
+        Returns:
+            list: A list of Document instances created from the image elements.
+        """
         docs = []
         for block_element, caption_element in elements:
             metadata = {'source': self.file_path,
@@ -125,6 +181,15 @@ class ParsePDF:
         return docs
 
     def load_file(self, path):
+        """
+        Loads a PDF file, partitions and classifies its elements, and processes these elements into structured documents.
+
+        Parameters:
+            path (str): The file path of the PDF document to be loaded and processed.
+
+        Returns:
+            dict: A dictionary with keys 'Text', 'Tables', and 'Images', each containing a list of processed Document instances.
+        """
         partitions = self.partition(path)
         classified_elements = self.classify(partitions)
         text_docs = self.process_text(classified_elements['Text'])
