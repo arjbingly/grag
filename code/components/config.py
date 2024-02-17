@@ -1,14 +1,26 @@
+llm_conf = {
+    'model_name': 'Llama-2-13b-chat',  # 'meta-llama/Llama-2-70b-chat-hf',
+    'quantization': 'Q5_K_M',
+    'device_map': 'auto',
+    'task': 'text-generation',
+    'max_new_tokens': 512,
+    'temperature': 0.1,
+    'n_batch_gpu_cpp': 512,
+    'n_ctx_cpp': 4096,
+    'n_gpu_layers_cpp': 24,  # The number of layers to put on the GPU.
+
+}
 from uuid import UUID
 
 chroma_conf = {
-    'host' : 'localhost',
-    'port' : 8000,
-    'collection_name' : "arxiv",
+    'host': 'localhost',
+    'port': 8000,
+    'collection_name': "arxiv",
     # 'embedding_type' : 'sentence-transformers',
     # 'embedding_model' : "all-mpnet-base-v2",
-    'embedding_type' : 'instructor-embedding',
-    'embedding_model' : 'hkunlp/instructor-xl',
-    'store_path' : "data/vectordb",
+    'embedding_type': 'instructor-embedding',
+    'embedding_model': 'hkunlp/instructor-xl',
+    'store_path': "data/vectordb",
     'allow_reset': True
 }
 

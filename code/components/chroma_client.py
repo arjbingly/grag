@@ -10,7 +10,7 @@ from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
 from .config import chroma_conf
-from .embedding import  Embedding
+from .embedding import Embedding
 
 
 class ChromaClient:
@@ -59,7 +59,7 @@ class ChromaClient:
         self.embedding_type: str = embedding_type
         self.embedding_model: str = embedding_model
 
-        self.embedding_function = Embedding(embedding_model=self.embedding_modelname,
+        self.embedding_function = Embedding(embedding_model=self.embedding_model,
                                             embedding_type=self.embedding_type).embedding_function
 
         self.chroma_client = chromadb.HttpClient(host=self.host, port=self.port)
@@ -67,8 +67,6 @@ class ChromaClient:
         self.langchain_chroma = Chroma(client=self.chroma_client,
                                        collection_name=self.collection_name,
                                        embedding_function=self.embedding_function, )
-
-
     def test_connection(self, verbose=True):
         '''
         Tests connection with Chroma Vectorstore
@@ -87,7 +85,6 @@ class ChromaClient:
                 print(f'Connection to {self.host}/{self.port} is not alive !!')
         return response
 
-
     async def aadd_docs(self, docs: List[Document], verbose=True):
         '''
         Asynchronously adds documents to chroma vectorstore
@@ -104,7 +101,6 @@ class ChromaClient:
             await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
         else:
             await asyncio.gather(*tasks)
-
 
     def add_docs(self, docs: List[Document], verbose=True):
         '''

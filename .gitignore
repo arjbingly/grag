@@ -161,7 +161,8 @@ cython_debug/
 
 # MacOS
 *.DS_Store
-/myvirtenv/
-
+**.env
+**.gguf
+.idea/
 code/others
-.idea
+data/
