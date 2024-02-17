@@ -40,7 +40,7 @@ class ParsePDF:
         self.single_text_out = single_text_out
         self.add_caption_first = True
 
-    def partition(self, path):
+    def partition(self, path: str):
         """
         Partitions a PDF document into elements based on the instance's configuration.
 
@@ -192,7 +192,7 @@ class ParsePDF:
         Returns:
             dict: A dictionary with keys 'Text', 'Tables', and 'Images', each containing a list of processed Document instances.
         """
-        partitions = self.partition(path)
+        partitions = self.partition(str(path))
         classified_elements = self.classify(partitions)
         text_docs = self.process_text(classified_elements['Text'])
         table_docs = self.process_tables(classified_elements['Tables'])
