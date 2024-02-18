@@ -37,6 +37,3 @@ multivec_retriever_conf = {
     'id_key': 'doc_id',
 
 }
-
-import os
-cur_path = os.getcwd()
