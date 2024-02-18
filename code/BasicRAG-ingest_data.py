@@ -1,12 +1,10 @@
 from pathlib import Path
 import os
 from uuid import UUID, uuid5
-
 from tqdm import tqdm
 
 from components.multivec_retriever import Retriever
 from components.parse_pdf import ParsePDF
-from components.config import cur_path
 
 data_path = Path(os.getcwd()).parent / 'data' / 'pdf'
 formats_to_add = ['Text', 'Tables']
@@ -48,7 +46,6 @@ def add_to_database(file_path, dry_run=False):
             retriever.add_docs(docs[format_key])
 
 
-# %%
 parser = ParsePDF()
 retriever = Retriever()
 
