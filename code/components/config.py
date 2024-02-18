@@ -30,9 +30,13 @@ text_splitter_conf = {
 }
 
 multivec_retriever_conf = {
-    'store_path': 'data/docs',
+    # 'store_path': 'data/docs',
+    'store_path': '/home/ubuntu/CapStone/Capstone_5/data/docs',
     'namespace': UUID('8c9040b0-b5cd-4d7c-bc2e-737da1b24ebf'),
     # 'namespace': '8c9040b0b5cd4d7cbc2e737da1b24ebf',
     'id_key': 'doc_id',
 
 }
+
+import os
+cur_path = os.getcwd()
