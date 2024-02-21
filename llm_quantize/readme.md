@@ -14,7 +14,8 @@ Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the 
 - Go to [HuggingFace](https://huggingface.co/models) and search for the models, make sure the model is listed in [description](https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#description) of `llama.cpp`.  
 - Make sure you are in `models` directory in `llama.cpp`. Follow the steps to download models on HuggingFace.
 
-After you have finished downloading models check if you have all the files downloaded properly.
+Note: If you are using gated models (like Llama-2) request for access from HuggingFace and Meta, steps will be in model repo.
+After you have finished downloading models check if you have all the files downloaded properly using checksum.
 
 ### 3. Steps to quantize:
 - Make sure you are in `llama.cpp` Now check that there is a `quantize.py` file in there.
