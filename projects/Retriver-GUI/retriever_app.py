@@ -1,7 +1,6 @@
 import streamlit as st
 
-from components.multivec_retriever import Retriever
-
+from src.components.multivec_retriever import Retriever
 
 class PageHome:
     def __init__(self, app):
