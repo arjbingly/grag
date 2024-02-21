@@ -1,18 +1,29 @@
-## Instruction for code folder
-
-- All classes and functions need to be in component folder
-- Main loop code needs to be in the main loop code folder.
-- All codes need to have docstrings and hints.
-
-To make the environment and install requirements:  
-`conda env create -f <path/to/file>`
-
-To download the Llama models from official repository:
-- Request access (fast response).
-- Clone the repository and `cd` to it.
-- Run `source ./download.sh`. It will prompt for URL paste that from email from Meta.
-- Then select the model to download.
-
-Findings
-- Llama-2-70b-chat is going OOM for Q5_K_M quantization.
-- 
+## Folder Structure
+```
+src
+├── Readme.md  
+├── __init__.py  
+├── components -> Contains all reusable modularised code   
+│   ├── __init__.py  
+│   ├── chroma_client.py   
+│   ├── config.py  
+│   ├── embedding.py  
+│   ├── llm.py  
+│   ├── multivec_retriever.py  
+│   ├── parse_pdf.py  
+│   ├── text_splitter.py
+│   └── utils.py
+├── scripts -> Contains scripts to run, reset, etc. 
+│   ├── reset_chroma.sh
+│   ├── reset_store.sh
+│   └── run_chroma.sh
+├── tests -> Contains test files for components 
+│   ├── chroma_add_test.py
+│   ├── chroma_async_test.py
+│   ├── embedding_test.py
+│   ├── llm_test.py
+│   ├── multivec_retriever_test.py
+│   └── parse_pdf_test.py
+└── utils 
+    └── txt_data_ingest.py
+```
