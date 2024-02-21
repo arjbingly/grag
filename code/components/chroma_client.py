@@ -5,6 +5,7 @@ import chromadb
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_core.documents import Document
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
@@ -67,6 +68,7 @@ class ChromaClient:
         self.langchain_chroma = Chroma(client=self.chroma_client,
                                        collection_name=self.collection_name,
                                        embedding_function=self.embedding_function, )
+        self.allowed_metadata_types = (str, int, float, bool)
     def test_connection(self, verbose=True):
         '''
         Tests connection with Chroma Vectorstore
@@ -96,6 +98,7 @@ class ChromaClient:
         Returns:
             None
         '''
+        docs = self._filter_metadata(docs)
         tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
         if verbose:
             await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
@@ -113,5 +116,9 @@ class ChromaClient:
         Returns:
             None
         '''
+        docs = self._filter_metadata(docs)
         for doc in (tqdm(docs, desc=f'Adding to {self.collection_name}:') if verbose else docs):
             _id = self.langchain_chroma.add_documents([doc])
+
+    def _filter_metadata(self, docs: List[Document]):
+        return filter_complex_metadata(docs, allowed_types=self.allowed_metadata_types)

@@ -18,8 +18,9 @@ class ParsePDF:
         add_captions_to_blocks (bool): Whether to add captions to table and image blocks. Default is True.
         add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. Default is True.
     """
+
     def __init__(self,
-                 single_text_out=True, 
+                 single_text_out=True,
                  strategy="hi_res",
                  infer_table_structure=True,
                  extract_images=True,
@@ -29,10 +30,10 @@ class ParsePDF:
                  ):
         # Instantialize instance variables with parameters
         self.strategy = strategy
-        if extract_images: # by default always extract Table
-            self.extract_image_block_types = ["Image", "Table"] # extracting Image and Table as image blocks
+        if extract_images:  # by default always extract Table
+            self.extract_image_block_types = ["Image", "Table"]  # extracting Image and Table as image blocks
         else:
-            self.extract_image_block_types = ["Table"] 
+            self.extract_image_block_types = ["Table"]
         self.infer_table_structure = infer_table_structure
         self.add_captions_to_text = add_captions_to_text
         self.add_captions_to_blocks = add_captions_to_blocks
@@ -40,7 +41,7 @@ class ParsePDF:
         self.single_text_out = single_text_out
         self.add_caption_first = True
 
-    def partition(self, path):
+    def partition(self, path: str):
         """
         Partitions a PDF document into elements based on the instance's configuration.
 
@@ -79,20 +80,20 @@ class ParsePDF:
             'Tables': [],
             'Images': []
         }
-        
+
         for i, element in enumerate(partitions):
-        # enumerate, classify and add element + caption (when available) to respective list
-            if element.category == "Table": 
-                if self.add_captions_to_blocks: 
+            # enumerate, classify and add element + caption (when available) to respective list
+            if element.category == "Table":
+                if self.add_captions_to_blocks and i + 1 < len(partitions):
                     if partitions[i + 1].category == "FigureCaption":  # check for caption
                         caption_element = partitions[i + 1]
                     else:
                         caption_element = None
-                    classified_elements['Tables'].append((element, caption_element)) 
+                    classified_elements['Tables'].append((element, caption_element))
                 else:
                     classified_elements['Tables'].append((element, None))
             elif element.category == "Image":
-                if self.add_captions_to_blocks:
+                if self.add_captions_to_blocks and i + 1 < len(partitions):
                     if partitions[i + 1].category == "FigureCaption":  # check for caption
                         caption_element = partitions[i + 1]
                     else:
@@ -120,8 +121,8 @@ class ParsePDF:
             docs (list): A list of Document instances containing the extracted Text content and their metadata.
         """
         if self.single_text_out:
-            metadata = {'source': self.file_path} # Check for more metadata
-            text = "\n\n".join([str(el) for el in elements]) 
+            metadata = {'source': self.file_path}  # Check for more metadata
+            text = "\n\n".join([str(el) for el in elements])
             docs = [Document(page_content=text, metadata=metadata)]
         else:
             docs = []
@@ -142,13 +143,13 @@ class ParsePDF:
         Returns:
             docs (list): A list of Document instances containing Tables, their captions and metadata. 
         """
-        docs = [] 
+        docs = []
         for block_element, caption_element in elements:
             metadata = {'source': self.file_path,
                         'category': block_element.category}
             metadata.update(block_element.metadata.to_dict())
             if caption_element:
-                if self.add_caption_first: # if there is a caption, add that before the element
+                if self.add_caption_first:  # if there is a caption, add that before the element
                     content = "\n\n".join([str(caption_element), str(block_element)])
                 else:
                     content = "\n\n".join([str(block_element), str(caption_element)])
@@ -172,7 +173,7 @@ class ParsePDF:
             metadata = {'source': self.file_path,
                         'category': block_element.category}
             metadata.update(block_element.metadata.to_dict())
-            if caption_element: # if there is a caption, add that before the element
+            if caption_element:  # if there is a caption, add that before the element
                 if self.add_caption_first:
                     content = "\n\n".join([str(caption_element), str(block_element)])
                 else:
@@ -192,7 +193,7 @@ class ParsePDF:
         Returns:
             dict: A dictionary with keys 'Text', 'Tables', and 'Images', each containing a list of processed Document instances.
         """
-        partitions = self.partition(path)
+        partitions = self.partition(str(path))
         classified_elements = self.classify(partitions)
         text_docs = self.process_text(classified_elements['Text'])
         table_docs = self.process_tables(classified_elements['Tables'])
