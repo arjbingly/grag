@@ -1,0 +1,9 @@
+{
+  "input_variables": [
+    "context",
+    "question"
+  ],
+  "template": "   ",
+  "model": "llama-2",
+  "source": "http://..."
+}
