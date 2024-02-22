@@ -1,4 +1,16 @@
 import textwrap
+from typing import List
+from langchain_core.documents import Document
+
+def stuff_docs(docs: List[Document]) -> str:
+    """
+    Args:
+        docs: List of langchain_core.documents.Document
+
+    Returns:
+        string of document page content joined by '\n\n'
+    """
+    return '\n\n'.join([doc.page_content for doc in docs])
 
 
 def wrap_text_preserve_newlines(text, width=110):
