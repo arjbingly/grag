@@ -6,6 +6,9 @@ from tqdm import tqdm
 from src.components.multivec_retriever import Retriever
 from src.components.parse_pdf import ParsePDF
 
+from src.components.utils import get_config
+config = get_config()
+
 DRY_RUN = True
 
 data_path = Path(os.getcwd()).parents[1] / 'data' / 'pdf'
@@ -82,5 +85,6 @@ def main():
 
 if __name__ == "__main__":
     print(config['instance']['user'])
-    print(config.instance.user)
+    print(config['model']['temperature'])
+
     # main()
