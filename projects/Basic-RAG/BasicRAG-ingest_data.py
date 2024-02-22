@@ -55,11 +55,11 @@ def add_to_database(file_path, dry_run=False):
             retriever.add_docs(docs[format_key])
 
 
-parser = ParsePDF()
-retriever = Retriever()
-
-processed_files = set()
-load_processed_files()  # Load processed files into the set on script startup
+# parser = ParsePDF()
+# retriever = Retriever()
+#
+# processed_files = set()
+# load_processed_files()  # Load processed files into the set on script startup
 
 
 def main():
@@ -81,4 +81,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print(config['instance']['user'])
+    print(config.instance.user)
+    # main()
