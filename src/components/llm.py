@@ -121,7 +121,7 @@ class LLM:
         # https://stackoverflow.com/a/77734908/13808323
         llm = LlamaCpp(
             model_path=self.model_path,
-            # max_tokens=self.max_new_tokens,
+            max_tokens=self.max_new_tokens,
             temperature=self.temperature,
             n_gpu_layers=self.n_gpu_layers,
             n_batch=self.n_batch,

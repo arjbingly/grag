@@ -6,11 +6,11 @@ llm_conf = {
     'max_new_tokens': 1024,
     'temperature': 0.1,
     'n_batch_gpu_cpp': 1024,
-    'n_ctx_cpp': 4096,
-    'n_gpu_layers_cpp': 24,  # The number of layers to put on the GPU.
+    'n_ctx_cpp': 6000,
+    'n_gpu_layers_cpp': -1,  # The number of layers to put on the GPU. 'Mixtral-18'
     'std_out': True
-
 }
+
 from uuid import UUID
 
 chroma_conf = {
@@ -36,5 +36,4 @@ multivec_retriever_conf = {
     'namespace': UUID('8c9040b0-b5cd-4d7c-bc2e-737da1b24ebf'),
     # 'namespace': '8c9040b0b5cd4d7cbc2e737da1b24ebf',
     'id_key': 'doc_id',
-
 }
