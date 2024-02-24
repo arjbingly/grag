@@ -11,14 +11,15 @@ This directory contains tools to quantize the models supported by `llama.cpp`.
 Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the outputs and if it is not then follow solution [here](https://stackoverflow.com/questions/76963311/llama-cpp-python-not-using-nvidia-gpu-cuda).  
 
 ### 2. Downloading models to quantize:
-- Go to [HuggingFace](https://huggingface.co/models) and search for the models, make sure the model is listed in [description](https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#description) of `llama.cpp`.  
-- Make sure you are in `models` directory in `llama.cpp`. Follow the steps to download models on HuggingFace.
+- Make sure you are in `models` directory in `llama.cpp` for this step.
+- Go to [HuggingFace](https://huggingface.co/models) and search for the models, make sure the model is listed in [description](https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#description) of `llama.cpp`.
+- Follow the steps to download models on HuggingFace.
 
-Note: If you are using gated models (like Llama-2) request for access from HuggingFace and Meta, steps will be in model repo.
+Note: If you are using gated models (like Llama-2) request for access from HuggingFace and Meta, steps will be in model repository.
 After you have finished downloading models check if you have all the files downloaded properly using checksum.
 
 ### 3. Steps to quantize:
-- Make sure you are in `llama.cpp` Now check that there is a `quantize.py` file in there.
+- Make sure you are in `llm_quantize` directory. Now check that there is a `quantize.py` file in there.
 - Run below command to quantize the model  
 `python quantize.py <model_directory_name> <quantization_method>`  
 - Example: `python quantize Llama-2-7B-chat Q5_K_M`  
