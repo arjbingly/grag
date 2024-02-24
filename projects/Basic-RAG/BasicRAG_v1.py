@@ -1,11 +1,12 @@
 from src.components.llm import LLM
 from src.components.multivec_retriever import Retriever
-from src.components.utils import stuff_docs, wrap_text_preserve_newlines
+from src.components.utils import stuff_docs
 from langchain_core.prompts import ChatPromptTemplate
+from src.components.config import llm_conf
 
 # from prompts import
 '''
-Basic RAG v1
+Basic RAG v1 - stuff, chunks
     Given a query, retrieve similar chunks from vector database. Concat them into a single string, called context.
     Using the prompt template, call llm. Return chunk sources.
 '''
@@ -40,10 +41,18 @@ def call_rag(query):
     context = stuff_docs(retrieved_docs)
     prompt = prompt_template.format(context=context, question=query)
     response = llm.invoke(prompt)
-    print(response)
-    print(f'Sources: {[doc.metadata["source"] for doc in retrieved_docs]}')
-    return response
+    sources = [doc.metadata["source"] for doc in retrieved_docs]
+    return response, sources
 
 
 if __name__ == "__main__":
-    call_rag('What types of dependencies does dependence analysis identify in loop programs?')
+    while True:
+        query = input("Query:")
+        response, sources = call_rag(query)
+        if not llm_conf['std_out']:
+            print(response)
+        print(f'Sources: ')
+        for index, source in enumerate(sources):
+            print(f'\t{index}: {source}')
+
+

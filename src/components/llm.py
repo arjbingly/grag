@@ -39,6 +39,7 @@ class LLM:
                  n_batch=llm_conf["n_batch_gpu_cpp"],
                  n_ctx=llm_conf["n_ctx_cpp"],
                  n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
+                 std_out=llm_conf["std_out"],
                  ):
         self.base_dir = Path(__file__).resolve().parents[2]
         self._model_name = model_name
@@ -49,7 +50,10 @@ class LLM:
         self.n_batch = n_batch
         self.n_ctx = n_ctx
         self.n_gpu_layers = n_gpu_layers
-        self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        if std_out:
+            self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        else:
+            self.callback_manager = None
 
     @property
     def model_name(self):

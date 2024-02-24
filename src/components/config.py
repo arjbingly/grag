@@ -1,5 +1,5 @@
 llm_conf = {
-    'model_name': 'Mixtral-8x7B-Instruct-v0.1',  # 'meta-llama/Llama-2-70b-chat-hf', 'Mixtral-8x7B-Instruct-v0.1'
+    'model_name': 'Llama-2-13b-chat',  # 'meta-llama/Llama-2-70b-chat-hf', 'Mixtral-8x7B-Instruct-v0.1'
     'quantization': 'Q5_K_M',
     'device_map': 'auto',
     'task': 'text-generation',
@@ -8,6 +8,7 @@ llm_conf = {
     'n_batch_gpu_cpp': 1024,
     'n_ctx_cpp': 4096,
     'n_gpu_layers_cpp': 24,  # The number of layers to put on the GPU.
+    'std_out': True
 
 }
 from uuid import UUID
