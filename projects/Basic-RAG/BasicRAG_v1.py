@@ -3,6 +3,7 @@ from src.components.multivec_retriever import Retriever
 from src.components.utils import stuff_docs, wrap_text_preserve_newlines
 from langchain_core.prompts import ChatPromptTemplate
 
+# from prompts import
 '''
 Basic RAG v1
     Given a query, retrieve similar chunks from vector database. Concat them into a single string, called context.
@@ -32,11 +33,17 @@ Question: {question}
 Helpful Answer: [/INST]
 """
 prompt_template = ChatPromptTemplate.from_template(template)
+
+
 def call_rag(query):
     retrieved_docs = retriever.get_chunk(query)
     context = stuff_docs(retrieved_docs)
     prompt = prompt_template.format(context=context, question=query)
     response = llm.invoke(prompt)
+    print(response)
     print(f'Sources: {[doc.metadata["source"] for doc in retrieved_docs]}')
     return response
 
+
+if __name__ == "__main__":
+    call_rag('What types of dependencies does dependence analysis identify in loop programs?')
