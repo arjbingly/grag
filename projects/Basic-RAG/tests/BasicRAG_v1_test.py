@@ -10,4 +10,4 @@ from BasicRAG_v1 import call_rag
 
 if __name__ == "__main__":
     query = 'What types of dependencies does dependence analysis identify in loop programs?'
-    call_rag(query)
+    response, sources = call_rag(query)
