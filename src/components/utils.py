@@ -6,8 +6,6 @@ from typing import List
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 
-from src.components.multivec_retriever import Retriever
-
 
 def stuff_docs(docs: List[Document]) -> str:
     """
@@ -62,28 +60,20 @@ def display_llm_output_and_sources(response_from_llm):
         print(source.metadata['source'])
 
 
-def get_prompt(query):
+def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
     """
-    Generates a chat prompt using a predefined template and documents retrieved based on the given query.
+    Loads a prompt template from json file and returns a langchain ChatPromptTemplate
 
     Args:
-        query (str): The user query to generate a prompt for.
+        json_file: path to the prompt template json file.
+        return_input_vars: if true returns a list of expected input variables for the prompt.
 
     Returns:
-        str: The generated prompt.
+        langchain_core.prompts.ChatPromptTemplate (and a list of input vars if return_input_vars is True)
+
     """
-    # Load a prompt template from a JSON file
     with open("json_path", "r") as f:
         prompt_json = json.load(f)
     prompt_template = ChatPromptTemplate.from_template(prompt_json['template'])
-
-    # Retrieve documents related to the query
-    retrieved_docs = retriever.get_chunk(query)
-
-    # Process the retrieved documents to generate context
-    context = stuff_docs(retrieved_docs)
-
-    # Format the prompt template with the generated context and the query
-    prompt = prompt_template.format(context=context, question=query)
-
-    return prompt
+    input_vars = prompt_json['input_vars']
+    return prompt_template, input_vars if return_input_vars else prompt_template
