@@ -4,9 +4,7 @@
       "question"
     ],
     "template": "<s> [INST] Some instructions [/INST] Primer text [generated output] </s>",
-    "metadata": {
-      "model": "Mixtral-8x7B",
-      "source": "https://www.pinecone.io/learn/mixtral-8x7b/",
-      "task": "QA"
-    }
+    "model": "Mixtral-8x7B",
+    "source": "https://www.pinecone.io/learn/mixtral-8x7b/",
+    "task": "QA"
 }

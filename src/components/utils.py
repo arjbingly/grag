@@ -72,8 +72,10 @@ def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
         langchain_core.prompts.ChatPromptTemplate (and a list of input vars if return_input_vars is True)
 
     """
-    with open("json_path", "r") as f:
+    with open(f"{json_file}", "r") as f:
         prompt_json = json.load(f)
     prompt_template = ChatPromptTemplate.from_template(prompt_json['template'])
-    input_vars = prompt_json['input_vars']
+
+    input_vars = prompt_json['input_variables']
+
     return prompt_template, input_vars if return_input_vars else prompt_template
