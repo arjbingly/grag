@@ -78,4 +78,4 @@ def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
 
     input_vars = prompt_json['input_variables']
 
-    return prompt_template, input_vars if return_input_vars else prompt_template
+    return (prompt_template, input_vars) if return_input_vars else prompt_template

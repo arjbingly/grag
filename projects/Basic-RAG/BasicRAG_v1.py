@@ -1,8 +1,9 @@
+from pathlib import Path
+
+from src.components.config import llm_conf
 from src.components.llm import LLM
 from src.components.multivec_retriever import Retriever
-from src.components.utils import stuff_docs
-from langchain_core.prompts import ChatPromptTemplate
-from src.components.config import llm_conf
+from src.components.utils import stuff_docs, load_prompt
 
 # from prompts import
 '''
@@ -16,24 +17,9 @@ llm = llm_.load_model()
 
 retriever = Retriever(top_k=3)
 
-template = """
-<s>[INST] <<SYS>>
-You are a helpful, respectful and honest assistant.
-
-Always answer based only on the provided context. If the question can not be answered from the provided context, just say that you don't know, don't try to make up an answer.
-<</SYS>>
-
-Use the following pieces of context to answer the question at the end:
-
-
-{context}
-
-
-Question: {question}
-
-Helpful Answer: [/INST]
-"""
-prompt_template = ChatPromptTemplate.from_template(template)
+prompt_name = 'Llama-2_QA_1.json'
+prompt_path = Path(__file__).parent / 'prompts' / prompt_name
+prompt_template = load_prompt(prompt_path)
 
 
 def call_rag(query):
@@ -54,5 +40,3 @@ if __name__ == "__main__":
         print(f'Sources: ')
         for index, source in enumerate(sources):
             print(f'\t{index}: {source}')
-
-
