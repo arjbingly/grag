@@ -119,8 +119,11 @@ def get_config() -> ConfigParser:
     """
     # Assuming this script is somewhere inside your project directory
     script_location = Path(__file__).resolve()
-    config_path = find_config_path(script_location)
-
+    if os.environ.get('CONFIG_PATH'):
+        config_path = os.environ.get('CONFIG_PATH')
+    else:
+        config_path = find_config_path(script_location)
+        os.environ['CONFIG_PATH'] = config_path
     print(f"Loaded config from {config_path}.")
     # Initialize parser and read config
     config = ConfigParser(interpolation=ExtendedInterpolation())
