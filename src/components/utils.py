@@ -1,16 +1,12 @@
 import os
 import json
 import textwrap
-<<<<<<< HEAD
 from typing import List
 
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-=======
-import os
 from configparser import ConfigParser, ExtendedInterpolation
 from pathlib import Path
->>>>>>> eb933b0 (new script for config)
 
 
 def stuff_docs(docs: List[Document]) -> str:
@@ -66,7 +62,6 @@ def display_llm_output_and_sources(response_from_llm):
         print(source.metadata['source'])
 
 
-<<<<<<< HEAD
 def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
     """
     Loads a prompt template from json file and returns a langchain ChatPromptTemplate
