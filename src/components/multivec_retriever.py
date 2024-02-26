@@ -7,8 +7,10 @@ from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
 
 from .chroma_client import ChromaClient
-from .config import multivec_retriever_conf
 from .text_splitter import TextSplitter
+from .utils import get_config
+
+multivec_retriever_conf = get_config()['multivec_retriever']
 
 
 class Retriever:
