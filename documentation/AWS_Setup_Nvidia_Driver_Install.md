@@ -70,11 +70,8 @@ Replace `$distro/$arch` with respective Linux distribution and architecture. Her
 
 Update repo cache: `sudo apt-get update`
 
-Use any of the following:
-
-Install All: `sudo apt-get -y install cuda-drivers` (Recommended)
-
-Install CUDA toolkit: `sudo apt-get install cuda-toolkit`	
+Install drivers: `sudo apt-get -y install cuda-drivers`    
+Install CUDA toolkit: `sudo apt-get install cuda-toolkit`	  
 Install GDS packages: `sudo apt-get install nvidia-gds`
 
 Reboot System: `sudo reboot`
