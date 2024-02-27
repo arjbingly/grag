@@ -69,24 +69,40 @@ ___
 
 A ready to deploy RAG pipeline for document retrival.
 
-## Requirements
+## To get started
+
+To run the projects make sure below instructions are followed.
+
+Moreover, further customization can be made on the config file, `src/config.ini`.
+
+### Requirements
 
 Use conda package manager to create an enviromennt using the `requirements.yml`  
 `conda env create -f requirements.yml`
 
-## LLM Models
+Required packages includes (but not limited to):
 
-- To run models locally refer the [LLM Quantize Readme](./llm_quantize/readme.md) for deatils on downloading and
+- PyTorch
+- LangChain
+- Chroma
+- Unstructured.io
+- sentence-embedding
+- instructor-embedding
+
+### LLM Models
+
+- **To run models locally** refer the [LLM Quantize Readme](./llm_quantize/readme.md) for details on downloading and
   quantizing LLM models.
-- To run models from Huggingface, change the `model_name` under `llm` in `src/config.ini` to the huggingface repo-id (If
+- **To run models from Huggingface**, change the `model_name` under `llm` in `src/config.ini` to the huggingface
+  repo-id (If
   models are not public, make sure you have the auth token).
 
-Tested with:
+**Tested models:**
 
 1. Llama-2 7B, 13B
 2. Mixtral 8x7B
 
-## Data Used
+### Data
 
 The project utilized ArXiv papers pdfs. Refer to [ArXiv Bulk Data](https://info.arxiv.org/help/bulk_data/index.html) for
 details on how to download.
@@ -96,7 +112,10 @@ details on how to download.
 │   ├── pdf
 ```
 
-## Vector Database (Chroma) Data Ingestion
+### Vector Database (Chroma) - Data Ingestion
+
+The vector database of choice os [Chroma](https://www.trychroma.com). Though most vector databases supported by
+LangChain should work with minimal changes.
 
 For ingesting data to the vector db:
 
@@ -106,6 +125,19 @@ For ingesting data to the vector db:
   in `src/config.ini'. Any huggingface embeddings can be used.
 - To add files to Chroma, run `projects/Basic-RAG/BasicRAG-ingest_data.py`. Make sure that the datapath in the python
   file is correct.
+
+## Other Features
+
+### PDF Parser
+
+- The pdf parser is implemented using [Unstructured.io](https://unstructured.io).
+- It effectively parses any pdf including OCR documents and categorises all elements including tables and images.
+- Contextual text parsing, it ensures that the chunking process does not seperate items like list items, and keeps
+  titles intact with text.
+
+### Multi Vector Retriever
+
+- It enables to easily retieve not only the most similar chunks (to a query) but easily retrive the source document.
 
 ## Projects
 
