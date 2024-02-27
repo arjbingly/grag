@@ -65,9 +65,13 @@ ___
         └── txt_data_ingest.py
 ```
 
+---
+
 ## Project Overview
 
 A ready to deploy RAG pipeline for document retrival.
+
+---
 
 ## To get started
 
@@ -77,7 +81,7 @@ Moreover, further customization can be made on the config file, `src/config.ini`
 
 ### Requirements
 
-Use conda package manager to create an enviromennt using the `requirements.yml`  
+Use conda package manager to create an environment using the `requirements.yml`  
 `conda env create -f requirements.yml`
 
 Required packages includes (but not limited to):
@@ -123,8 +127,10 @@ For ingesting data to the vector db:
 - If Chroma is not run locally, change `host` and `port` under `chroma` in `src/config.ini`.
 - By default, the embedding model is `instructor-xl`. Can be changed by changing `embedding_type` and `embedding_model`
   in `src/config.ini'. Any huggingface embeddings can be used.
-- To add files to Chroma, run `projects/Basic-RAG/BasicRAG-ingest_data.py`. Make sure that the datapath in the python
+- To add files to Chroma, run `projects/Basic-RAG/BasicRAG-ingest_data.py`. Make sure that the data-path in the python
   file is correct.
+
+---
 
 ## Other Features
 
@@ -132,18 +138,20 @@ For ingesting data to the vector db:
 
 - The pdf parser is implemented using [Unstructured.io](https://unstructured.io).
 - It effectively parses any pdf including OCR documents and categorises all elements including tables and images.
-- Contextual text parsing, it ensures that the chunking process does not seperate items like list items, and keeps
+- Contextual text parsing, it ensures that the chunking process does not separate items like list items, and keeps
   titles intact with text.
 
 ### Multi Vector Retriever
 
-- It enables to easily retieve not only the most similar chunks (to a query) but easily retrive the source document.
+- It enables to easily retrieve not only the most similar chunks (to a query) but easily retrieve the source document.
+
+---
 
 ## Projects
 
 ### 1. Retriever GUI
 
-A simple GUI for retriving documents and viewing config of the vector database
+A simple GUI for retrieving documents and viewing config of the vector database
 
 ### 2. BasicRAG
 
