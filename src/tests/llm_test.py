@@ -13,7 +13,7 @@ from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 
 from components.llm import LLM
 from components.utils import reformat_text_with_line_breaks, display_llm_output_and_sources
-from components.config import llm_conf
+
 
 # load docs from path
 path = "../../data/test/pdfs/new_papers"

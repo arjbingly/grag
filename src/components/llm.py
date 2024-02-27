@@ -11,7 +11,8 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 
-from .config import llm_conf
+from .utils import get_config
+llm_conf = get_config()['llm']
 
 print("CUDA: ", torch.cuda.is_available())
 

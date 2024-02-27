@@ -1,10 +1,14 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from uuid import UUID, uuid5
+
 from tqdm import tqdm
 
 from src.components.multivec_retriever import Retriever
 from src.components.parse_pdf import ParsePDF
+from src.components.utils import get_config
+
+config = get_config()
 
 DRY_RUN = True
 
@@ -71,13 +75,13 @@ def main():
     for file in pbar:
         pbar.set_postfix({'Current file': file.relative_to(data_path)})
         pbar.write(add_file_to_database(file, dry_run=DRY_RUN))
-        # if str(file) not in processed_files:
-        #     add_to_database(file, dry_run=DRY_RUN)  # Add file to the vector database
-        #     processed_files.add(str(file))  # Add file_path to processed set
-        #     update_processed_file_record(str(file), dry_run=DRY_RUN)  # Update the processed file record file
-        #     pbar.write(f'Completed adding - {file.relative_to(data_path)}')
-        # else:
-        #     pbar.write(f'Already exists - {file.relative_to(data_path)}')
+        if str(file) not in processed_files:
+            add_to_database(file, dry_run=DRY_RUN)  # Add file to the vector database
+            processed_files.add(str(file))  # Add file_path to processed set
+            update_processed_file_record(str(file), dry_run=DRY_RUN)  # Update the processed file record file
+            pbar.write(f'Completed adding - {file.relative_to(data_path)}')
+        else:
+            pbar.write(f'Already exists - {file.relative_to(data_path)}')
 
 
 if __name__ == "__main__":
