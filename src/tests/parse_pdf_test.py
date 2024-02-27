@@ -8,9 +8,9 @@ sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
 from components.parse_pdf import ParsePDF
 
-from src.utils import get_config
+from src.components.utils import get_config
 
-data_path = get_config()['data']['data_path']
+data_path = Path(get_config()['data']['data_path'])
 # %%
 data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
 

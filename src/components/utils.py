@@ -1,12 +1,12 @@
-import os
 import json
+import os
 import textwrap
+from configparser import ConfigParser, ExtendedInterpolation
+from pathlib import Path
 from typing import List
 
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-from configparser import ConfigParser, ExtendedInterpolation
-from pathlib import Path
 
 
 def stuff_docs(docs: List[Document]) -> str:
@@ -123,7 +123,7 @@ def get_config() -> ConfigParser:
         config_path = os.environ.get('CONFIG_PATH')
     else:
         config_path = find_config_path(script_location)
-        os.environ['CONFIG_PATH'] = config_path
+        os.environ['CONFIG_PATH'] = str(config_path)
     print(f"Loaded config from {config_path}.")
     # Initialize parser and read config
     config = ConfigParser(interpolation=ExtendedInterpolation())
