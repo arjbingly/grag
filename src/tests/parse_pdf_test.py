@@ -36,9 +36,11 @@ def main(filename):
     for doc in docs_dict['Images']:
         print(doc)
 
+    return docs_dict
+
 
 if __name__ == "__main__":
     filename = 'he_pdsw12.pdf'
     print(f'Parsing: {filename}')
-    main(filename)
+    docs = main(filename)
     print('All Tests Passed')

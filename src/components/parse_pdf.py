@@ -113,6 +113,34 @@ class ParsePDF:
 
         return classified_elements
 
+    def text_concat(self, elements) -> str:
+
+        for current_element, next_element in zip(elements, elements[1:]):
+            curr_type = current_element.category
+            next_type = next_element.category
+
+            # if curr_type in ["FigureCaption", "NarrativeText", "Title", "Address", 'Table', "UncategorizedText", "Formula"]:
+            #     full_text += str(current_element) + "\n\n"
+
+            if curr_type == "Title" and next_type == 'NarrativeText':
+                full_text += str(current_element) + '\n'
+            elif curr_type == 'NarrativeText' and next_type == 'NarrativeText':
+                full_text += str(current_element) + '\n'
+            elif curr_type == "ListItem":
+                full_text += "- " + str(current_element) + "\n"
+                if next_element == 'Title':
+                    full_text += '\n'
+            elif next_element == 'Title':
+                full_text = str(current_element) + '\n\n'
+
+            elif curr_type in ["Header", "Footer", "PageBreak"]:
+                full_text += str(current_element) + "\n\n\n"
+
+            else:
+                full_text += '\n'
+
+        return full_text
+
     def process_text(self, elements):
         """
         Processes text elements into langchain Documents.
