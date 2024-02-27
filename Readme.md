@@ -140,6 +140,7 @@ For ingesting data to the vector db:
 - It effectively parses any pdf including OCR documents and categorises all elements including tables and images.
 - Contextual text parsing, it ensures that the chunking process does not separate items like list items, and keeps
   titles intact with text.
+- Tables are not chunked.
 
 ### Multi Vector Retriever
 
