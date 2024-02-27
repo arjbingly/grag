@@ -10,9 +10,10 @@ from langchain_core.documents import Document
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
-from .config import chroma_conf
 from .embedding import Embedding
+from .utils import get_config
 
+chroma_conf = get_config()['chroma']
 
 class ChromaClient:
     """

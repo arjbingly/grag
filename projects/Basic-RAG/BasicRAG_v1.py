@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from src.components.config import llm_conf
-from src.components.llm import LLM
+from src.components.llm import LLM, llm_conf
 from src.components.multivec_retriever import Retriever
 from src.components.utils import stuff_docs, load_prompt
+
 
 # from prompts import
 '''

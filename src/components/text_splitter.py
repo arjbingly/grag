@@ -1,6 +1,7 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-from .config import text_splitter_conf
+from .utils import get_config
+text_splitter_conf = get_config()['text_splitter']
 
 
 # %%
