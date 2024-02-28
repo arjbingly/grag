@@ -84,6 +84,8 @@ Moreover, further customization can be made on the config file, `src/config.ini`
 Use conda package manager to create an environment using the `requirements.yml`  
 `conda env create -f requirements.yml`
 
+_If you need help installing conda, refer to [AWS_Setup_Python_Env](./documentation/AWS_Setup_Python_Env.md)_
+
 Required packages includes (but not limited to):
 
 - PyTorch
@@ -115,6 +117,8 @@ details on how to download.
 ├── data
 │   ├── pdf
 ```
+
+**Make sure to specify `data_path` under `data` in `src/config.ini`**
 
 ### Vector Database (Chroma) - Data Ingestion
 
@@ -153,6 +157,8 @@ For ingesting data to the vector db:
 ### 1. Retriever GUI
 
 A simple GUI for retrieving documents and viewing config of the vector database
+
+To run: `streamlit run projects/retriver_app.py -server.port=8888`
 
 ### 2. BasicRAG
 
