@@ -12,8 +12,8 @@ from langchain_community.embeddings.sentence_transformer import SentenceTransfor
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 
 from components.llm import LLM
-from components.utils import process_llm_response
-from components.config import llm_conf
+from components.utils import reformat_text_with_line_breaks, display_llm_output_and_sources
+
 
 # load docs from path
 path = "../../data/test/pdfs/new_papers"

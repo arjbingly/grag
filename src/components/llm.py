@@ -11,7 +11,8 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 
-from .config import llm_conf
+from .utils import get_config
+llm_conf = get_config()['llm']
 
 print("CUDA: ", torch.cuda.is_available())
 
@@ -39,6 +40,7 @@ class LLM:
                  n_batch=llm_conf["n_batch_gpu_cpp"],
                  n_ctx=llm_conf["n_ctx_cpp"],
                  n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
+                 std_out=llm_conf["std_out"],
                  ):
         self.base_dir = Path(__file__).resolve().parents[2]
         self._model_name = model_name
@@ -49,7 +51,10 @@ class LLM:
         self.n_batch = n_batch
         self.n_ctx = n_ctx
         self.n_gpu_layers = n_gpu_layers
-        self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        if std_out:
+            self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        else:
+            self.callback_manager = None
 
     @property
     def model_name(self):
@@ -117,7 +122,7 @@ class LLM:
         # https://stackoverflow.com/a/77734908/13808323
         llm = LlamaCpp(
             model_path=self.model_path,
-            # max_tokens=self.max_new_tokens,
+            max_tokens=self.max_new_tokens,
             temperature=self.temperature,
             n_gpu_layers=self.n_gpu_layers,
             n_batch=self.n_batch,

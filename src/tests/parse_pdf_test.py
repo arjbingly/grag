@@ -1,16 +1,18 @@
-import time
-
 # add code folder to sys path
 import os
-from pathlib import Path
 import sys
+import time
+from pathlib import Path
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
 from components.parse_pdf import ParsePDF
 
+from src.components.utils import get_config
+
+data_path = Path(get_config()['data']['data_path'])
 # %%
-data_path = Path(os.getcwd()).parents[1] / 'data' / 'test' / 'pdf'  # "data/test/pdf"
+data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
 
 
 def main(filename):
@@ -19,7 +21,7 @@ def main(filename):
     start_time = time.time()
     docs_dict = pdf_parser.load_file(file_path)
     time_taken = time.time() - start_time
-    
+
     print(f'Parsed pdf in {time_taken:2f} secs')
 
     print(f'******** TEXT ********')

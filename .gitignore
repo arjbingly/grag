@@ -164,5 +164,5 @@ cython_debug/
 **.env
 **.gguf
 .idea/
-code/others
+**/others
 data/
