@@ -131,7 +131,10 @@ class ParsePDF:
 
             elif curr_type in ["Header", "Footer", "PageBreak"]:
                 full_text += str(current_element) + "\n\n\n"
-            
+            elif curr_type == 'Table':
+                table_data = current_element['metadata']['text_as_html']
+                table_text = ''.join(c for c in table_data if c not in ['<', '>'])
+                full_text += table_text + "\n"
             else:
                 full_text += '\n'
 
