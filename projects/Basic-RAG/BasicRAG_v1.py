@@ -4,7 +4,6 @@ from src.components.llm import LLM, llm_conf
 from src.components.multivec_retriever import Retriever
 from src.components.utils import stuff_docs, load_prompt
 
-
 # from prompts import
 '''
 Basic RAG v1 - stuff, chunks
@@ -13,6 +12,7 @@ Basic RAG v1 - stuff, chunks
 '''
 
 llm_ = LLM()
+# llm = llm_.load_model(pipeline='hf', is_local=False)
 llm = llm_.load_model()
 
 retriever = Retriever(top_k=3)
