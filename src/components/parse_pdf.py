@@ -1,6 +1,9 @@
-from unstructured.partition.pdf import partition_pdf
 from langchain_core.documents import Document
-import os
+from unstructured.partition.pdf import partition_pdf
+
+from .utils import get_config
+
+parser_conf = get_config()['parser']
 
 
 class ParsePDF:
@@ -20,13 +23,13 @@ class ParsePDF:
     """
 
     def __init__(self,
-                 single_text_out=True,
-                 strategy="hi_res",
-                 infer_table_structure=True,
-                 extract_images=True,
-                 image_output_dir=None,
-                 add_captions_to_text=True,
-                 add_captions_to_blocks=True,
+                 single_text_out=parser_conf['single_text_out'],
+                 strategy=parser_conf['strategy'],
+                 infer_table_structure=parser_conf['infer_table_structure'],
+                 extract_images=parser_conf['extract_images'],
+                 image_output_dir=parser_conf['image_output_dir'],
+                 add_captions_to_text=parser_conf['add_captions_to_text'],
+                 add_captions_to_blocks=parser_conf['add_captions_to_blocks'],
                  ):
         # Instantialize instance variables with parameters
         self.strategy = strategy
@@ -109,25 +112,26 @@ class ParsePDF:
                     classified_elements['Text'].append(element)
 
         return classified_elements
-    def text_concat(self, elements)->str:
+
+    def text_concat(self, elements) -> str:
 
         for current_element, next_element in zip(elements, elements[1:]):
             curr_type = current_element.category
             next_type = next_element.category
-            
+
             # if curr_type in ["FigureCaption", "NarrativeText", "Title", "Address", 'Table', "UncategorizedText", "Formula"]:
             #     full_text += str(current_element) + "\n\n"
 
             if curr_type == "Title" and next_type == 'NarrativeText':
                 full_text += str(current_element) + '\n'
-            elif curr_type=='NarrativeText' and next_type=='NarrativeText':
-                full_text+=str(current_element)+'\n'
+            elif curr_type == 'NarrativeText' and next_type == 'NarrativeText':
+                full_text += str(current_element) + '\n'
             elif curr_type == "ListItem":
                 full_text += "- " + str(current_element) + "\n"
                 if next_element == 'Title':
                     full_text += '\n'
-            elif next_element=='Title':
-                full_text=str(current_element)+'\n\n'
+            elif next_element == 'Title':
+                full_text = str(current_element) + '\n\n'
 
             elif curr_type in ["Header", "Footer", "PageBreak"]:
                 full_text += str(current_element) + "\n\n\n"
@@ -240,4 +244,3 @@ class ParsePDF:
         return {'Text': text_docs,
                 'Tables': table_docs,
                 'Images': image_docs}
-# %%

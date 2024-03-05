@@ -3,23 +3,26 @@ import numpy as np
 import sys
 import os
 from pathlib import Path
+
 sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
 from components.embedding import Embedding
 
-#%%
-def cosine_similarity(a,b):
+
+# %%
+def cosine_similarity(a, b):
     dot_product = np.dot(a, b)
     magnitude_a = np.linalg.norm(a)
     magnitude_b = np.linalg.norm(b)
-    return dot_product/(magnitude_a * magnitude_b)
+    return dot_product / (magnitude_a * magnitude_b)
 
-#%%
+
+# %%
 embedding_configs = [
-    {'embedding_type' : 'sentence-transformers',
-    'embedding_model' : "all-mpnet-base-v2",},
+    {'embedding_type': 'sentence-transformers',
+     'embedding_model': "all-mpnet-base-v2", },
     {'embedding_type': 'instructor-embedding',
-    'embedding_model': 'hkunlp/instructor-xl',}
+     'embedding_model': 'hkunlp/instructor-xl', }
 ]
 # Test Documents
 docs = ['Dynamic programming is both a mathematical optimization method and an algorithmic paradigm. The method was '
@@ -32,8 +35,8 @@ docs = ['Dynamic programming is both a mathematical optimization method and an a
 
 print('Documents:')
 for i, doc in enumerate(docs):
-    print(f'{i+1}. {doc}')
-    
+    print(f'{i + 1}. {doc}')
+
 query = 'What is recursion?'
 print(f'Query: {query}')
 
@@ -66,4 +69,3 @@ if similarity_scores[1] > similarity_scores[0]:
     print('Test Passed')
 else:
     print('Test Failed')
-
