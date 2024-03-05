@@ -12,8 +12,8 @@ from src.components.utils import get_config
 
 data_path = Path(get_config()['data']['data_path'])
 # %%
-# data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
-data_path = data_path / 'data' / 'pdf'
+data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
+
 
 
 def main(filename):
@@ -41,7 +41,7 @@ def main(filename):
 
 
 if __name__ == "__main__":
-    filename = '1040a.pdf'
+    filename = 'he_pdsw12.pdf'
     print(f'Parsing: {filename}')
     docs = main(filename)
     print('All Tests Passed')
