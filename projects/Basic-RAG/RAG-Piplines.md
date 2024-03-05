@@ -40,7 +40,7 @@ Pros of this method include **incorporating more relevant context and potentiall
 
 There may also be dependencies on the order in which the documents are analyzed. *Thus it might be ideal to provide documents in order of similarity. ??*
 
-![image](https://github.com/arjbingly/Capstone_5/assets/54805765/bba655c5-954b-4a68-9317-3e272c7a543b)
+![image](https://github.com/arjbingly/Capstone_5/assets/54805765/bba655c5-954b-4a68-9317-3e272c7a543b)  
 [image](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
 
 ### 3. Map Reduce Chain
@@ -58,7 +58,7 @@ The pros of this method are that **it can scale to larger documents and handle m
 
 The cons are that it **requires many more calls to the LLM** than the StuffDocumentsChain and **loses some information during the final combining call**.
 
-![image](https://github.com/arjbingly/Capstone_5/assets/54805765/664c9a11-1d9a-4d85-8945-a43ee150708c)
+![image](https://github.com/arjbingly/Capstone_5/assets/54805765/664c9a11-1d9a-4d85-8945-a43ee150708c)  
 [image](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
 
 # Prompting
