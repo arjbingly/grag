@@ -6,14 +6,14 @@ from pathlib import Path
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
-from components.parse_pdf import ParsePDF
+from src.components.parse_pdf import ParsePDF
 
 from src.components.utils import get_config
 
 data_path = Path(get_config()['data']['data_path'])
 # %%
-data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
-
+# data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
+data_path=data_path/'data'/'pdf'
 
 def main(filename):
     file_path = data_path / filename
@@ -40,7 +40,7 @@ def main(filename):
 
 
 if __name__ == "__main__":
-    filename = 'he_pdsw12.pdf'
+    filename = '1040a.pdf'
     print(f'Parsing: {filename}')
     docs = main(filename)
     print('All Tests Passed')

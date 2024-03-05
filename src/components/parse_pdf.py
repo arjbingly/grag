@@ -30,6 +30,8 @@ class ParsePDF:
                  image_output_dir=parser_conf['image_output_dir'],
                  add_captions_to_text=parser_conf['add_captions_to_text'],
                  add_captions_to_blocks=parser_conf['add_captions_to_blocks'],
+                 table_as_html=parser_conf['table_as_html']
+
                  ):
         # Instantialize instance variables with parameters
         self.strategy = strategy
@@ -43,6 +45,7 @@ class ParsePDF:
         self.image_output_dir = image_output_dir
         self.single_text_out = single_text_out
         self.add_caption_first = True
+        self.table_as_html = table_as_html
 
     def partition(self, path: str):
         """
@@ -135,10 +138,7 @@ class ParsePDF:
 
             elif curr_type in ["Header", "Footer", "PageBreak"]:
                 full_text += str(current_element) + "\n\n\n"
-            elif curr_type == 'Table':
-                table_data = current_element['metadata']['text_as_html']
-                table_text = ''.join(c for c in table_data if c not in ['<', '>'])
-                full_text += table_text + "\n"
+
             else:
                 full_text += '\n'
 
@@ -183,8 +183,11 @@ class ParsePDF:
             metadata = {'source': self.file_path,
                         'category': block_element.category}
             metadata.update(block_element.metadata.to_dict())
-            if block_element.type == 'Table':
-                table_data = block_element.metadata['text_as_html']
+            if block_element.category == 'Table':
+                if self.table_as_html:
+                    table_data = block_element.metadata.text_as_html
+                else:
+                    table_data = str(block_element)
                 table_text = ''.join(c for c in table_data if c not in ['<', '>'])
                 full_text = table_text + "\n"
             else:
@@ -197,7 +200,7 @@ class ParsePDF:
                     content = "\n\n".join([str(block_element), str(caption_element)])
             else:
                 # content = str(block_element)
-                content=full_text
+                content = full_text
             docs.append(Document(page_content=content, metadata=metadata))
         return docs
 
