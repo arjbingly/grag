@@ -25,7 +25,7 @@ However, one downside is that **most LLMs can only handle a certain amount of co
 Additionally, this method is **only suitable for smaller amounts of data**. When working with larger amounts, alternative approaches should be used.
 
 ![image](https://github.com/arjbingly/Capstone_5/assets/54805765/0b2bd6fa-4254-43ba-aa15-922a0f6ee8f0)  
-[image](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
+[source](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
 
 ### 2. Refine Chain
 The Refine Documents Chain uses an iterative process to generate a response by analyzing each input document and updating its answer accordingly.
@@ -41,7 +41,7 @@ Pros of this method include **incorporating more relevant context and potentiall
 There may also be dependencies on the order in which the documents are analyzed. *Thus it might be ideal to provide documents in order of similarity. ??*
 
 ![image](https://github.com/arjbingly/Capstone_5/assets/54805765/bba655c5-954b-4a68-9317-3e272c7a543b)  
-[image](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
+[source](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
 
 ### 3. Map Reduce Chain
 To process **large amounts of data efficiently**, the MapReduceDocumentsChain method is used.
@@ -59,7 +59,7 @@ The pros of this method are that **it can scale to larger documents and handle m
 The cons are that it **requires many more calls to the LLM** than the StuffDocumentsChain and **loses some information during the final combining call**.
 
 ![image](https://github.com/arjbingly/Capstone_5/assets/54805765/664c9a11-1d9a-4d85-8945-a43ee150708c)  
-[image](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
+[source](https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9)
 
 # Prompting
 Prompting strategies differ from model to model. 
