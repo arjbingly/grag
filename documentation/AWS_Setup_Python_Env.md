@@ -21,6 +21,9 @@ And the reboot: `sudo reboot`
 
 Update conda: `conda update conda`
 
+Use conda package manager to create an environment using the `requirements.yml`  
+`conda env create -f requirements.yml`
+
 # Setup Remote Interpreter - PyCharm
 
 Since PyCharm does not support Remote Conda environments out of the box.
