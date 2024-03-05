@@ -13,7 +13,8 @@ from src.components.utils import get_config
 data_path = Path(get_config()['data']['data_path'])
 # %%
 # data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
-data_path=data_path/'data'/'pdf'
+data_path = data_path / 'data' / 'pdf'
+
 
 def main(filename):
     file_path = data_path / filename

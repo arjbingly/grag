@@ -183,24 +183,18 @@ class ParsePDF:
             metadata = {'source': self.file_path,
                         'category': block_element.category}
             metadata.update(block_element.metadata.to_dict())
-            if block_element.category == 'Table':
-                if self.table_as_html:
-                    table_data = block_element.metadata.text_as_html
-                else:
-                    table_data = str(block_element)
-                table_text = ''.join(c for c in table_data if c not in ['<', '>'])
-                full_text = table_text + "\n"
+            if self.table_as_html:
+                table_data = block_element.metadata.text_as_html
             else:
-                full_text = str(block_element)
+                table_data = str(block_element)
 
             if caption_element:
                 if self.add_caption_first:  # if there is a caption, add that before the element
-                    content = "\n\n".join([str(caption_element), str(block_element)])
+                    content = "\n\n".join([str(caption_element), table_data])
                 else:
-                    content = "\n\n".join([str(block_element), str(caption_element)])
+                    content = "\n\n".join([str(block_element), table_data])
             else:
-                # content = str(block_element)
-                content = full_text
+                content = table_data
             docs.append(Document(page_content=content, metadata=metadata))
         return docs
 
