@@ -8,7 +8,7 @@ This directory contains tools to quantize the models supported by `llama.cpp`.
   `git clone https://github.com/ggerganov/llama.cpp.git`
 - Change directory to `llama.cpp` using  
   `cd llama.cpp`
-- Now make sure you have CUDA installed (check using `-nvcc version`) and
+- Now make sure you have CUDA installed (check using `nvcc --version`) and
   go [here](https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#cublas) and follow the steps.
 
 Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the outputs and if it is not then follow
