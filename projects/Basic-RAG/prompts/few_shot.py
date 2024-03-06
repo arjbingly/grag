@@ -72,3 +72,8 @@ few_shot_template = """
 ```
 
 """
+
+example = """
+
+
+"""
