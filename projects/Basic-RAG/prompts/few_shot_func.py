@@ -25,6 +25,45 @@ examples = [
     }
 ]
 
+json_examples = [
+    {
+        "query": "FX July21 Call 120.5 / 125.0",
+        "answer": """{{
+            "trade": [
+                {{
+                    "entity": "FX",
+                    "action": "Call",
+                    "details": [
+                        {{
+                            "price": 120.5,
+                            "quantity": 125.0,
+                            "date": "July21"
+                        }}
+                    ]
+                }}
+            ]
+        }}"""
+    },
+    {
+        "query": "Commodity Sep22 Put 75.0 / 80.0",
+        "answer": """{{
+            "market": [
+                {{
+                    "entity": "Commodity",
+                    "strategy": "Put",
+                    "contracts": [
+                        {{
+                            "strike_price": 75.0,
+                            "quantity": 80.0,
+                            "expiry": "Sep22"
+                        }}
+                    ]
+                }}
+            ]
+        }}"""
+    }
+]
+
 # create an example template
 example_template = """
 User: {query}
@@ -40,20 +79,24 @@ example_prompt = PromptTemplate(
 # now break our previous prompt into a prefix and suffix
 # the prefix is our instructions
 prefix = """
+[INST]
+<<SYS>>
 You are a helpful, respectful and honest assistant. You are good at writing python code.
 You will be given with a formula or name of an equation or a concept. Based on your knowledge give the correct python
 implementation of that as shown in below examples:
+<</SYS>
 """
 
 # and the suffix our user input and output indicator
 suffix = """
 User: {query}
 AI: 
+[/INST]
 """
 
 # now create the few shot prompt template
 few_shot_prompt_template = FewShotPromptTemplate(
-    examples=examples,
+    examples=json_examples,
     example_prompt=example_prompt,
     prefix=prefix,
     suffix=suffix,
