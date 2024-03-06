@@ -107,7 +107,7 @@ def find_config_path(current_path: Path) -> Path:
     return current_path / config_path
 
 
-def get_config() -> ConfigParser:
+def get_config(path=None) -> ConfigParser:
     """
     Retrieves and parses the configuration settings from the 'config.ini' file.
 
@@ -118,12 +118,15 @@ def get_config() -> ConfigParser:
         ConfigParser: A parser object containing the configuration settings from 'config.ini'.
     """
     # Assuming this script is somewhere inside your project directory
-    script_location = Path(__file__).resolve()
-    if os.environ.get('CONFIG_PATH'):
-        config_path = os.environ.get('CONFIG_PATH')
+    if path is None:
+        script_location = Path(__file__).resolve()
+        if os.environ.get('CONFIG_PATH'):
+            config_path = os.environ.get('CONFIG_PATH')
+        else:
+            config_path = find_config_path(script_location)
+            os.environ['CONFIG_PATH'] = str(config_path)
     else:
-        config_path = find_config_path(script_location)
-        os.environ['CONFIG_PATH'] = str(config_path)
+        config_path = path
     print(f"Loaded config from {config_path}.")
     # Initialize parser and read config
     config = ConfigParser(interpolation=ExtendedInterpolation())

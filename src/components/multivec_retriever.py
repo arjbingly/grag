@@ -35,7 +35,8 @@ class Retriever:
                  store_path: str = multivec_retriever_conf['store_path'],
                  id_key: str = multivec_retriever_conf['id_key'],
                  namespace: str = multivec_retriever_conf['namespace'],
-                 top_k=1):
+                 top_k=1,
+                 chroma_kwargs=None):
         """
         Args:
             store_path: Path to the local file store, defaults to argument from config file
@@ -46,7 +47,10 @@ class Retriever:
         self.store_path = store_path
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
-        self.client = ChromaClient()
+        if chroma_kwargs is None:
+            self.client = ChromaClient()
+        else:
+            self.client = ChromaClient(**chroma_kwargs)
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
             vectorstore=self.client.langchain_chroma,
