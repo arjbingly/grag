@@ -192,7 +192,7 @@ class ParsePDF:
                 if self.add_caption_first:  # if there is a caption, add that before the element
                     content = "\n\n".join([str(caption_element), table_data])
                 else:
-                    content = "\n\n".join([str(block_element), table_data])
+                    content = "\n\n".join([table_data, str(caption_element)])
             else:
                 content = table_data
             docs.append(Document(page_content=content, metadata=metadata))
@@ -237,7 +237,7 @@ class ParsePDF:
         classified_elements = self.classify(partitions)
         text_docs = self.process_text(classified_elements['Text'])
         table_docs = self.process_tables(classified_elements['Tables'])
-        image_docs = self.process_tables(classified_elements['Images'])
+        image_docs = self.process_images(classified_elements['Images'])
         return {'Text': text_docs,
                 'Tables': table_docs,
                 'Images': image_docs}

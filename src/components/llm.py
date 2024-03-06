@@ -1,17 +1,17 @@
-from dotenv import load_dotenv
-from pathlib import Path
 import os
-from huggingface_hub import login
+from pathlib import Path
+
 import torch
-from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from huggingface_hub.utils import LocalTokenNotFoundError
+from dotenv import load_dotenv
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import pipeline
 
 from .utils import get_config
+
 llm_conf = get_config()['llm']
 
 print("CUDA: ", torch.cuda.is_available())
@@ -46,7 +46,7 @@ class LLM:
         self._model_name = model_name
         self.device_map = device_map
         self.task = task
-        self.max_new_tokens = max_new_tokens
+        self.max_new_tokens = int(max_new_tokens)
         self.temperature = temperature
         self.n_batch = n_batch
         self.n_ctx = n_ctx
@@ -83,14 +83,15 @@ class LLM:
             hf_model = self.model_path
         else:
             hf_model = self.model_name
-
+        quantization_config = BitsAndBytesConfig(load_in_8bit=True)
         try:
             # Try to load the model without passing the token
             tokenizer = AutoTokenizer.from_pretrained(hf_model)
             model = AutoModelForCausalLM.from_pretrained(hf_model,
+                                                         quantization_config=quantization_config,
                                                          device_map=self.device_map,
                                                          torch_dtype=torch.float16, )
-        except LocalTokenNotFoundError:
+        except OSError:  # LocalTokenNotFoundError:
             # If loading fails due to an auth token error, then load the token and retry
             load_dotenv()
             auth_token = os.getenv("AUTH_TOKEN")
@@ -98,6 +99,7 @@ class LLM:
                 raise ValueError("Authentication token not provided.")
             tokenizer = AutoTokenizer.from_pretrained(hf_model, token=True)
             model = AutoModelForCausalLM.from_pretrained(hf_model,
+                                                         quantization_config=quantization_config,
                                                          device_map=self.device_map,
                                                          torch_dtype=torch.float16,
                                                          token=True)
@@ -109,7 +111,7 @@ class LLM:
                         device_map=self.device_map,
                         max_new_tokens=self.max_new_tokens,
                         do_sample=True,
-                        top_k=30,
+                        top_k=10,
                         num_return_sequences=1,
                         eos_token_id=tokenizer.eos_token_id
                         )

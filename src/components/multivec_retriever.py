@@ -45,7 +45,7 @@ class Retriever:
         """
         self.store_path = store_path
         self.id_key = id_key
-        self.namespace = namespace
+        self.namespace = uuid.UUID(namespace)
         self.client = ChromaClient()
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
