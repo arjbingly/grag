@@ -30,6 +30,8 @@ class ParsePDF:
                  image_output_dir=parser_conf['image_output_dir'],
                  add_captions_to_text=parser_conf['add_captions_to_text'],
                  add_captions_to_blocks=parser_conf['add_captions_to_blocks'],
+                 table_as_html=parser_conf['table_as_html']
+
                  ):
         # Instantialize instance variables with parameters
         self.strategy = strategy
@@ -43,6 +45,7 @@ class ParsePDF:
         self.image_output_dir = image_output_dir
         self.single_text_out = single_text_out
         self.add_caption_first = True
+        self.table_as_html = table_as_html
 
     def partition(self, path: str):
         """
@@ -175,17 +178,23 @@ class ParsePDF:
             docs (list): A list of Document instances containing Tables, their captions and metadata. 
         """
         docs = []
+
         for block_element, caption_element in elements:
             metadata = {'source': self.file_path,
                         'category': block_element.category}
             metadata.update(block_element.metadata.to_dict())
+            if self.table_as_html:
+                table_data = block_element.metadata.text_as_html
+            else:
+                table_data = str(block_element)
+
             if caption_element:
                 if self.add_caption_first:  # if there is a caption, add that before the element
-                    content = "\n\n".join([str(caption_element), str(block_element)])
+                    content = "\n\n".join([str(caption_element), table_data])
                 else:
                     content = "\n\n".join([table_data, str(caption_element)])
             else:
-                content = str(block_element)
+                content = table_data
             docs.append(Document(page_content=content, metadata=metadata))
         return docs
 
