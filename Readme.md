@@ -162,7 +162,7 @@ To run: `streamlit run projects/retriver_app.py -server.port=8888`
 
 ### 2. BasicRAG
 
-Refer to [BasicRAG/README.md](./projects/Basic-RAG/README.md)
+Refer to [BasicRAG/README.md](projects/BasicRAG/README.md)
 
 ___
 

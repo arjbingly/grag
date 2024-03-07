@@ -34,6 +34,7 @@ class LLM:
     def __init__(self,
                  model_name=llm_conf["model_name"],
                  device_map=llm_conf["device_map"],
+                 quantization=llm_conf["quantization"],
                  task=llm_conf["task"],
                  max_new_tokens=llm_conf["max_new_tokens"],
                  temperature=llm_conf["temperature"],
@@ -45,6 +46,7 @@ class LLM:
         self.base_dir = Path(__file__).resolve().parents[2]
         self._model_name = model_name
         self.device_map = device_map
+        self.quantization = quantization
         self.task = task
         self.max_new_tokens = int(max_new_tokens)
         self.temperature = temperature
@@ -65,7 +67,7 @@ class LLM:
     def model_path(self):
         """Sets the model name."""
         return str(
-            self.base_dir / 'models' / self.model_name / f'ggml-model-{llm_conf["quantization"]}.gguf')
+            self.base_dir / 'models' / self.model_name / f'ggml-model-{self.quantization}.gguf')
 
     @model_name.setter
     def model_name(self, value):
