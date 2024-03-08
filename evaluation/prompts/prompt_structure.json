@@ -1,0 +1,11 @@
+{
+  "_comment": "Use this structure for creating your own prompt. Name it with '<Model>_<task>_<number>.json'.",
+  "input_variables": [
+    "...",
+    "..."
+  ],
+  "template": "...",
+  "model": "...",
+  "source": "...",
+  "task": "..."
+}
