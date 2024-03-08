@@ -53,7 +53,7 @@ class LLM:
         self.n_batch = n_batch
         self.n_ctx = n_ctx
         self.n_gpu_layers = n_gpu_layers
-        if std_out:
+        if std_out=='True':
             self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         else:
             self.callback_manager = None

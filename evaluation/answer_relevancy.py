@@ -5,6 +5,7 @@ import ragas
 from datasets import Dataset
 from ragas.metrics import faithfulness, answer_relevancy, answer_correctness
 
+from src.components.embedding import Embedding
 from src.components.llm import LLM
 from src.components.multivec_retriever import Retriever
 from src.components.utils import get_config, load_prompt
@@ -24,6 +25,7 @@ eval_df = pd.DataFrame()
 eval_df['ground_truth'] = qna_df['Answer']
 eval_df['question'] = qna_df['Question']
 
+emb = Embedding("instructor-embedding", "hkunlp/instructor-xl")
 retriever = Retriever(top_k=3, **config['multivec_retriever'], chroma_kwargs=config['chroma'])
 llm_ = LLM(**config['llm'])
 llm = llm_.load_model()
@@ -47,7 +49,7 @@ for i, row in eval_df.iterrows():
     response = llm.invoke(prompt)
     responses.append(response)
 
-eval_df['response'] = responses
+eval_df['answer'] = responses
 dataset_dict = {
     "question": qna_df['Question'].to_list(),
     "answer": responses,
@@ -56,34 +58,24 @@ dataset_dict = {
 }
 
 ds = Dataset.from_dict(dataset_dict)
-result_zephyr = ragas.evaluate(ds, metrics=metrics)
+# override the llm and embeddings for a specific metric
+from ragas.metrics import answer_relevancy
 
-print(result_zephyr)
+answer_relevancy.llm = llm
+answer_relevancy.embeddings = emb.embedding_function
 
-# examples = [
-#     {"question": q, "ground_truth": a}
-#     for i, (q, a) in enumerate(zip(qna_df['Question'].to_list(), qna_df['Answer'].to_list()))
-# ]
-# predictions = [
-#     {"context": c, "response": r}
-#     for i, (c, r) in enumerate(zip(contexts, responses))
-# ]
-# from ragas.langchain.evalchain import RagasEvaluatorChain
-# from ragas.metrics import (
-#     faithfulness,
-#     answer_relevancy,
-#     context_precision,
-#     context_recall,
+# You can also init a new metric with the llm and embeddings of your choice
+
+from ragas.metrics import AnswerRelevancy
+
+ar = AnswerRelevancy(llm=llm, embeddings=emb.embedding_function)
+
+# # pass to evaluate
+result = ragas.evaluate(dataset=ds, metrics=[ar, answer_relevancy])
+# even if I pass an llm or embeddings to evaluate, it will use the ones attached to the metrics
+# result = ragas.evaluate(
+#     metrics=[ar, answer_relevancy, faithfullness],
+#     llm=llm,
+#     embeddings=embeddings
 # )
-#
-# # create evaluation chains
-# faithfulness_chain = RagasEvaluatorChain(metric=faithfulness)
-# answer_rel_chain = RagasEvaluatorChain(metric=answer_relevancy)
-# context_rel_chain = RagasEvaluatorChain(metric=context_precision)
-# context_recall_chain = RagasEvaluatorChain(metric=context_recall)
-#
-# res = faithfulness_chain.evaluate(examples, predictions)
-# print(res)
-# if __name__ == "__main__":
-#     query = 'What types of dependencies does dependence analysis identify in loop programs?'
-# responses, sources = call_rag(query)
+print(result)
