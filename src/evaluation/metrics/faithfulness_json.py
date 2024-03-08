@@ -46,7 +46,7 @@ from src.components.llm import LLM
 #     ]
 # }
 #
-# %%
+
 examples = [
     {
         "question": "Who was  Albert Einstein and what is he best known for?",
@@ -75,30 +75,24 @@ examples = [
     }]
 
 for example in examples:
-    statements = '\n'.join(f'{i}. {st}' for i, st in enumerate(example['statements']['statements'], 1))
+    statements = '\n'.join(f'statement_{i}: {st}' for i, st in enumerate(example['statements']['statements'], 1))
     example['statements'] = statements
-# %%
-example_prompt_template = "Question: {question}\nAnswer: {answer}\nStatements: {statements}"
+
 example_formatter = PromptTemplate(
     input_variables=["question", "answer", "statements"],
     template="Question: {question}\nAnswer: {answer}\nStatements: {statements}"
 )
 
-# long_answer_template_prefix = '''<s>[INST] <<SYS>>
-# You are a helpful, respectful and honest assistant. You have to create one or more statements from each sentence in the given answer
-# Always create statements from the given question and answer. If the question and answer does not have relevant statements, do not return anything, don't try to make up statements.
-# Create one or more statements from each sentence in the given answer as shown in the below examples.<</SYS>>
-# '''
-
 long_answer_template_prefix = '''<s>[INST] <<SYS>>
-You are a helpful, respectful and honest assistant.
-Create one or more statements from each sentence in the given answer as shown in the below examples. Always create statements from the given question and answer. Do not make up anything.<</SYS>>
-'''
+You are a helpful, respectful and honest assistant. You always return a JSON object. You have to create one or more statements from each sentence in the given answer
+Always create statements from the given question and answer. If the question and answer does not have relevant statements, do not return anything, don't try to make up statements
+<</SYS>>
+Here are some examples:'''
 
 long_answer_template_suffix = '''Create one or more statements from each sentence in the given answer:
 Question: {question}
-Answer: {answer}[/INST]
-Statements: '''
+Answer: {answer}
+Statements: [/INST]'''
 
 long_answer_template = FewShotPromptTemplate(
     examples=examples,
@@ -107,10 +101,10 @@ long_answer_template = FewShotPromptTemplate(
     suffix=long_answer_template_suffix,
     input_variables=["question", "answer"],
 )
-# %%
+
 llm_ = LLM()
 llm = llm_.load_model()
-# %%
+
 query = "Who was the father of Mary Ball Washington?"
 gen_response = "The school principal, Roger was the father of Mary Ball"
 prompt = long_answer_template.format(question=query,
@@ -119,16 +113,7 @@ print(prompt)
 
 response = llm.invoke(prompt)
 print(response)
-# %%
-query = "What unique ability does the newly discovered species of frog have?"
-gen_response = "It can change its skin color based on the temperature of its environment"
-prompt = long_answer_template.format(question=query,
-                                     answer=gen_response)
-print(prompt)
 
-response = llm.invoke(prompt)
-# print(response)
-# %%
 ##Step 2
 
 # NLI_STATEMENTS_MESSAGE = {
@@ -279,3 +264,12 @@ response = llm.invoke(prompt)
 # )
 #
 # nli_response = llm.invoke(prompt)
+#
+# output_parse_prompt = PromptTemplate(input_variables=["text"],
+#                                      template='''<s>[INST] <<SYS>>
+# You are a helpful, respectful and honest assistant. You have to format the given statements in the given text into a JSON object. Always create JSON from the given text. Do not to make up statements..
+# <</SYS>>
+# Convert the 'statements' in the given text to a JSON object.
+# Text: {text}''')
+# output_parse_prompt = output_parse_prompt.format(text=response)
+# output = llm.invoke(output_parse_prompt)
