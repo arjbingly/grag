@@ -128,6 +128,20 @@ class BasicRAG:
 
         return (prompt_template, input_vars) if return_input_vars else prompt_template
 
+    @staticmethod
+    def output_parser(call_func):
+        def output_parser_wrapper(*args, **kwargs):
+            response, sources = call_func(*args, **kwargs)
+            if conf['llm']['std_out'] == 'False':
+                # if self.llm_.callback_manager is None:
+                print(response)
+            print(f'Sources: ')
+            for index, source in enumerate(sources):
+                print(f'\t{index}: {source}')
+
+        return output_parser_wrapper
+
+    @output_parser
     def stuff_call(self, query: str):
         retrieved_docs = self.retriever.get_chunk(query)
         context = self.stuff_docs(retrieved_docs)
@@ -136,6 +150,7 @@ class BasicRAG:
         sources = [doc.metadata["source"] for doc in retrieved_docs]
         return response, sources
 
+    @output_parser
     def refine_call(self, query: str):
         retrieved_docs = self.retriever.get_chunk(query)
         sources = [doc.metadata["source"] for doc in retrieved_docs]
