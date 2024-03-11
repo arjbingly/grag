@@ -26,12 +26,26 @@ classifiers = [
   "Environment :: GPU :: NVIDIA CUDA :: 12",
   "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
-dependencies = []
+dependencies = [
+  "langchain>=0.1.5",
+  "chromadb>=0.4.13",
+  "pytorch>=2.2.0",
+  "pytorch-cuda>=12.1",
+  "transformers>=4.37.1",
+  "sentence-transformers>=2.2.2",
+  "instructorembedding>=1.0.1",
+  "streamlit>=1.31.1",
+  "unstructured>=0.12.3",
+  "pdfplumber>=0.10.3",
+  "llama-cpp-python>=0.2.43",
+  "tqdm>=4.65.0",
+  "huggingface_hub>=0.20.2",
+]
 
 [project.urls]
-Documentation = "https://github.com/unknown/grag#readme"
-Issues = "https://github.com/unknown/grag/issues"
-Source = "https://github.com/unknown/grag"
+Documentation = "https://github.com/arjbingly/Capstone_5#readme"
+Issues = "https://github.com/arjbingly/Capstone_5/issues"
+Source = "https://github.com/arjbingly/Capstone_5/"
 
 [tool.hatch.version]
 path = "src/grag/__about__.py"
