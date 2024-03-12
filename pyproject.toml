@@ -11,35 +11,34 @@ requires-python = ">=3.8"
 license = "MIT"
 keywords = []
 authors = [
-  { name = "Arjun Bingly", email = "arjunbin@gmail.com" },
+    { name = "Arjun Bingly", email = "arjunbin@gmail.com" },
 ]
 classifiers = [
-  "Development Status :: 1 - Planning",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
-  "Environment :: GPU :: NVIDIA CUDA :: 12",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Environment :: GPU :: NVIDIA CUDA :: 12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
 dependencies = [
-  "langchain>=0.1.5",
-  "chromadb>=0.4.13",
-  "pytorch>=2.2.0",
-  "pytorch-cuda>=12.1",
-  "transformers>=4.37.1",
-  "sentence-transformers>=2.2.2",
-  "instructorembedding>=1.0.1",
-  "streamlit>=1.31.1",
-  "unstructured>=0.12.3",
-  "pdfplumber>=0.10.3",
-  "llama-cpp-python>=0.2.43",
-  "tqdm>=4.65.0",
-  "huggingface_hub>=0.20.2",
+    "langchain>=0.1.5",
+    "chromadb>=0.4.13",
+    "torch>=2.2.0",
+    "transformers>=4.37.1",
+    "sentence-transformers>=2.2.2",
+    "instructorembedding>=1.0.1",
+    "streamlit>=1.31.1",
+    "unstructured>=0.12.3",
+    "pdfplumber>=0.10.3",
+    "llama-cpp-python>=0.2.43",
+    "tqdm>=4.65.0",
+    "huggingface_hub>=0.20.2",
 ]
 
 [project.urls]
@@ -52,19 +51,19 @@ path = "src/grag/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "coverage[toml]>=6.5",
-  "pytest",
+    "coverage[toml]>=6.5",
+    "pytest",
 ]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
 cov-report = [
-  "- coverage combine",
-  "coverage report",
+    "- coverage combine",
+    "coverage report",
 ]
 cov = [
-  "test-cov",
-  "cov-report",
+    "test-cov",
+    "cov-report",
 ]
 
 [[tool.hatch.envs.all.matrix]]
@@ -72,7 +71,7 @@ python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.types]
 dependencies = [
-  "mypy>=1.0.0",
+    "mypy>=1.0.0",
 ]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/grag tests}"
@@ -82,7 +81,7 @@ source_pkgs = ["grag", "tests"]
 branch = true
 parallel = true
 omit = [
-  "src/grag/__about__.py",
+    "src/grag/__about__.py",
 ]
 
 [tool.coverage.paths]
@@ -91,7 +90,7 @@ tests = ["tests", "*/grag/tests"]
 
 [tool.coverage.report]
 exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
 ]
