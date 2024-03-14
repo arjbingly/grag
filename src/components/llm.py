@@ -42,6 +42,7 @@ class LLM:
                  n_ctx=llm_conf["n_ctx_cpp"],
                  n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
                  std_out=llm_conf["std_out"],
+                 **kwargs
                  ):
         self.base_dir = Path(__file__).resolve().parents[2]
         self._model_name = model_name
@@ -53,10 +54,11 @@ class LLM:
         self.n_batch = n_batch
         self.n_ctx = n_ctx
         self.n_gpu_layers = n_gpu_layers
-        if std_out=='True':
+        if std_out == 'True':
             self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         else:
             self.callback_manager = None
+        self.llama_cpp_kwargs = kwargs
 
     @property
     def model_name(self):
@@ -133,6 +135,7 @@ class LLM:
             n_ctx=self.n_ctx,
             callbacks=self.callback_manager,
             verbose=True,  # Verbose is required to pass to the callback manager
+            **self.llama_cpp_kwargs,
         )
         return llm
 
