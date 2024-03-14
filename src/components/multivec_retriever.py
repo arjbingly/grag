@@ -108,7 +108,7 @@ class Retriever:
             chunks.extend(_sub_docs)
         return chunks
 
-    def add_docs(self, docs: List[Document], asynchronous=False):
+    def add_docs(self, docs: List[Document], asynchronous=False, skip_chunking=False):
         """
         Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
         and adds the parent document into the file store.
@@ -120,7 +120,10 @@ class Retriever:
             None
 
         """
-        chunks = self.split_docs(docs)
+        if skip_chunking:
+            chunks = docs
+        else:
+            chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
         if asynchronous:
             asyncio.run(self.client.aadd_docs(chunks))
