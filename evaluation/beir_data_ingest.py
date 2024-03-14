@@ -1,27 +1,30 @@
+import math
+from pathlib import Path
+
 from datasets import load_dataset
-import pandas as pd
-from src.components.multivec_retriever import Retriever
 from langchain_core.documents import Document
 from tqdm import tqdm
-from pathlib import Path
+
+from src.components.multivec_retriever import Retriever
 from src.components.utils import get_config
-import math
-#%%
+
+# %%
 DRY_RUN = False
 BATCH_SIZE = 1024
 COLLECTION_NAME = "hotpotqa"
 HF_DATASET_NAME = "BeIR/hotpotqa-generated-queries"
 
-#%%
+# %%
 dataset = load_dataset(HF_DATASET_NAME)['train']
-
 
 config_path = Path(__file__).parent / 'config.ini'
 config = get_config(config_path)
 config['chroma']["collection_name"] = COLLECTION_NAME
 
 retriever = Retriever(**config['multivec_retriever'], chroma_kwargs=config['chroma'])
-#%%
+
+
+# %%
 def batch_gen(dataset, batch_size=128):
     n_samples = len(dataset)
     for start in range(0, n_samples, batch_size):
@@ -30,17 +33,15 @@ def batch_gen(dataset, batch_size=128):
             yield dataset[start:n_samples]
         yield dataset[start:end]
 
-#%%
 
-
-
+# %%
 if __name__ == "__main__":
     print(f'{DRY_RUN =}')
     print(f'{COLLECTION_NAME =}')
     print(f'{HF_DATASET_NAME =}')
     print(f'Number of samples: {len(dataset)}')
-    for batch in tqdm(batch_gen(dataset, batch_size=BATCH_SIZE), total = math.ceil(len(dataset) / BATCH_SIZE)):
+    for batch in tqdm(batch_gen(dataset, batch_size=BATCH_SIZE), total=math.ceil(len(dataset) / BATCH_SIZE)):
         docs = list(map(lambda row: Document(page_content=row[0], metadata={"source": row[1]}),
                         list(zip(batch['text'], batch['_id']))))
         if not DRY_RUN:
-            retriever.add_docs(docs, skip_chunking=True)
+            retriever.add_docs(docs, skip_chunking=True, asynchronous=True)
