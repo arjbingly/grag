@@ -4,7 +4,7 @@ from typing import List, Union, Dict, Any, Optional
 
 from langchain.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
-from pydantic import BaseModel, model_validator, field_validator, Field
+from pydantic import BaseModel, field_validator, Field
 
 Example = Dict[str, Any]
 
@@ -26,7 +26,7 @@ class Prompt(BaseModel):
 
     @field_validator("input_keys")
     @classmethod
-    def validate_input_jeys(cls, v):
+    def validate_input_keys(cls, v):
         if v is None or v == []:
             raise ValueError('input_keys cannot be empty')
         return v
@@ -51,7 +51,7 @@ class Prompt(BaseModel):
     #     self.prompt = ChatPromptTemplate.from_template(self.template)
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.prompt = PromptTemplate(input_keys=self.input_keys, template=self.template)
+        self.prompt = PromptTemplate(input_variables=self.input_keys, template=self.template)
 
     @classmethod
     def save(self, filepath: Union[Path, str, None], overwrite=False) -> None:
@@ -77,18 +77,21 @@ class Prompt(BaseModel):
         _prompt.filepath = str(filepath)
         return _prompt
 
+    def format(self, **kwargs):
+        return self.prompt.format(**kwargs)
+
 
 class FewShotPrompt(Prompt):
     output_keys: List[str]
     examples: List[dict]
     prefix: str
     suffix: str
-    eg_template: str
+    example_template: str
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         eg_formatter = PromptTemplate(input_vars=self.input_keys + self.output_keys,
-                                      template=self.eg_template)
+                                      template=self.example_template)
         self.prompt = FewShotPromptTemplate(
             examples=self.examples,
             example_prompt=eg_formatter,
@@ -96,13 +99,6 @@ class FewShotPrompt(Prompt):
             suffix=self.suffix,
             input_variables=self.input_keys,
         )
-
-    @model_validator(mode='before')
-    @classmethod
-    def validate_prompt(cls, values):
-        if values.get('input_keys') is None or values.get('input_keys') == []:
-            raise ValueError('input_keys cannot be empty')
-        return values
 
     @field_validator("output_keys")
     @classmethod
