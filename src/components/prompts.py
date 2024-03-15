@@ -3,11 +3,7 @@ from pathlib import Path
 from typing import List, Union, Dict, Any, Optional
 
 from langchain.prompts.few_shot import FewShotPromptTemplate
-<<<<<<< HEAD
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
-=======
 from langchain_core.prompts import PromptTemplate
->>>>>>> c09c63f646461a38a25b3a411ad3dda1c67e07c3
 from pydantic import BaseModel, field_validator, Field
 
 Example = Dict[str, Any]
@@ -30,11 +26,7 @@ class Prompt(BaseModel):
 
     @field_validator("input_keys")
     @classmethod
-<<<<<<< HEAD
-    def validate_input_keys(cls, v):
-=======
     def validate_input_keys(cls, v) -> List[str]:
->>>>>>> c09c63f646461a38a25b3a411ad3dda1c67e07c3
         if v is None or v == []:
             raise ValueError('input_keys cannot be empty')
         return v
@@ -61,7 +53,6 @@ class Prompt(BaseModel):
         super().__init__(**kwargs)
         self.prompt = PromptTemplate(input_variables=self.input_keys, template=self.template)
 
-    @classmethod
     def save(self, filepath: Union[Path, str, None], overwrite=False) -> Union[None, ValueError]:
         dump = self.model_dump_json(
             indent=2,
@@ -95,12 +86,8 @@ class FewShotPrompt(Prompt):
     examples: List[Dict[str, Any]]
     prefix: str
     suffix: str
-<<<<<<< HEAD
     example_template: str
-=======
-    eg_template: str
     prompt: Optional[FewShotPromptTemplate] = Field(exclude=True, repr=False, default=None)
->>>>>>> c09c63f646461a38a25b3a411ad3dda1c67e07c3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
