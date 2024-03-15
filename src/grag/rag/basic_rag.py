@@ -5,11 +5,11 @@ from typing import List
 from importlib_resources import files
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-
 from src.components.llm import LLM
 from src.components.multivec_retriever import Retriever
 from src.components.utils import get_config
-from src.rag import prompts
+
+from src.grag.rag import prompts
 
 conf = get_config()
 

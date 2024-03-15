@@ -1,3 +1,3 @@
-from src.rag.basic_rag import BasicRAG
+from src.grag.rag import BasicRAG
 
 rag = BasicRAG()
