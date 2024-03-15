@@ -28,7 +28,7 @@ def call_rag(query):
     prompt = prompt_template.format(context=context, question=query)
     response = llm.invoke(prompt)
     sources = [doc.metadata["source"] for doc in retrieved_docs]
-    return response, sources
+    return response, sources, context
 
 
 if __name__ == "__main__":
