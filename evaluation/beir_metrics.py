@@ -2,6 +2,7 @@ from hashlib import md5
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 from datasets import load_dataset
 from sklearn.metrics import recall_score, precision_score, f1_score, ndcg_score
 from tqdm import tqdm
@@ -31,9 +32,9 @@ def load_hf_dataset(dataset_name, split=False):
 
 
 dataset = load_hf_dataset(HF_DATASET_NAME)
+dataset = pd.DataFrame(dataset[:10])
 
 retrieved_chunks = []  # hashes
-ground_truth_chunks = []  # hashes
 for n, row in enumerate(tqdm(dataset, desc="Retrieving chunks")):
     query = row['query'].strip()
     retrieved_docs = retriever.get_chunk(query)
@@ -45,6 +46,7 @@ for n, row in enumerate(tqdm(dataset, desc="Retrieving chunks")):
     if n >= 2:
         break
 
+ground_truth_chunks = []  # hashes
 for n, row in enumerate(tqdm(dataset, desc="Getting ground truth chunks")):
     _hash = md5(row['text'].encode()).digest()
     ground_truth_chunks.append([_hash])
