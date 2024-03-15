@@ -9,9 +9,10 @@ description = 'A simple package for implementing RAG'
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
-keywords = []
+keywords = ["RAG", "Retrieval Augmented Generation", "LLM", "Graph"]
 authors = [
     { name = "Arjun Bingly", email = "arjunbin@gmail.com" },
+    { name = "Sanchit Vijay", email = "sanchitvj1026@gmail.com" }
 ]
 classifiers = [
     "Development Status :: 1 - Planning",
