@@ -1,19 +1,13 @@
 # add code folder to sys path
-import os
-import sys
 import time
 from pathlib import Path
 
-sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
-
-from src.components.parse_pdf import ParsePDF
-
-from src.components.utils import get_config
+from grag.components.parse_pdf import ParsePDF
+from grag.components.utils import get_config
 
 data_path = Path(get_config()['data']['data_path'])
 # %%
 data_path = data_path / 'test' / 'pdf'  # "data/test/pdf"
-
 
 
 def main(filename):

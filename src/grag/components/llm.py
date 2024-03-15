@@ -41,8 +41,9 @@ class LLM:
                  n_ctx=llm_conf["n_ctx_cpp"],
                  n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
                  std_out=llm_conf["std_out"],
+                 base_dir=llm_conf["base_dir"]
                  ):
-        self.base_dir = Path(__file__).resolve().parents[2]
+        self.base_dir = Path(base_dir)
         self._model_name = model_name
         self.device_map = device_map
         self.task = task
@@ -65,7 +66,7 @@ class LLM:
     def model_path(self):
         """Sets the model name."""
         return str(
-            self.base_dir / 'models' / self.model_name / f'ggml-model-{llm_conf["quantization"]}.gguf')
+            self.base_dir / self.model_name / f'ggml-model-{llm_conf["quantization"]}.gguf')
 
     @model_name.setter
     def model_name(self, value):

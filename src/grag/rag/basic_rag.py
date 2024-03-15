@@ -2,14 +2,14 @@ import json
 import os
 from typing import List
 
+from grag import prompts
+from grag.components.llm import LLM
+from grag.components.multivec_retriever import Retriever
+from grag.components.prompt import Prompt
+from grag.components.utils import get_config
 from importlib_resources import files
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-from src.components.llm import LLM
-from src.components.multivec_retriever import Retriever
-from src.components.utils import get_config
-
-from src.grag.rag import prompts
 
 conf = get_config()
 
@@ -40,10 +40,10 @@ class BasicRAG:
         self.doc_chain = doc_chain
         self.task = task
 
-        self.main_prompt = self.load_prompt(self.prompt_path.joinpath(self.main_prompt_name))
+        self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
 
         if self.doc_chain == 'refine':
-            self.refine_prompt = self.load_prompt(self.prompt_path.joinpath(self.refine_prompt_name))
+            self.refine_prompt = Prompt.load(self.prompt_path.joinpath(self.refine_prompt_name))
 
     @property
     def model_name(self):
@@ -93,9 +93,9 @@ class BasicRAG:
 
         self.main_prompt_name = f'{self.model_type}_{self.task}_1.json'
         self.refine_prompt_name = f'{self.model_type}_{self.task}-refine_1.json'
-        self.main_prompt = self.load_prompt(self.prompt_path.joinpath(self.main_prompt_name))
+        self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
         if self.doc_chain == 'refine':
-            self.refine_prompt = self.load_prompt(self.prompt_path.joinpath(self.refine_prompt_name))
+            self.refine_prompt = Prompt.load(self.prompt_path.joinpath(self.refine_prompt_name))
 
     @staticmethod
     def stuff_docs(docs: List[Document]) -> str:
@@ -124,7 +124,7 @@ class BasicRAG:
             prompt_json = json.load(f)
         prompt_template = ChatPromptTemplate.from_template(prompt_json['template'])
 
-        input_vars = prompt_json['input_variables']
+        input_vars = prompt_json['input_keys']
 
         return (prompt_template, input_vars) if return_input_vars else prompt_template
 

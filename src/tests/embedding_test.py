@@ -1,12 +1,6 @@
 import numpy as np
 
-import sys
-import os
-from pathlib import Path
-
-sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
-
-from components.embedding import Embedding
+from grag.components.embedding import Embedding
 
 
 # %%

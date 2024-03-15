@@ -2,18 +2,16 @@ import asyncio
 from typing import List
 
 import chromadb
-from langchain_community.embeddings import HuggingFaceInstructEmbeddings
-from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from grag.components.embedding import Embedding
+from grag.components.utils import get_config
 from langchain_community.vectorstores import Chroma
 from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_core.documents import Document
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
-from .embedding import Embedding
-from .utils import get_config
-
 chroma_conf = get_config()['chroma']
+
 
 class ChromaClient:
     """
@@ -70,6 +68,7 @@ class ChromaClient:
                                        collection_name=self.collection_name,
                                        embedding_function=self.embedding_function, )
         self.allowed_metadata_types = (str, int, float, bool)
+
     def test_connection(self, verbose=True):
         '''
         Tests connection with Chroma Vectorstore

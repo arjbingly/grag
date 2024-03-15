@@ -32,7 +32,7 @@ dependencies = [
     "chromadb>=0.4.13",
     "torch>=2.2.0",
     "transformers>=4.37.1",
-    "sentence-transformers>=2.2.2",
+    "sentence-transformers==2.2.2",
     "instructorembedding>=1.0.1",
     "streamlit>=1.31.1",
     "unstructured>=0.12.3",
@@ -40,6 +40,8 @@ dependencies = [
     "llama-cpp-python>=0.2.43",
     "tqdm>=4.65.0",
     "huggingface_hub>=0.20.2",
+    "pydantic>=2.5.0",
+    "rouge-score>=0.1.2",
 ]
 
 [project.urls]

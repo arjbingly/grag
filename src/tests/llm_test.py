@@ -1,8 +1,4 @@
 import os
-from pathlib import Path
-import sys
-
-sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
 from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -11,9 +7,7 @@ from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 
-from components.llm import LLM
-from components.utils import reformat_text_with_line_breaks, display_llm_output_and_sources
-
+from grag.components.llm import LLM
 
 # load docs from path
 path = "../../data/test/pdfs/new_papers"
