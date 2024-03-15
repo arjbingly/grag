@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import List, Union, Dict, Any, Optional
 
 from langchain.prompts.few_shot import FewShotPromptTemplate
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
-from pydantic import BaseModel, model_validator, field_validator, Field
+from langchain_core.prompts import PromptTemplate
+from pydantic import BaseModel, field_validator, Field
 
 Example = Dict[str, Any]
 
@@ -22,11 +22,11 @@ class Prompt(BaseModel):
     filepath: Optional[str] = Field(default=None, exclude=True)
     input_keys: List[str]
     template: str
-    prompt: Optional[ChatPromptTemplate] = Field(exclude=True, repr=False, default=None)
+    prompt: Optional[PromptTemplate] = Field(exclude=True, repr=False, default=None)
 
     @field_validator("input_keys")
     @classmethod
-    def validate_input_jeys(cls, v):
+    def validate_input_keys(cls, v) -> List[str]:
         if v is None or v == []:
             raise ValueError('input_keys cannot be empty')
         return v
@@ -54,7 +54,7 @@ class Prompt(BaseModel):
         self.prompt = PromptTemplate(input_keys=self.input_keys, template=self.template)
 
     @classmethod
-    def save(self, filepath: Union[Path, str, None], overwrite=False) -> None:
+    def save(self, filepath: Union[Path, str, None], overwrite=False) -> Union[None, ValueError]:
         dump = self.model_dump_json(
             indent=2,
             exclude_defaults=True,
@@ -68,6 +68,7 @@ class Prompt(BaseModel):
             filepath = self.filepath
         with open(filepath, 'w') as f:
             f.write(dump)
+        return None
 
     @classmethod
     def load(cls, filepath: Union[Path, str]):
@@ -80,10 +81,11 @@ class Prompt(BaseModel):
 
 class FewShotPrompt(Prompt):
     output_keys: List[str]
-    examples: List[dict]
+    examples: List[Dict[str, Any]]
     prefix: str
     suffix: str
     eg_template: str
+    prompt: Optional[FewShotPromptTemplate] = Field(exclude=True, repr=False, default=None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -97,23 +99,16 @@ class FewShotPrompt(Prompt):
             input_variables=self.input_keys,
         )
 
-    @model_validator(mode='before')
-    @classmethod
-    def validate_prompt(cls, values):
-        if values.get('input_keys') is None or values.get('input_keys') == []:
-            raise ValueError('input_keys cannot be empty')
-        return values
-
     @field_validator("output_keys")
     @classmethod
-    def validate_output_keys(cls, v):
+    def validate_output_keys(cls, v) -> List[str]:
         if v is None or v == []:
             raise ValueError('output_keys cannot be empty')
         return v
 
-    @field_validator("examples")
+    @field_validator('examples')
     @classmethod
-    def validate_examples(cls, v):
+    def validate_examples(cls, v) -> List[Dict[str, Any]]:
         if v is None or v == []:
             raise ValueError('examples cannot be empty')
         for eg in v:
