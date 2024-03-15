@@ -131,6 +131,26 @@ class Retriever:
             self.client.add_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
+    async def aadd_docs(self, docs: List[Document], skip_chunking=False):
+        """
+        Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
+        and adds the parent document into the file store.
+        Args:
+            docs: List of langchain_core.documents.Document
+            asynchronous: Add chunks to vector store asynchronously
+
+        Returns:
+            None
+
+        """
+        if skip_chunking:
+            chunks = docs
+        else:
+            chunks = self.split_docs(docs)
+        doc_ids = self.gen_doc_ids(docs)
+        await self.client.aadd_docs(chunks)
+        self.retriever.docstore.mset(list(zip(doc_ids, docs)))
+
     def get_chunk(self, query: str, with_score=False, top_k=None):
         """
         Returns the most (cosine) similar chunks from the vector database.

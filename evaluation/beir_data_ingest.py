@@ -1,16 +1,17 @@
+import asyncio
 import math
 from pathlib import Path
 
 from datasets import load_dataset
 from langchain_core.documents import Document
-from tqdm import tqdm
+from tqdm.asyncio import tqdm
 
 from src.components.multivec_retriever import Retriever
 from src.components.utils import get_config
 
 # %%
 DRY_RUN = False
-BATCH_SIZE = 1024
+BATCH_SIZE = 2048
 COLLECTION_NAME = "hotpotqa"
 HF_DATASET_NAME = "BeIR/hotpotqa-generated-queries"
 
@@ -35,13 +36,26 @@ def batch_gen(dataset, batch_size=128):
 
 
 # %%
-if __name__ == "__main__":
-    print(f'{DRY_RUN =}')
-    print(f'{COLLECTION_NAME =}')
-    print(f'{HF_DATASET_NAME =}')
-    print(f'Number of samples: {len(dataset)}')
-    for batch in tqdm(batch_gen(dataset, batch_size=BATCH_SIZE), total=math.ceil(len(dataset) / BATCH_SIZE)):
+# if __name__ == "__main__":
+#     print(f'{DRY_RUN =}')
+#     print(f'{COLLECTION_NAME =}')
+#     print(f'{HF_DATASET_NAME =}')
+#     print(f'Number of samples: {len(dataset)}')
+#
+#     for batch in tqdm(batch_gen(dataset, batch_size=BATCH_SIZE), total=math.ceil(len(dataset) / BATCH_SIZE)):
+#         docs = list(map(lambda row: Document(page_content=row[0], metadata={"source": row[1]}),
+#                         list(zip(batch['text'], batch['_id']))))
+#         if not DRY_RUN:
+#             asyncio.run(retriever.aadd_docs(docs, skip_chunking=True))
+
+
+async def main():
+    for batch in tqdm(batch_gen(dataset, BATCH_SIZE), total=math.ceil(len(dataset) / BATCH_SIZE)):
         docs = list(map(lambda row: Document(page_content=row[0], metadata={"source": row[1]}),
                         list(zip(batch['text'], batch['_id']))))
         if not DRY_RUN:
-            retriever.add_docs(docs, skip_chunking=True, asynchronous=True)
+            await retriever.aadd_docs(docs, skip_chunking=True)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
