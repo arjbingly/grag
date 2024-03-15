@@ -11,7 +11,8 @@ This directory contains tools to quantize the models supported by `llama.cpp`.
 - Now make sure you have CUDA installed (check using `nvcc --version`) and
   go [here](https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#cublas) and follow the steps.
 
-Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the outputs and if it is not then follow
+Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the outputs and if it is not then try reinstalling using `CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir
+` or follow
 solution [here](https://stackoverflow.com/questions/76963311/llama-cpp-python-not-using-nvidia-gpu-cuda).
 
 ### 2. Downloading models to quantize:
