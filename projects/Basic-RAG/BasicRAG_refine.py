@@ -1,4 +1,4 @@
-from src.grag.rag import BasicRAG
+from grag.grag.rag import BasicRAG
 
 rag = BasicRAG(doc_chain="refine")
 

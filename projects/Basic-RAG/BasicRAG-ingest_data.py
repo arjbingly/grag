@@ -2,11 +2,10 @@ import os
 from pathlib import Path
 from uuid import UUID, uuid5
 
+from grag.components.multivec_retriever import Retriever
+from grag.components.parse_pdf import ParsePDF
+from grag.components.utils import get_config
 from tqdm import tqdm
-
-from src.components.multivec_retriever import Retriever
-from src.components.parse_pdf import ParsePDF
-from src.components.utils import get_config
 
 config = get_config()
 
