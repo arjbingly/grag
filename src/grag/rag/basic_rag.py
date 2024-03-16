@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import List, Union
 
 from grag import prompts
 from grag.components.llm import LLM
@@ -19,7 +19,7 @@ class BasicRAG:
                  task='QA',
                  llm_kwargs=None,
                  retriever_kwargs=None,
-                 custom_prompt: Union[Prompt, FewShotPrompt] = None
+                 custom_prompt: Union[Prompt, FewShotPrompt, None] = None
                  ):
 
         if retriever_kwargs is None:
