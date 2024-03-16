@@ -13,11 +13,11 @@ SUPPORTED_DOC_CHAINS = ["stuff", 'refine']
 
 
 class Prompt(BaseModel):
-    name: str = Field(default='Custom Prompt')
-    llm_type: str
-    task: str
+    name: str = Field(default='custom_prompt')
+    llm_type: str = Field(default='None')
+    task: str = Field(default='QA')
     source: str = Field(default='NoSource')
-    doc_chain: str
+    doc_chain: str = Field(default='stuff')
     language: str = 'en'
     filepath: Optional[str] = Field(default=None, exclude=True)
     input_keys: List[str]

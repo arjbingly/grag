@@ -21,6 +21,7 @@ class BasicRAG:
                  task='QA',
                  llm_kwargs=None,
                  retriever_kwargs=None,
+                 custom_prompt: Prompt = None
                  ):
 
         if retriever_kwargs is None:
@@ -39,11 +40,15 @@ class BasicRAG:
         self.model_name = model_name
         self.doc_chain = doc_chain
         self.task = task
+        self.custom_prompt = custom_prompt
 
-        self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
+        if self.custom_prompt is None:
+            self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
 
-        if self.doc_chain == 'refine':
-            self.refine_prompt = Prompt.load(self.prompt_path.joinpath(self.refine_prompt_name))
+            if self.doc_chain == 'refine':
+                self.refine_prompt = Prompt.load(self.prompt_path.joinpath(self.refine_prompt_name))
+        else:
+            self.main_prompt = self.custom_prompt
 
     @property
     def model_name(self):
@@ -68,6 +73,10 @@ class BasicRAG:
         if value not in _allowed_doc_chains:
             raise ValueError(f'Doc chain {value} is not allowed. Available choices: {_allowed_doc_chains}')
         self._doc_chain = value
+        if value == 'refine':
+            if self.custom_prompt is not None:
+                assert len(self.custom_prompt) == 2, ValueError(
+                    f"Refine chain needs 2 custom prompts. {len(self.custom_prompt)} custom prompts were given.")
         self.prompt_matcher()
 
     @property
@@ -93,9 +102,10 @@ class BasicRAG:
 
         self.main_prompt_name = f'{self.model_type}_{self.task}_1.json'
         self.refine_prompt_name = f'{self.model_type}_{self.task}-refine_1.json'
-        self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
-        if self.doc_chain == 'refine':
-            self.refine_prompt = Prompt.load(self.prompt_path.joinpath(self.refine_prompt_name))
+        if self.custom_prompt is None:
+            self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
+            if self.doc_chain == 'refine':
+                self.refine_prompt = Prompt.load(self.prompt_path.joinpath(self.refine_prompt_name))
 
     @staticmethod
     def stuff_docs(docs: List[Document]) -> str:
