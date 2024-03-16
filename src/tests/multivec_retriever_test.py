@@ -1,16 +1,13 @@
-from langchain_community.document_loaders import DirectoryLoader, TextLoader
-
 # add code folder to sys path
 import os
 from pathlib import Path
-import sys
-sys.path.insert(1, str(Path(os.getcwd()).parents[0]))
 
-from components.multivec_retriever import Retriever
+from grag.components.multivec_retriever import Retriever
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 
 # %%%
 # data_path = "data/pdf/9809"
-data_path = Path(os.getcwd()).parents[1]/'data'/'Gutenberg'/'txt' #"data/Gutenberg/txt"
+data_path = Path(os.getcwd()).parents[1] / 'data' / 'Gutenberg' / 'txt'  # "data/Gutenberg/txt"
 # %%
 retriever = Retriever(top_k=3)
 

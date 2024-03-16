@@ -1,0 +1,12 @@
+{
+  "llm_type": "Llama-2",
+  "task": "QA",
+  "source": "https://github.com/hwchase17/langchain-hub/blob/master/prompts/qa_with_sources/refine/basic.json",
+  "doc_chain": "refine",
+  "input_keys": [
+    "question",
+    "existing_answer",
+    "context"
+  ],
+  "template": "<s>[INST] <<SYS>>\nYou are a helpful, respectful and honest assistant.\n\nAlways answer based only on the provided context. If the question can not be answered from the provided context, just say that you don't know, don't try to make up an answer.\n<</SYS>>\n\nThe original question is as follows: {question}\n\nYou have been provided an existing answer: {existing_answer}\n\nYou have the opportunity to refine the existing answer(only if needed) with some more context below.\n\n\n{context}\n\n\nGiven the new context, refine the original answer to better answer the question. If the context isn't useful, return the original answer.\n\nHelpful Answer: [/INST]"
+}

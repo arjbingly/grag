@@ -2,13 +2,12 @@ import asyncio
 import uuid
 from typing import List
 
+from grag.components.chroma_client import ChromaClient
+from grag.components.text_splitter import TextSplitter
+from grag.components.utils import get_config
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
-
-from .chroma_client import ChromaClient
-from .text_splitter import TextSplitter
-from .utils import get_config
 
 multivec_retriever_conf = get_config()['multivec_retriever']
 
@@ -104,13 +103,12 @@ class Retriever:
             chunks.extend(_sub_docs)
         return chunks
 
-    def add_docs(self, docs: List[Document], asynchronous=False):
+    def add_docs(self, docs: List[Document]):
         """
         Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
         and adds the parent document into the file store.
         Args:
             docs: List of langchain_core.documents.Document
-            asynchronous: Add chunks to vector store asynchronously
 
         Returns:
             None
@@ -118,11 +116,24 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        if asynchronous:
-            asyncio.run(self.client.aadd_docs(chunks))
-        else:
-            self.client.add_docs(chunks)
+        self.client.add_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
+
+    async def aadd_docs(self, docs: List[Document]):
+        """
+          Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
+          and adds the parent document into the file store.
+          Args:
+              docs: List of langchain_core.documents.Document
+
+          Returns:
+              None
+
+          """
+        chunks = self.split_docs(docs)
+        doc_ids = self.gen_doc_ids(docs)
+        await asyncio.run(self.client.aadd_docs(chunks))
+        self.retriever.docstore.mset(list(zip(doc_ids)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
         """
@@ -149,7 +160,7 @@ class Retriever:
                 **{'k': top_k} if top_k else self.retriever.search_kwargs
             )
 
-    def aget_chunk(self, query: str, with_score=False, top_k=None):
+    async def aget_chunk(self, query: str, with_score=False, top_k=None):
         """
         Returns the most (cosine) similar chunks from the vector database, asynchronously.
 
@@ -163,12 +174,12 @@ class Retriever:
 
         """
         if with_score:
-            return self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
+            return await self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
                 query=query,
                 **{'k': top_k} if top_k else self.retriever.search_kwargs
             )
         else:
-            return self.client.langchain_chroma.asimilarity_search(
+            return await self.client.langchain_chroma.asimilarity_search(
                 query=query,
                 **{'k': top_k} if top_k else self.retriever.search_kwargs
             )
@@ -185,7 +196,7 @@ class Retriever:
         """
         return self.retriever.get_relevant_documents(query=query)
 
-    def aget_doc(self, query: str):
+    async def aget_doc(self, query: str):
         """
         Returns the parent documents of the most (cosine) similar chunks from the vector database.
         Args:
@@ -194,7 +205,7 @@ class Retriever:
              Documents
 
         """
-        return self.retriever.aget_relevant_documents(query=query)
+        return await self.retriever.aget_relevant_documents(query=query)
 
     def get_docs_from_chunks(self, chunks: List[Document], one_to_one=False):
         """
@@ -210,10 +221,10 @@ class Retriever:
             if one_to_one:
                 if self.id_key in d.metadata:
                     ids.append(d.metadata[self.id_key])
-                docs = self.docstore.mget(ids)
+                docs = self.retriever.docstore.mget(ids)
                 return docs
             else:
                 if self.id_key in d.metadata and d.metadata[self.id_key] not in ids:
                     ids.append(d.metadata[self.id_key])
-                docs = self.docstore.mget(ids)
+                docs = self.retriever.docstore.mget(ids)
                 return [d for d in docs if d is not None]

@@ -6,7 +6,7 @@ import streamlit as st
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 
-from src.components.multivec_retriever import Retriever
+from grag.components.multivec_retriever import Retriever
 
 
 class PageHome:
