@@ -4,7 +4,7 @@
 
 ### Generation Metrics
 
-1. **Perplexity** : *Fluency measure*
+1. **Perplexity** : *Fluency measure*	
    Serves as an indicator of language processing efficacy. The lower the better. A model with a low perplexity score
    demonstrates high confidence and accuracy in its prediction, reflecting a strong understanding.
 
@@ -143,3 +143,4 @@ They also provide end-to-end evaluation metrics like answer semantic similarity 
 - [RAG Evaluation - Blog](https://weaviate.io/blog/rag-evaluation) - more reading to do.
 - [RAGAS - paper](https://arxiv.org/pdf/2309.15217v1.pdf)
 - [ARES - paper](https://arxiv.org/pdf/2311.09476.pdf)
+
