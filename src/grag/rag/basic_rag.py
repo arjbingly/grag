@@ -1,15 +1,13 @@
 import json
-import os
 from typing import List
 
 from grag import prompts
 from grag.components.llm import LLM
 from grag.components.multivec_retriever import Retriever
-from grag.components.prompt import Prompt
+from grag.components.prompt import Prompt, FewShotPrompt
 from grag.components.utils import get_config
 from importlib_resources import files
 from langchain_core.documents import Document
-from langchain_core.prompts import ChatPromptTemplate
 
 conf = get_config()
 
@@ -21,7 +19,7 @@ class BasicRAG:
                  task='QA',
                  llm_kwargs=None,
                  retriever_kwargs=None,
-                 custom_prompt: Prompt = None
+                 custom_prompt: Union[Prompt, FewShotPrompt] = None
                  ):
 
         if retriever_kwargs is None:
@@ -117,26 +115,6 @@ class BasicRAG:
             string of document page content joined by '\n\n'
         """
         return '\n\n'.join([doc.page_content for doc in docs])
-
-    def load_prompt(self, json_file: str | os.PathLike, return_input_vars=False):
-        """
-        Loads a prompt template from json file and returns a langchain ChatPromptTemplate
-
-        Args:
-            json_file: path to the prompt template json file.
-            return_input_vars: if true returns a list of expected input variables for the prompt.
-
-        Returns:
-            langchain_core.prompts.ChatPromptTemplate (and a list of input vars if return_input_vars is True)
-
-        """
-        with open(f"{json_file}", "r") as f:
-            prompt_json = json.load(f)
-        prompt_template = ChatPromptTemplate.from_template(prompt_json['template'])
-
-        input_vars = prompt_json['input_keys']
-
-        return (prompt_template, input_vars) if return_input_vars else prompt_template
 
     @staticmethod
     def output_parser(call_func):
