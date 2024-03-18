@@ -2,12 +2,13 @@ import asyncio
 import uuid
 from typing import List
 
-from grag.components.chroma_client import ChromaClient
-from grag.components.text_splitter import TextSplitter
-from grag.components.utils import get_config
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
+
+from grag.components.chroma_client import ChromaClient
+from grag.components.text_splitter import TextSplitter
+from grag.components.utils import get_config
 
 multivec_retriever_conf = get_config()['multivec_retriever']
 

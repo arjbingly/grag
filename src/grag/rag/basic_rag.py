@@ -1,13 +1,14 @@
 import json
 from typing import List, Union
 
+from importlib_resources import files
+from langchain_core.documents import Document
+
 from grag import prompts
 from grag.components.llm import LLM
 from grag.components.multivec_retriever import Retriever
-from grag.components.prompt import Prompt, FewShotPrompt
+from grag.components.prompt import FewShotPrompt, Prompt
 from grag.components.utils import get_config
-from importlib_resources import files
-from langchain_core.documents import Document
 
 conf = get_config()
 
@@ -123,7 +124,7 @@ class BasicRAG:
             if conf['llm']['std_out'] == 'False':
                 # if self.llm_.callback_manager is None:
                 print(response)
-            print(f'Sources: ')
+            print('Sources: ')
             for index, source in enumerate(sources):
                 print(f'\t{index}: {source}')
 

@@ -19,15 +19,15 @@ def main(filename):
 
     print(f'Parsed pdf in {time_taken:2f} secs')
 
-    print(f'******** TEXT ********')
+    print('******** TEXT ********')
     for doc in docs_dict['Text']:
         print(doc)
 
-    print(f'******** TABLES ********')
+    print('******** TABLES ********')
     for text_doc in docs_dict['Tables']:
         print(text_doc)
 
-    print(f'******** IMAGES ********')
+    print('******** IMAGES ********')
     for doc in docs_dict['Images']:
         print(doc)
 

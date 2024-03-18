@@ -7,8 +7,12 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-from transformers import pipeline
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    pipeline,
+)
 
 from .utils import get_config
 

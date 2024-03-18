@@ -1,5 +1,7 @@
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
-from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain_community.embeddings.sentence_transformer import (
+    SentenceTransformerEmbeddings,
+)
 
 
 class Embedding:
