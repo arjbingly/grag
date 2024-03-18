@@ -32,7 +32,3 @@ def test_embeddings(embedding_config):
         similarity_scores = [cosine_similarity(doc_vecs[0], doc_vecs[1]),
                              cosine_similarity(doc_vecs[0], doc_vecs[2])]
     assert similarity_scores[0] > similarity_scores[1]
-
-
-if __name__ == '__main__':
-    test_embeddings(embedding_configs[0])
