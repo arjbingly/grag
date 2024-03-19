@@ -1,4 +1,3 @@
-import asyncio
 from typing import List
 
 import chromadb
@@ -6,7 +5,7 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_core.documents import Document
 from tqdm import tqdm
-from tqdm.asyncio import tqdm_asyncio
+from tqdm.asyncio import tqdm as atqdm
 
 from grag.components.embedding import Embedding
 from grag.components.utils import get_config
@@ -15,8 +14,7 @@ chroma_conf = get_config()['chroma']
 
 
 class ChromaClient:
-    """
-    A class for connecting to a hosted Chroma Vectorstore collection.
+    """A class for connecting to a hosted Chroma Vectorstore collection.
 
     Attributes:
         host : str
@@ -45,15 +43,13 @@ class ChromaClient:
                  collection_name=chroma_conf['collection_name'],
                  embedding_type=chroma_conf['embedding_type'],
                  embedding_model=chroma_conf['embedding_model']):
+        """Args:
+        host: IP Address of hosted Chroma Vectorstore, defaults to argument from config file
+        port: port address of hosted Chroma Vectorstore, defaults to argument from config file
+        collection_name: name of the collection in the Chroma Vectorstore, defaults to argument from config file
+        embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding', defaults to argument from config file
+        embedding_model: model name of embedding used, should correspond to the embedding_type, defaults to argument from config file
         """
-        Args:
-            host: IP Address of hosted Chroma Vectorstore, defaults to argument from config file
-            port: port address of hosted Chroma Vectorstore, defaults to argument from config file
-            collection_name: name of the collection in the Chroma Vectorstore, defaults to argument from config file
-            embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding', defaults to argument from config file
-            embedding_model: model name of embedding used, should correspond to the embedding_type, defaults to argument from config file
-        """
-
         self.host: str = host
         self.port: str = port
         self.collection_name: str = collection_name
@@ -71,15 +67,14 @@ class ChromaClient:
         self.allowed_metadata_types = (str, int, float, bool)
 
     def test_connection(self, verbose=True):
-        '''
-        Tests connection with Chroma Vectorstore
+        """Tests connection with Chroma Vectorstore
 
         Args:
             verbose: if True, prints connection status
 
         Returns:
             A random integer if connection is alive else None
-        '''
+        """
         response = self.chroma_client.heartbeat()
         if verbose:
             if response:
@@ -89,8 +84,7 @@ class ChromaClient:
         return response
 
     async def aadd_docs(self, docs: List[Document], verbose=True):
-        '''
-        Asynchronously adds documents to chroma vectorstore
+        """Asynchronously adds documents to chroma vectorstore
 
         Args:
             docs: List of Documents
@@ -98,25 +92,30 @@ class ChromaClient:
 
         Returns:
             None
-        '''
+        """
         docs = self._filter_metadata(docs)
-        tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
+        # tasks = [self.langchain_chroma.aadd_documents([doc]) for doc in docs]
+        # if verbose:
+        #     await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
+        # else:
+        #     await asyncio.gather(*tasks)
         if verbose:
-            await tqdm_asyncio.gather(*tasks, desc=f'Adding to {self.collection_name}')
+            for doc in atqdm(docs, desc=f'Adding documents to {self.collection_name}', total=len(docs)):
+                await self.langchain_chroma.aadd_documents([doc])
         else:
-            await asyncio.gather(*tasks)
+            for doc in docs:
+                await self.langchain_chroma.aadd_documents([doc])
 
     def add_docs(self, docs: List[Document], verbose=True):
-        '''
-        Adds documents to chroma vectorstore
+        """Adds documents to chroma vectorstore
 
-         Args:
+        Args:
             docs: List of Documents
             verbose: Show progress bar
 
         Returns:
             None
-        '''
+        """
         docs = self._filter_metadata(docs)
         for doc in (tqdm(docs, desc=f'Adding to {self.collection_name}:') if verbose else docs):
             _id = self.langchain_chroma.add_documents([doc])
