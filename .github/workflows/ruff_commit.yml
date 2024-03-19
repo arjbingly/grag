@@ -1,0 +1,16 @@
+name: Ruff and commit
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu_latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+    - run: pip install ruff
+    - run: |
+      ruff check src/
+      ruff fix src/
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: 'style fixes by ruff'
