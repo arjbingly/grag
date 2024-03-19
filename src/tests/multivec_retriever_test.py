@@ -1,13 +1,13 @@
 # add code folder to sys path
-import os
 from pathlib import Path
 
 from grag.components.multivec_retriever import Retriever
+from grag.components.utils import get_config
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 
 # %%%
-# data_path = "data/pdf/9809"
-data_path = Path(os.getcwd()).parents[1] / 'data' / 'Gutenberg' / 'txt'  # "data/Gutenberg/txt"
+config = get_config()
+data_path = Path(config['data']['data_path']) / 'Gutenberg' / 'txt'
 # %%
 retriever = Retriever(top_k=3)
 
