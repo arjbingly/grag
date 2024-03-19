@@ -14,8 +14,7 @@ multivec_retriever_conf = get_config()['multivec_retriever']
 
 
 class Retriever:
-    """
-    A class for multi vector retriever, it connects to a vector database and a local file store.
+    """A class for multi vector retriever, it connects to a vector database and a local file store.
     It is used to return most similar chunks from a vector store but has the additional funcationality
     to return a linked document, chunk, etc.
 
@@ -36,12 +35,11 @@ class Retriever:
                  id_key: str = multivec_retriever_conf['id_key'],
                  namespace: str = multivec_retriever_conf['namespace'],
                  top_k=1):
-        """
-        Args:
-            store_path: Path to the local file store, defaults to argument from config file
-            id_key: A key prefix for identifying documents, defaults to argument from config file
-            namespace: A namespace for producing unique id, defaults to argument from congig file
-            top_k: Number of top chunks to return from similarity search, defaults to 1
+        """Args:
+        store_path: Path to the local file store, defaults to argument from config file
+        id_key: A key prefix for identifying documents, defaults to argument from config file
+        namespace: A namespace for producing unique id, defaults to argument from congig file
+        top_k: Number of top chunks to return from similarity search, defaults to 1
         """
         self.store_path = store_path
         self.id_key = id_key
@@ -58,8 +56,7 @@ class Retriever:
         self.retriever.search_kwargs = {'k': self.top_k}
 
     def id_gen(self, doc: Document) -> str:
-        """
-        Takes a document and returns a unique id (uuid5) using the namespace and document source.
+        """Takes a document and returns a unique id (uuid5) using the namespace and document source.
         This ensures that a  single document always gets the same unique id.
 
         Args:
@@ -71,8 +68,7 @@ class Retriever:
         return uuid.uuid5(self.namespace, doc.metadata['source']).hex
 
     def gen_doc_ids(self, docs: List[Document]) -> List[str]:
-        """
-        Takes a list of documents and produces a list of unique id, refer id_gen method for more details.
+        """Takes a list of documents and produces a list of unique id, refer id_gen method for more details.
 
         Args:
             docs: List of langchain_core.documents.Document
@@ -84,8 +80,7 @@ class Retriever:
         return [self.id_gen(doc) for doc in docs]
 
     def split_docs(self, docs: List[Document]) -> List[Document]:
-        """
-        Takes a list of documents and splits them into smaller chunks using TextSplitter from compoenents.text_splitter
+        """Takes a list of documents and splits them into smaller chunks using TextSplitter from compoenents.text_splitter
         Also adds the unique parent document id into metadata
 
         Args:
@@ -105,9 +100,9 @@ class Retriever:
         return chunks
 
     def add_docs(self, docs: List[Document]):
-        """
-        Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
+        """Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
         and adds the parent document into the file store.
+
         Args:
             docs: List of langchain_core.documents.Document
 
@@ -121,24 +116,23 @@ class Retriever:
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
     async def aadd_docs(self, docs: List[Document]):
+        """Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
+        and adds the parent document into the file store.
+
+        Args:
+            docs: List of langchain_core.documents.Document
+
+        Returns:
+            None
+
         """
-          Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
-          and adds the parent document into the file store.
-          Args:
-              docs: List of langchain_core.documents.Document
-
-          Returns:
-              None
-
-          """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
         await asyncio.run(self.client.aadd_docs(chunks))
         self.retriever.docstore.mset(list(zip(doc_ids)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
-        """
-        Returns the most (cosine) similar chunks from the vector database.
+        """Returns the most (cosine) similar chunks from the vector database.
 
         Args:
             query: A query string
@@ -162,8 +156,7 @@ class Retriever:
             )
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
-        """
-        Returns the most (cosine) similar chunks from the vector database, asynchronously.
+        """Returns the most (cosine) similar chunks from the vector database, asynchronously.
 
         Args:
             query: A query string
@@ -186,8 +179,7 @@ class Retriever:
             )
 
     def get_doc(self, query: str):
-        """
-        Returns the parent document of the most (cosine) similar chunk from the vector database.
+        """Returns the parent document of the most (cosine) similar chunk from the vector database.
 
         Args:
             query: A query string
@@ -198,8 +190,8 @@ class Retriever:
         return self.retriever.get_relevant_documents(query=query)
 
     async def aget_doc(self, query: str):
-        """
-        Returns the parent documents of the most (cosine) similar chunks from the vector database.
+        """Returns the parent documents of the most (cosine) similar chunks from the vector database.
+
         Args:
             query: A query string
         Returns:
@@ -209,8 +201,8 @@ class Retriever:
         return await self.retriever.aget_relevant_documents(query=query)
 
     def get_docs_from_chunks(self, chunks: List[Document], one_to_one=False):
-        """
-        Returns the parent documents of chunks.
+        """Returns the parent documents of chunks.
+
         Args:
             chunks: chunks from vector store
             one_to_one: if True, returns parent doc for each chunk

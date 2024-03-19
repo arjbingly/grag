@@ -108,8 +108,7 @@ class BasicRAG:
 
     @staticmethod
     def stuff_docs(docs: List[Document]) -> str:
-        """
-        Args:
+        """Args:
             docs: List of langchain_core.documents.Document
 
         Returns:

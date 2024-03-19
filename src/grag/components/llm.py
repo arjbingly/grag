@@ -24,16 +24,16 @@ print("CUDA: ", torch.cuda.is_available())
 class LLM:
     """A class for managing and utilizing large language models (LLMs).
 
-        Attributes:
-            model_name (str): Name of the model to be loaded.
-            device_map (dict): Device mapping for model execution.
-            task (str): The task for which the model is being used.
-            max_new_tokens (int): Maximum new tokens to be generated.
-            temperature (float): Sampling temperature for generation.
-            n_batch (int): Number of batches for GPU CPP.
-            n_ctx (int): Context size for CPP.
-            n_gpu_layers (int): Number of GPU layers for CPP.
-        """
+    Attributes:
+        model_name (str): Name of the model to be loaded.
+        device_map (dict): Device mapping for model execution.
+        task (str): The task for which the model is being used.
+        max_new_tokens (int): Maximum new tokens to be generated.
+        temperature (float): Sampling temperature for generation.
+        n_batch (int): Number of batches for GPU CPP.
+        n_ctx (int): Context size for CPP.
+        n_gpu_layers (int): Number of GPU layers for CPP.
+    """
 
     def __init__(self,
                  model_name=llm_conf["model_name"],
@@ -87,7 +87,6 @@ class LLM:
         Args:
             is_local (bool): Whether to load the model from a local path.
         """
-
         if is_local:
             hf_model = Path(self.model_path).parent
         else:
@@ -137,7 +136,6 @@ class LLM:
 
     def llama_cpp(self):
         """Loads the model using a custom CPP pipeline."""
-
         # https://stackoverflow.com/a/77734908/13808323
         llm = LlamaCpp(
             model_path=self.model_path,
@@ -164,7 +162,6 @@ class LLM:
             pipeline (str): The pipeline to use for loading the model. Defaults to 'llama_cpp'.
             is_local (bool): Whether the model is loaded from a local directory. Defaults to True.
         """
-
         if model_name is not None:
             self.model_name = model_name
         if pipeline is not None:

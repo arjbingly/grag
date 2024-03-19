@@ -5,8 +5,7 @@ from langchain_community.embeddings.sentence_transformer import (
 
 
 class Embedding:
-    """
-    A class for vector embeddings.
+    """A class for vector embeddings.
     Supports:
         huggingface sentence transformers -> model_type = 'sentence-transformers'
         huggingface instructor embeddings -> model_type = 'instructor-embedding'
