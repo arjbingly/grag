@@ -153,7 +153,7 @@ class LLM:
                    model_name=None,
                    pipeline=None,
                    quantization=None,
-                   is_local=True):
+                   is_local=None):
         """Loads the model based on the specified pipeline and model name.
 
         Args:
@@ -168,6 +168,8 @@ class LLM:
             self.pipeline = pipeline
         if quantization is not None:
             self.quantization = quantization
+        if is_local is None:
+            is_local = False
 
         match self.pipeline:
             case 'llama_cpp':
