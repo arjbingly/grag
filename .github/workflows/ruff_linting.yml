@@ -21,5 +21,5 @@ jobs:
         run: pip install ruff
 
       - name: Run the adopt-ruff action
-        uses: ScDor/adopt-ruff@master
+        uses: chartboost/ruff-action@v1
          
