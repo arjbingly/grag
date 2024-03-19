@@ -1,10 +1,11 @@
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
-from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain_community.embeddings.sentence_transformer import (
+    SentenceTransformerEmbeddings,
+)
 
 
 class Embedding:
-    """
-    A class for vector embeddings.
+    """A class for vector embeddings.
     Supports:
         huggingface sentence transformers -> model_type = 'sentence-transformers'
         huggingface instructor embeddings -> model_type = 'instructor-embedding'

@@ -15,7 +15,7 @@ conf = get_config()
 class BasicRAG:
     def __init__(self,
                  model_name=None,
-                 doc_chain='refine',
+                 doc_chain='stuff',
                  task='QA',
                  llm_kwargs=None,
                  retriever_kwargs=None,
@@ -33,12 +33,12 @@ class BasicRAG:
             self.llm_ = LLM(**llm_kwargs)
 
         self.prompt_path = files(prompts)
+        self.custom_prompt = custom_prompt
 
         self._task = 'QA'
         self.model_name = model_name
         self.doc_chain = doc_chain
         self.task = task
-        self.custom_prompt = custom_prompt
 
         if self.custom_prompt is None:
             self.main_prompt = Prompt.load(self.prompt_path.joinpath(self.main_prompt_name))
@@ -107,8 +107,7 @@ class BasicRAG:
 
     @staticmethod
     def stuff_docs(docs: List[Document]) -> str:
-        """
-        Args:
+        """Args:
             docs: List of langchain_core.documents.Document
 
         Returns:
@@ -123,9 +122,10 @@ class BasicRAG:
             if conf['llm']['std_out'] == 'False':
                 # if self.llm_.callback_manager is None:
                 print(response)
-            print(f'Sources: ')
+            print('Sources: ')
             for index, source in enumerate(sources):
                 print(f'\t{index}: {source}')
+            return response, sources
 
         return output_parser_wrapper
 

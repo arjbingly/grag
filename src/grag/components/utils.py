@@ -10,8 +10,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 
 def stuff_docs(docs: List[Document]) -> str:
-    """
-    Args:
+    """Args:
         docs: List of langchain_core.documents.Document
 
     Returns:
@@ -21,8 +20,7 @@ def stuff_docs(docs: List[Document]) -> str:
 
 
 def reformat_text_with_line_breaks(input_text, max_width=110):
-    """
-    Reformat the given text to ensure each line does not exceed a specific width,
+    """Reformat the given text to ensure each line does not exceed a specific width,
     preserving existing line breaks.
 
     Args:
@@ -45,8 +43,7 @@ def reformat_text_with_line_breaks(input_text, max_width=110):
 
 
 def display_llm_output_and_sources(response_from_llm):
-    """
-    Displays the result from an LLM response and lists the sources.
+    """Displays the result from an LLM response and lists the sources.
 
     Args:
     response_from_llm (dict): The response object from an LLM which includes the result and source documents.
@@ -63,8 +60,7 @@ def display_llm_output_and_sources(response_from_llm):
 
 
 def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
-    """
-    Loads a prompt template from json file and returns a langchain ChatPromptTemplate
+    """Loads a prompt template from json file and returns a langchain ChatPromptTemplate
 
     Args:
         json_file: path to the prompt template json file.
@@ -84,8 +80,7 @@ def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
 
 
 def find_config_path(current_path: Path) -> Path:
-    """
-    Finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
+    """Finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
 
     This function starts at the current path and moves up the directory tree until it finds a file named 'config.ini'.
     If 'config.ini' is not found by the time the root of the directory tree is reached, a FileNotFoundError is raised.
@@ -108,8 +103,7 @@ def find_config_path(current_path: Path) -> Path:
 
 
 def get_config() -> ConfigParser:
-    """
-    Retrieves and parses the configuration settings from the 'config.ini' file.
+    """Retrieves and parses the configuration settings from the 'config.ini' file.
 
     This function locates the 'config.ini' file by calling `find_config_path` using the script's current location.
     It initializes a `ConfigParser` object to read the configuration settings from the located 'config.ini' file.

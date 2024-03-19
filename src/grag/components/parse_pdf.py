@@ -7,8 +7,7 @@ parser_conf = get_config()['parser']
 
 
 class ParsePDF:
-    """
-    Parsing and partitioning PDF documents into Text, Table or Image elements.
+    """Parsing and partitioning PDF documents into Text, Table or Image elements.
     
     Attributes:
         single_text_out (bool): Whether to combine all text elements into a single output document.
@@ -48,8 +47,7 @@ class ParsePDF:
         self.table_as_html = table_as_html
 
     def partition(self, path: str):
-        """
-        Partitions a PDF document into elements based on the instance's configuration.
+        """Partitions a PDF document into elements based on the instance's configuration.
 
         Parameters:
             path (str): The file path of the PDF document to be parsed and partitioned.
@@ -70,8 +68,7 @@ class ParsePDF:
         return partitions
 
     def classify(self, partitions):
-        """
-        Classifies the partitioned elements into Text, Tables, and Images list in a dictionary. 
+        """Classifies the partitioned elements into Text, Tables, and Images list in a dictionary.
         Add captions for each element (if available).
 
         Parameters:
@@ -145,8 +142,7 @@ class ParsePDF:
         return full_text
 
     def process_text(self, elements):
-        """
-        Processes text elements into langchain Documents.
+        """Processes text elements into langchain Documents.
 
         Parameters:
             elements (list): The list of text elements to be processed.
@@ -168,8 +164,7 @@ class ParsePDF:
         return docs
 
     def process_tables(self, elements):
-        """
-        Processes table elements into Documents, including handling of captions if specified.
+        """Processes table elements into Documents, including handling of captions if specified.
 
         Parameters:
             elements (list): The list of table elements (and optional captions) to be processed.
@@ -199,8 +194,7 @@ class ParsePDF:
         return docs
 
     def process_images(self, elements):
-        """
-        Processes image elements into Documents, including handling of captions if specified.
+        """Processes image elements into Documents, including handling of captions if specified.
 
         Parameters:
             elements (list): The list of image elements (and optional captions) to be processed.
@@ -224,8 +218,7 @@ class ParsePDF:
         return docs
 
     def load_file(self, path):
-        """
-        Loads a PDF file, partitions and classifies its elements, and processes these elements into Documents.
+        """Loads a PDF file, partitions and classifies its elements, and processes these elements into Documents.
 
         Parameters:
             path (str): The file path of the PDF document to be loaded and processed.
