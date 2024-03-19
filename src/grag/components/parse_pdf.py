@@ -1,6 +1,9 @@
-from unstructured.partition.pdf import partition_pdf
 from langchain_core.documents import Document
-import os
+from unstructured.partition.pdf import partition_pdf
+
+from .utils import get_config
+
+parser_conf = get_config()['parser']
 
 
 class ParsePDF:
@@ -20,13 +23,15 @@ class ParsePDF:
     """
 
     def __init__(self,
-                 single_text_out=True,
-                 strategy="hi_res",
-                 infer_table_structure=True,
-                 extract_images=True,
-                 image_output_dir=None,
-                 add_captions_to_text=True,
-                 add_captions_to_blocks=True,
+                 single_text_out=parser_conf['single_text_out'],
+                 strategy=parser_conf['strategy'],
+                 infer_table_structure=parser_conf['infer_table_structure'],
+                 extract_images=parser_conf['extract_images'],
+                 image_output_dir=parser_conf['image_output_dir'],
+                 add_captions_to_text=parser_conf['add_captions_to_text'],
+                 add_captions_to_blocks=parser_conf['add_captions_to_blocks'],
+                 table_as_html=parser_conf['table_as_html']
+
                  ):
         # Instantialize instance variables with parameters
         self.strategy = strategy
@@ -40,6 +45,7 @@ class ParsePDF:
         self.image_output_dir = image_output_dir
         self.single_text_out = single_text_out
         self.add_caption_first = True
+        self.table_as_html = table_as_html
 
     def partition(self, path: str):
         """
@@ -110,6 +116,34 @@ class ParsePDF:
 
         return classified_elements
 
+    def text_concat(self, elements) -> str:
+
+        for current_element, next_element in zip(elements, elements[1:]):
+            curr_type = current_element.category
+            next_type = next_element.category
+
+            # if curr_type in ["FigureCaption", "NarrativeText", "Title", "Address", 'Table', "UncategorizedText", "Formula"]:
+            #     full_text += str(current_element) + "\n\n"
+
+            if curr_type == "Title" and next_type == 'NarrativeText':
+                full_text += str(current_element) + '\n'
+            elif curr_type == 'NarrativeText' and next_type == 'NarrativeText':
+                full_text += str(current_element) + '\n'
+            elif curr_type == "ListItem":
+                full_text += "- " + str(current_element) + "\n"
+                if next_element == 'Title':
+                    full_text += '\n'
+            elif next_element == 'Title':
+                full_text = str(current_element) + '\n\n'
+
+            elif curr_type in ["Header", "Footer", "PageBreak"]:
+                full_text += str(current_element) + "\n\n\n"
+
+            else:
+                full_text += '\n'
+
+        return full_text
+
     def process_text(self, elements):
         """
         Processes text elements into langchain Documents.
@@ -144,17 +178,23 @@ class ParsePDF:
             docs (list): A list of Document instances containing Tables, their captions and metadata. 
         """
         docs = []
+
         for block_element, caption_element in elements:
             metadata = {'source': self.file_path,
                         'category': block_element.category}
             metadata.update(block_element.metadata.to_dict())
+            if self.table_as_html:
+                table_data = block_element.metadata.text_as_html
+            else:
+                table_data = str(block_element)
+
             if caption_element:
                 if self.add_caption_first:  # if there is a caption, add that before the element
-                    content = "\n\n".join([str(caption_element), str(block_element)])
+                    content = "\n\n".join([str(caption_element), table_data])
                 else:
-                    content = "\n\n".join([str(block_element), str(caption_element)])
+                    content = "\n\n".join([table_data, str(caption_element)])
             else:
-                content = str(block_element)
+                content = table_data
             docs.append(Document(page_content=content, metadata=metadata))
         return docs
 
@@ -197,8 +237,7 @@ class ParsePDF:
         classified_elements = self.classify(partitions)
         text_docs = self.process_text(classified_elements['Text'])
         table_docs = self.process_tables(classified_elements['Tables'])
-        image_docs = self.process_tables(classified_elements['Images'])
+        image_docs = self.process_images(classified_elements['Images'])
         return {'Text': text_docs,
                 'Tables': table_docs,
                 'Images': image_docs}
-# %%

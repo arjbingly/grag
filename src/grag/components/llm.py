@@ -1,17 +1,18 @@
-from dotenv import load_dotenv
-from pathlib import Path
 import os
-from huggingface_hub import login
+from pathlib import Path
+
 import torch
-from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from huggingface_hub.utils import LocalTokenNotFoundError
+from dotenv import load_dotenv
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import pipeline
 
-from .config import llm_conf
+from .utils import get_config
+
+llm_conf = get_config()['llm']
 
 print("CUDA: ", torch.cuda.is_available())
 
@@ -39,17 +40,22 @@ class LLM:
                  n_batch=llm_conf["n_batch_gpu_cpp"],
                  n_ctx=llm_conf["n_ctx_cpp"],
                  n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
+                 std_out=llm_conf["std_out"],
+                 base_dir=llm_conf["base_dir"]
                  ):
-        self.base_dir = Path(__file__).resolve().parents[2]
+        self.base_dir = Path(base_dir)
         self._model_name = model_name
         self.device_map = device_map
         self.task = task
-        self.max_new_tokens = max_new_tokens
+        self.max_new_tokens = int(max_new_tokens)
         self.temperature = temperature
         self.n_batch = n_batch
         self.n_ctx = n_ctx
         self.n_gpu_layers = n_gpu_layers
-        self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        if std_out:
+            self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        else:
+            self.callback_manager = None
 
     @property
     def model_name(self):
@@ -60,7 +66,7 @@ class LLM:
     def model_path(self):
         """Sets the model name."""
         return str(
-            self.base_dir / 'models' / self.model_name / f'ggml-model-{llm_conf["quantization"]}.gguf')
+            self.base_dir / self.model_name / f'ggml-model-{llm_conf["quantization"]}.gguf')
 
     @model_name.setter
     def model_name(self, value):
@@ -78,14 +84,15 @@ class LLM:
             hf_model = self.model_path
         else:
             hf_model = self.model_name
-
+        quantization_config = BitsAndBytesConfig(load_in_8bit=True)
         try:
             # Try to load the model without passing the token
             tokenizer = AutoTokenizer.from_pretrained(hf_model)
             model = AutoModelForCausalLM.from_pretrained(hf_model,
+                                                         quantization_config=quantization_config,
                                                          device_map=self.device_map,
                                                          torch_dtype=torch.float16, )
-        except LocalTokenNotFoundError:
+        except OSError:  # LocalTokenNotFoundError:
             # If loading fails due to an auth token error, then load the token and retry
             load_dotenv()
             auth_token = os.getenv("AUTH_TOKEN")
@@ -93,6 +100,7 @@ class LLM:
                 raise ValueError("Authentication token not provided.")
             tokenizer = AutoTokenizer.from_pretrained(hf_model, token=True)
             model = AutoModelForCausalLM.from_pretrained(hf_model,
+                                                         quantization_config=quantization_config,
                                                          device_map=self.device_map,
                                                          torch_dtype=torch.float16,
                                                          token=True)
@@ -104,7 +112,7 @@ class LLM:
                         device_map=self.device_map,
                         max_new_tokens=self.max_new_tokens,
                         do_sample=True,
-                        top_k=30,
+                        top_k=10,
                         num_return_sequences=1,
                         eos_token_id=tokenizer.eos_token_id
                         )
@@ -117,7 +125,7 @@ class LLM:
         # https://stackoverflow.com/a/77734908/13808323
         llm = LlamaCpp(
             model_path=self.model_path,
-            # max_tokens=self.max_new_tokens,
+            max_tokens=self.max_new_tokens,
             temperature=self.temperature,
             n_gpu_layers=self.n_gpu_layers,
             n_batch=self.n_batch,

@@ -1,0 +1,9 @@
+{
+  "Llama-2-7b-chat": "Llama-2",
+  "Llama-2-13b-chat": "Llama-2",
+  "Llama-2-70b-chat": "Llama-2",
+  "Llama-2-7b": "Llama-2",
+  "Llama-2-13b": "Llama-2",
+  "Llama-2-70b": "Llama-2",
+  "Mixtral-8x7B-Instruct-v0.1": "Mixtral"
+}

@@ -1,6 +1,13 @@
+import os
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-from src.components.multivec_retriever import Retriever
+sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
+
+from grag.components.multivec_retriever import Retriever
+
 
 class PageHome:
     def __init__(self, app):

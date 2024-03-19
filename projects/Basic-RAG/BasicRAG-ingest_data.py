@@ -1,21 +1,24 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from uuid import UUID, uuid5
+
+from grag.components.multivec_retriever import Retriever
+from grag.components.parse_pdf import ParsePDF
+from grag.components.utils import get_config
 from tqdm import tqdm
 
-from src.components.multivec_retriever import Retriever
-from src.components.parse_pdf import ParsePDF
+config = get_config()
 
-DRY_RUN = True
+DRY_RUN = False
 
-data_path = Path(os.getcwd()).parents[1] / 'data' / 'pdf'
+data_path = Path(config['data']['data_path']) / 'pdf'
 formats_to_add = ['Text', 'Tables']
 glob_pattern = '**/*.pdf'
 
 namespace = UUID('8c9040b0-b5cd-4d7c-bc2e-737da1b24ebf')
 record_filename = uuid5(namespace, str(data_path))  # Unique file record name based on folder path
 
-records_dir = Path(os.getcwd()).parent / 'data' / 'records'
+records_dir = Path(config['data']['data_path']) / 'records'
 records_dir.mkdir(parents=True, exist_ok=True)
 record_file = records_dir / f'{record_filename}.txt'
 
@@ -45,7 +48,7 @@ def add_file_to_database(file_path: Path, dry_run=False):
         update_processed_file_record(str(file_path), dry_run=dry_run)
         return f'Completed adding - {file_path.relative_to(data_path)}'
     else:
-        return f'Already exists - {file.relative_to(data_path)}'
+        return f'Already exists - {file_path.relative_to(data_path)}'
 
 
 def add_to_database(file_path, dry_run=False):
