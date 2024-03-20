@@ -13,7 +13,7 @@ from langchain_core.documents import Document
 from tqdm import tqdm
 from tqdm.asyncio import tqdm as atqdm
 
-multivec_retriever_conf = get_config()['multivec_retriever']
+multivec_retriever_conf = get_config()["multivec_retriever"]
 
 
 class Retriever:
@@ -27,7 +27,7 @@ class Retriever:
         id_key: A key prefix for identifying documents
         client: ChromaClient class instance from components.chroma_client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
-        retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance, 
+        retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
                     langchain's multi-vector retriever
         splitter: TextSplitter class instance from components.text_splitter
         namespace: Namespace for producing unique id
@@ -35,11 +35,13 @@ class Retriever:
 
     """
 
-    def __init__(self,
-                 store_path: str = multivec_retriever_conf['store_path'],
-                 id_key: str = multivec_retriever_conf['id_key'],
-                 namespace: str = multivec_retriever_conf['namespace'],
-                 top_k=1):
+    def __init__(
+        self,
+        store_path: str = multivec_retriever_conf["store_path"],
+        id_key: str = multivec_retriever_conf["id_key"],
+        namespace: str = multivec_retriever_conf["namespace"],
+        top_k=1,
+    ):
         """
         Args:
             store_path: Path to the local file store, defaults to argument from config file
@@ -59,7 +61,7 @@ class Retriever:
         )
         self.splitter = TextSplitter()
         self.top_k: int = top_k
-        self.retriever.search_kwargs = {'k': self.top_k}
+        self.retriever.search_kwargs = {"k": self.top_k}
 
     def id_gen(self, doc: Document) -> str:
         """
@@ -72,7 +74,7 @@ class Retriever:
         Returns:
             string of hexadecimal uuid
         """
-        return uuid.uuid5(self.namespace, doc.metadata['source']).hex
+        return uuid.uuid5(self.namespace, doc.metadata["source"]).hex
 
     def gen_doc_ids(self, docs: List[Document]) -> List[str]:
         """
@@ -126,15 +128,15 @@ class Retriever:
 
     async def aadd_docs(self, docs: List[Document]):
         """
-          Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
-          and adds the parent document into the file store.
-          Args:
-              docs: List of langchain_core.documents.Document
+        Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
+        and adds the parent document into the file store.
+        Args:
+            docs: List of langchain_core.documents.Document
 
-          Returns:
-              None
+        Returns:
+            None
 
-          """
+        """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
         await asyncio.run(self.client.aadd_docs(chunks))
@@ -154,15 +156,12 @@ class Retriever:
 
         """
         if with_score:
-
             return self.client.langchain_chroma.similarity_search_with_relevance_scores(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
         else:
             return self.client.langchain_chroma.similarity_search(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
@@ -180,13 +179,11 @@ class Retriever:
         """
         if with_score:
             return await self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
         else:
             return await self.client.langchain_chroma.asimilarity_search(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
 
     def get_doc(self, query: str):
@@ -234,12 +231,14 @@ class Retriever:
                 docs = self.retriever.docstore.mget(ids)
                 return [d for d in docs if d is not None]
 
-    def ingest(self,
-               dir_path: Union[str, Path],
-               glob_pattern: str = "**/*.pdf",
-               dry_run: bool = False,
-               verbose: bool = True,
-               parser_kwargs: dict = None):
+    def ingest(
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
+    ):
         """
         Ingests the files in directory
         Args:
@@ -250,7 +249,7 @@ class Retriever:
             parser_kwargs: arguments to pass to the parser
 
         """
-        _formats_to_add = ['Text', 'Tables']
+        _formats_to_add = ["Text", "Tables"]
         filepath_gen = Path(dir_path).glob(glob_pattern)
         if parser_kwargs:
             parser = ParsePDF(parser_kwargs)
@@ -258,24 +257,30 @@ class Retriever:
             parser = ParsePDF()
         if verbose:
             num_files = len(list(Path(dir_path).glob(glob_pattern)))
-            pbar = tqdm(filepath_gen, total=num_files, desc='Ingesting Files')
+            pbar = tqdm(filepath_gen, total=num_files, desc="Ingesting Files")
             for filepath in pbar:
                 if not dry_run:
-                    pbar.set_postfix_str(f'Parsing file - {filepath.relative_to(dir_path)}')
+                    pbar.set_postfix_str(
+                        f"Parsing file - {filepath.relative_to(dir_path)}"
+                    )
                     docs = parser.load_file(filepath)
-                    pbar.set_postfix_str(f'Adding file - {filepath.relative_to(dir_path)}')
+                    pbar.set_postfix_str(
+                        f"Adding file - {filepath.relative_to(dir_path)}"
+                    )
                     for format_key in _formats_to_add:
                         self.add_docs(docs[format_key])
-                    print(f'Completed adding - {filepath.relative_to(dir_path)}')
+                    print(f"Completed adding - {filepath.relative_to(dir_path)}")
                 else:
-                    print(f'DRY RUN: found - {filepath.relative_to(dir_path)}')
+                    print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
-    async def aingest(self,
-                      dir_path: Union[str, Path],
-                      glob_pattern: str = "**/*.pdf",
-                      dry_run: bool = False,
-                      verbose: bool = True,
-                      parser_kwargs: dict = None):
+    async def aingest(
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
+    ):
         """
         Asynchronously ingests the files in directory
         Args:
@@ -286,7 +291,7 @@ class Retriever:
             parser_kwargs: arguments to pass to the parser
 
         """
-        _formats_to_add = ['Text', 'Tables']
+        _formats_to_add = ["Text", "Tables"]
         filepath_gen = Path(dir_path).glob(glob_pattern)
         if parser_kwargs:
             parser = ParsePDF(parser_kwargs)
@@ -294,14 +299,18 @@ class Retriever:
             parser = ParsePDF()
         if verbose:
             num_files = len(list(Path(dir_path).glob(glob_pattern)))
-            pbar = atqdm(filepath_gen, total=num_files, desc='Ingesting Files')
+            pbar = atqdm(filepath_gen, total=num_files, desc="Ingesting Files")
             for filepath in pbar:
                 if not dry_run:
-                    pbar.set_postfix_str(f'Parsing file - {filepath.relative_to(dir_path)}')
+                    pbar.set_postfix_str(
+                        f"Parsing file - {filepath.relative_to(dir_path)}"
+                    )
                     docs = parser.load_file(filepath)
-                    pbar.set_postfix_str(f'Adding file - {filepath.relative_to(dir_path)}')
+                    pbar.set_postfix_str(
+                        f"Adding file - {filepath.relative_to(dir_path)}"
+                    )
                     for format_key in _formats_to_add:
                         await self.aadd_docs(docs[format_key])
-                    print(f'Completed adding - {filepath.relative_to(dir_path)}')
+                    print(f"Completed adding - {filepath.relative_to(dir_path)}")
                 else:
-                    print(f'DRY RUN: found - {filepath.relative_to(dir_path)}')
+                    print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
