@@ -10,7 +10,7 @@ from grag.components.chroma_client import ChromaClient
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
 
-multivec_retriever_conf = get_config()['multivec_retriever']
+multivec_retriever_conf = get_config()["multivec_retriever"]
 
 
 class Retriever:
@@ -30,11 +30,13 @@ class Retriever:
 
     """
 
-    def __init__(self,
-                 store_path: str = multivec_retriever_conf['store_path'],
-                 id_key: str = multivec_retriever_conf['id_key'],
-                 namespace: str = multivec_retriever_conf['namespace'],
-                 top_k=1):
+    def __init__(
+        self,
+        store_path: str = multivec_retriever_conf["store_path"],
+        id_key: str = multivec_retriever_conf["id_key"],
+        namespace: str = multivec_retriever_conf["namespace"],
+        top_k=1,
+    ):
         """Args:
         store_path: Path to the local file store, defaults to argument from config file
         id_key: A key prefix for identifying documents, defaults to argument from config file
@@ -53,7 +55,7 @@ class Retriever:
         )
         self.splitter = TextSplitter()
         self.top_k: int = top_k
-        self.retriever.search_kwargs = {'k': self.top_k}
+        self.retriever.search_kwargs = {"k": self.top_k}
 
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.
@@ -65,7 +67,7 @@ class Retriever:
         Returns:
             string of hexadecimal uuid
         """
-        return uuid.uuid5(self.namespace, doc.metadata['source']).hex
+        return uuid.uuid5(self.namespace, doc.metadata["source"]).hex
 
     def gen_doc_ids(self, docs: List[Document]) -> List[str]:
         """Takes a list of documents and produces a list of unique id, refer id_gen method for more details.
@@ -144,15 +146,12 @@ class Retriever:
 
         """
         if with_score:
-
             return self.client.langchain_chroma.similarity_search_with_relevance_scores(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
         else:
             return self.client.langchain_chroma.similarity_search(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
@@ -169,13 +168,11 @@ class Retriever:
         """
         if with_score:
             return await self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
         else:
             return await self.client.langchain_chroma.asimilarity_search(
-                query=query,
-                **{'k': top_k} if top_k else self.retriever.search_kwargs
+                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
             )
 
     def get_doc(self, query: str):
