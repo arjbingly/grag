@@ -117,7 +117,7 @@ class ParsePDF:
         return classified_elements
 
     def text_concat(self, elements) -> str:
-
+        full_text = ''
         for current_element, next_element in zip(elements, elements[1:]):
             curr_type = current_element.category
             next_type = next_element.category
