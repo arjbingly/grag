@@ -1,4 +1,4 @@
-from typing import Text, List
+from typing import List, Text
 
 from grag.rag.basic_rag import BasicRAG
 

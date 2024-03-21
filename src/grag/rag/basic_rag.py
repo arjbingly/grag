@@ -4,7 +4,7 @@ from typing import List, Union
 from grag import prompts
 from grag.components.llm import LLM
 from grag.components.multivec_retriever import Retriever
-from grag.components.prompt import Prompt, FewShotPrompt
+from grag.components.prompt import FewShotPrompt, Prompt
 from grag.components.utils import get_config
 from importlib_resources import files
 from langchain_core.documents import Document
