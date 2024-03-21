@@ -2,9 +2,10 @@ import asyncio
 import uuid
 from typing import List
 
-from grag.components.chroma_client import ChromaClient
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
+from grag.components.vectordb.base import VectorDB
+from grag.components.vectordb.chroma_client import ChromaClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
@@ -20,7 +21,7 @@ class Retriever:
     Attributes:
         store_path: Path to the local file store
         id_key: A key prefix for identifying documents
-        client: ChromaClient class instance from components.chroma_client
+        vectordb: ChromaClient class instance from components.client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
         retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance, langchain's multi-vector retriever
         splitter: TextSplitter class instance from components.text_splitter
@@ -30,11 +31,11 @@ class Retriever:
     """
 
     def __init__(
-        self,
-        store_path: str = multivec_retriever_conf["store_path"],
-        id_key: str = multivec_retriever_conf["id_key"],
-        namespace: str = multivec_retriever_conf["namespace"],
-        top_k=1,
+            self,
+            store_path: str = multivec_retriever_conf["store_path"],
+            id_key: str = multivec_retriever_conf["id_key"],
+            namespace: str = multivec_retriever_conf["namespace"],
+            top_k=1,
     ):
         """Args:
         store_path: Path to the local file store, defaults to argument from config file
@@ -45,10 +46,10 @@ class Retriever:
         self.store_path = store_path
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
-        self.client = ChromaClient()
+        self.vectordb: VectorDB = ChromaClient()  # TODO - change to init argument
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
-            vectorstore=self.client.langchain_chroma,
+            vectorstore=self.vectordb.langchain_client,
             byte_store=self.store,
             id_key=self.id_key,
         )
@@ -113,7 +114,7 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        self.client.add_docs(chunks)
+        self.vectordb.add_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
     async def aadd_docs(self, docs: List[Document]):
@@ -129,11 +130,11 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        await asyncio.run(self.client.aadd_docs(chunks))
+        await asyncio.run(self.vectordb.aadd_docs(chunks))
         self.retriever.docstore.mset(list(zip(doc_ids)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
-        """Returns the most (cosine) similar chunks from the vector database.
+        """Returns the most similar chunks from the vector database.
 
         Args:
             query: A query string
@@ -144,14 +145,8 @@ class Retriever:
             list of Documents
 
         """
-        if with_score:
-            return self.client.langchain_chroma.similarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
-        else:
-            return self.client.langchain_chroma.similarity_search(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
+        _top_k = top_k if top_k else self.retriever.search_kwargs['k']
+        return self.vectordb.get_chunk(query=query, top_k=_top_k, with_score=with_score)
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
         """Returns the most (cosine) similar chunks from the vector database, asynchronously.
@@ -165,14 +160,8 @@ class Retriever:
             list of Documents
 
         """
-        if with_score:
-            return await self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
-        else:
-            return await self.client.langchain_chroma.asimilarity_search(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
+        _top_k = top_k if top_k else self.retriever.search_kwargs['k']
+        return await self.vectordb.aget_chunk(query=query, top_k=_top_k, with_score=with_score)
 
     def get_doc(self, query: str):
         """Returns the parent document of the most (cosine) similar chunk from the vector database.
