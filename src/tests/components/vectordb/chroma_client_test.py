@@ -1,12 +1,13 @@
 import asyncio
 
-from grag.components.chroma_client import ChromaClient
+import pytest
+from grag.components.vectordb.chroma_client import ChromaClient
 from langchain_core.documents import Document
 
 
 def test_chroma_connection():
-    client = ChromaClient()
-    response = client.test_connection()
+    chroma_client = ChromaClient()
+    response = chroma_client.test_connection()
     assert isinstance(response, int)
 
 
@@ -45,13 +46,13 @@ def test_chroma_add_docs():
     storm-clouds was split to the blinding zigzag of lightning, and the
     thunder rolled and boomed, like the Colorado in flood.""",
     ]
-    client = ChromaClient(collection_name="test")
-    if client.collection.count() > 0:
-        client.chroma_client.delete_collection("test")
-    client = ChromaClient(collection_name="test")
+    chroma_client = ChromaClient(collection_name="test")
+    if chroma_client.collection.count() > 0:
+        chroma_client.client.delete_collection("test")
+    chroma_client = ChromaClient(collection_name="test")
     docs = [Document(page_content=doc) for doc in docs]
-    client.add_docs(docs)
-    collection_count = client.collection.count()
+    chroma_client.add_docs(docs)
+    collection_count = chroma_client.collection.count()
     assert collection_count == len(docs)
 
 
@@ -90,11 +91,59 @@ def test_chroma_aadd_docs():
     storm-clouds was split to the blinding zigzag of lightning, and the
     thunder rolled and boomed, like the Colorado in flood.""",
     ]
-    client = ChromaClient(collection_name="test")
-    if client.collection.count() > 0:
-        client.chroma_client.delete_collection("test")
-    client = ChromaClient(collection_name="test")
+    chroma_client = ChromaClient(collection_name="test")
+    if chroma_client.collection.count() > 0:
+        chroma_client.client.delete_collection("test")
+    chroma_client = ChromaClient(collection_name="test")
     docs = [Document(page_content=doc) for doc in docs]
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(client.aadd_docs(docs))
-    assert client.collection.count() == len(docs)
+    loop.run_until_complete(chroma_client.aadd_docs(docs))
+    assert chroma_client.collection.count() == len(docs)
+
+
+chrome_get_chunk_params = [(1, False), (1, True), (2, False), (2, True)]
+
+
+@pytest.mark.parametrize("top_k,with_score", chrome_get_chunk_params)
+def test_chroma_get_chunk(top_k, with_score):
+    query = """Slone and Lucy never rode down so far as the stately monuments, though
+    these held memories as hauntingly sweet as others were poignantly
+    bitter. Lucy never rode the King again. But Slone rode him, learned to
+    love him. And Lucy did not race any more. When Slone tried to stir in
+    her the old spirit all the response he got was a wistful shake of head
+    or a laugh that hid the truth or an excuse that the strain on her
+    ankles from Joel Creech's lasso had never mended. The girl was
+    unutterably happy, but it was possible that she would never race a
+    horse again."""
+    chroma_client = ChromaClient(collection_name="test")
+    retrieved_chunks = chroma_client.get_chunk(query=query, top_k=top_k, with_score=with_score)
+    assert len(retrieved_chunks) == top_k
+    if with_score:
+        assert all(isinstance(doc[0], Document) for doc in retrieved_chunks)
+        assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
+    else:
+        assert all(isinstance(doc, Document) for doc in retrieved_chunks)
+
+
+@pytest.mark.parametrize("top_k,with_score", chrome_get_chunk_params)
+def test_chroma_aget_chunk(top_k, with_score):
+    query = """Slone and Lucy never rode down so far as the stately monuments, though
+    these held memories as hauntingly sweet as others were poignantly
+    bitter. Lucy never rode the King again. But Slone rode him, learned to
+    love him. And Lucy did not race any more. When Slone tried to stir in
+    her the old spirit all the response he got was a wistful shake of head
+    or a laugh that hid the truth or an excuse that the strain on her
+    ankles from Joel Creech's lasso had never mended. The girl was
+    unutterably happy, but it was possible that she would never race a
+    horse again."""
+    chroma_client = ChromaClient(collection_name="test")
+    loop = asyncio.get_event_loop()
+    retrieved_chunks = loop.run_until_complete(
+        chroma_client.aget_chunk(query=query, top_k=top_k, with_score=with_score)
+    )
+    assert len(retrieved_chunks) == top_k
+    if with_score:
+        assert all(isinstance(doc[0], Document) for doc in retrieved_chunks)
+        assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
+    else:
+        assert all(isinstance(doc, Document) for doc in retrieved_chunks)
