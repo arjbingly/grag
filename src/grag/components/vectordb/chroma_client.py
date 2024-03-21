@@ -141,11 +141,11 @@ class ChromaClient(VectorDB):
         """
         if with_score:
             return self.langchain_client.similarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else 1
+                query=query, k=top_k if top_k else 1
             )
         else:
             return self.langchain_client.similarity_search(
-                query=query, **{"k": top_k} if top_k else 1
+                query=query, k=top_k if top_k else 1
             )
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
@@ -162,9 +162,9 @@ class ChromaClient(VectorDB):
         """
         if with_score:
             return await self.langchain_client.asimilarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else 1
+                query=query, k=top_k if top_k else 1
             )
         else:
             return await self.langchain_client.asimilarity_search(
-                query=query, **{"k": top_k} if top_k else 1
+                query=query, k=top_k if top_k else 1
             )
