@@ -1,3 +1,4 @@
+"""Class for LLM."""
 import os
 from pathlib import Path
 
@@ -36,20 +37,21 @@ class LLM:
     """
 
     def __init__(
-        self,
-        model_name=llm_conf["model_name"],
-        device_map=llm_conf["device_map"],
-        task=llm_conf["task"],
-        max_new_tokens=llm_conf["max_new_tokens"],
-        temperature=llm_conf["temperature"],
-        n_batch=llm_conf["n_batch_gpu_cpp"],
-        n_ctx=llm_conf["n_ctx_cpp"],
-        n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
-        std_out=llm_conf["std_out"],
-        base_dir=llm_conf["base_dir"],
-        quantization=llm_conf["quantization"],
-        pipeline=llm_conf["pipeline"],
+            self,
+            model_name=llm_conf["model_name"],
+            device_map=llm_conf["device_map"],
+            task=llm_conf["task"],
+            max_new_tokens=llm_conf["max_new_tokens"],
+            temperature=llm_conf["temperature"],
+            n_batch=llm_conf["n_batch_gpu_cpp"],
+            n_ctx=llm_conf["n_ctx_cpp"],
+            n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
+            std_out=llm_conf["std_out"],
+            base_dir=llm_conf["base_dir"],
+            quantization=llm_conf["quantization"],
+            pipeline=llm_conf["pipeline"],
     ):
+        """Initialize the LLM class using the given parameters."""
         self.base_dir = Path(base_dir)
         self._model_name = model_name
         self.quantization = quantization
@@ -160,7 +162,7 @@ class LLM:
         return llm
 
     def load_model(
-        self, model_name=None, pipeline=None, quantization=None, is_local=None
+            self, model_name=None, pipeline=None, quantization=None, is_local=None
     ):
         """Loads the model based on the specified pipeline and model name.
 

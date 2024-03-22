@@ -1,3 +1,11 @@
+"""Utils functions.
+
+This module provides:
+- stuff_docs: concats langchain documents into string
+- load_prompt: loads json prompt to langchain prompt
+- find_config_path: finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
+- get_config: retrieves and parses the configuration settings from the 'config.ini' file.
+"""
 import json
 import os
 import textwrap
@@ -10,7 +18,9 @@ from langchain_core.prompts import ChatPromptTemplate
 
 
 def stuff_docs(docs: List[Document]) -> str:
-    """Args:
+    r"""Concatenates langchain documents into a string using '\n\n' seperator.
+    
+    Args:
         docs: List of langchain_core.documents.Document
 
     Returns:
@@ -20,8 +30,7 @@ def stuff_docs(docs: List[Document]) -> str:
 
 
 def reformat_text_with_line_breaks(input_text, max_width=110):
-    """Reformat the given text to ensure each line does not exceed a specific width,
-    preserving existing line breaks.
+    """Reformat the given text to ensure each line does not exceed a specific width, preserving existing line breaks.
 
     Args:
     input_text (str): The text to be reformatted.
@@ -62,7 +71,7 @@ def display_llm_output_and_sources(response_from_llm):
 
 
 def load_prompt(json_file: str | os.PathLike, return_input_vars=False):
-    """Loads a prompt template from json file and returns a langchain ChatPromptTemplate
+    """Loads a prompt template from json file and returns a langchain ChatPromptTemplate.
 
     Args:
         json_file: path to the prompt template json file.

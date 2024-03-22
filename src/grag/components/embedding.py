@@ -1,3 +1,9 @@
+"""Class for embedding.
+
+This module provies:
+- Embedding
+"""
+
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain_community.embeddings.sentence_transformer import (
     SentenceTransformerEmbeddings,
@@ -6,6 +12,7 @@ from langchain_community.embeddings.sentence_transformer import (
 
 class Embedding:
     """A class for vector embeddings.
+    
     Supports:
         huggingface sentence transformers -> model_type = 'sentence-transformers'
         huggingface instructor embeddings -> model_type = 'instructor-embedding'
@@ -17,6 +24,7 @@ class Embedding:
     """
 
     def __init__(self, embedding_type: str, embedding_model: str):
+        """Initialize the embedding with embedding_type and embedding_model."""
         self.embedding_type = embedding_type
         self.embedding_model = embedding_model
         match self.embedding_type:
