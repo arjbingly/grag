@@ -46,7 +46,7 @@ def test_deeplake_add_docs():
     docs = [Document(page_content=doc) for doc in docs]
     deeplake_client.add_docs(docs)
     assert len(deeplake_client) == len(docs)
-    del (deeplake_client)
+    del deeplake_client
 
 
 def test_chroma_aadd_docs():
@@ -91,7 +91,7 @@ def test_chroma_aadd_docs():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(deeplake_client.aadd_docs(docs))
     assert len(deeplake_client) == len(docs)
-    del (deeplake_client)
+    del deeplake_client
 
 
 deeplake_get_chunk_params = [(1, False), (1, True), (2, False), (2, True)]
@@ -109,14 +109,16 @@ def test_deeplake_get_chunk(top_k, with_score):
     unutterably happy, but it was possible that she would never race a
     horse again."""
     deeplake_client = DeepLakeClient(collection_name="test", read_only=True)
-    retrieved_chunks = deeplake_client.get_chunk(query=query, top_k=top_k, with_score=with_score)
+    retrieved_chunks = deeplake_client.get_chunk(
+        query=query, top_k=top_k, with_score=with_score
+    )
     assert len(retrieved_chunks) == top_k
     if with_score:
         assert all(isinstance(doc[0], Document) for doc in retrieved_chunks)
         assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
     else:
         assert all(isinstance(doc, Document) for doc in retrieved_chunks)
-    del (deeplake_client)
+    del deeplake_client
 
 
 @pytest.mark.parametrize("top_k,with_score", deeplake_get_chunk_params)
@@ -141,4 +143,4 @@ def test_deeplake_aget_chunk(top_k, with_score):
         assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
     else:
         assert all(isinstance(doc, Document) for doc in retrieved_chunks)
-    del (deeplake_client)
+    del deeplake_client

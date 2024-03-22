@@ -31,11 +31,11 @@ class Retriever:
     """
 
     def __init__(
-            self,
-            store_path: str = multivec_retriever_conf["store_path"],
-            id_key: str = multivec_retriever_conf["id_key"],
-            namespace: str = multivec_retriever_conf["namespace"],
-            top_k=1,
+        self,
+        store_path: str = multivec_retriever_conf["store_path"],
+        id_key: str = multivec_retriever_conf["id_key"],
+        namespace: str = multivec_retriever_conf["namespace"],
+        top_k=1,
     ):
         """Args:
         store_path: Path to the local file store, defaults to argument from config file
@@ -145,7 +145,7 @@ class Retriever:
             list of Documents
 
         """
-        _top_k = top_k if top_k else self.retriever.search_kwargs['k']
+        _top_k = top_k if top_k else self.retriever.search_kwargs["k"]
         return self.vectordb.get_chunk(query=query, top_k=_top_k, with_score=with_score)
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
@@ -160,8 +160,10 @@ class Retriever:
             list of Documents
 
         """
-        _top_k = top_k if top_k else self.retriever.search_kwargs['k']
-        return await self.vectordb.aget_chunk(query=query, top_k=_top_k, with_score=with_score)
+        _top_k = top_k if top_k else self.retriever.search_kwargs["k"]
+        return await self.vectordb.aget_chunk(
+            query=query, top_k=_top_k, with_score=with_score
+        )
 
     def get_doc(self, query: str):
         """Returns the parent document of the most (cosine) similar chunk from the vector database.

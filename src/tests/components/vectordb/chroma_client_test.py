@@ -113,7 +113,9 @@ def test_chroma_get_chunk(top_k, with_score):
     unutterably happy, but it was possible that she would never race a
     horse again."""
     chroma_client = ChromaClient(collection_name="test")
-    retrieved_chunks = chroma_client.get_chunk(query=query, top_k=top_k, with_score=with_score)
+    retrieved_chunks = chroma_client.get_chunk(
+        query=query, top_k=top_k, with_score=with_score
+    )
     assert len(retrieved_chunks) == top_k
     if with_score:
         assert all(isinstance(doc[0], Document) for doc in retrieved_chunks)

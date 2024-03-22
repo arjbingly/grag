@@ -6,7 +6,6 @@ from langchain_core.documents import Document
 
 
 class VectorDB(ABC):
-
     @abstractmethod
     def __len__(self) -> int:
         """Number of chunks in the vector database."""
@@ -19,7 +18,7 @@ class VectorDB(ABC):
     @abstractmethod
     def add_docs(self, docs: List[Document], verbose: bool = True) -> None:
         """Adds documents to the vector database.
-        
+
         Args:
             docs: List of Documents
             verbose: Show progress bar
@@ -43,8 +42,9 @@ class VectorDB(ABC):
         ...
 
     @abstractmethod
-    def get_chunk(self, query: str, with_score: bool = False, top_k: int = None) -> Union[
-        List[Document], List[Tuple[Document, float]]]:
+    def get_chunk(
+        self, query: str, with_score: bool = False, top_k: int = None
+    ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the vector database.
 
         Args:
@@ -58,8 +58,9 @@ class VectorDB(ABC):
         ...
 
     @abstractmethod
-    async def aget_chunk(self, query: str, with_score: bool = False, top_k: int = None) -> Union[
-        List[Document], List[Tuple[Document, float]]]:
+    async def aget_chunk(
+        self, query: str, with_score: bool = False, top_k: int = None
+    ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the vector database. (asynchronous)
 
         Args:
