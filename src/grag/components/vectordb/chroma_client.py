@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple, Union
 
 import chromadb
 from grag.components.embedding import Embedding
@@ -72,7 +72,21 @@ class ChromaClient(VectorDB):
         )
         self.allowed_metadata_types = (str, int, float, bool)
 
-    def test_connection(self, verbose=True):
+    def __len__(self) -> int:
+        return self.collection.count()
+
+    def delete(self) -> None:
+        self.client.delete_collection(self.collection_name)
+        self.collection = self.client.get_or_create_collection(
+            name=self.collection_name
+        )
+        self.langchain_client = Chroma(
+            client=self.client,
+            collection_name=self.collection_name,
+            embedding_function=self.embedding_function,
+        )
+
+    def test_connection(self, verbose=True) -> int:
         """Tests connection with Chroma Vectorstore
 
         Args:
@@ -89,7 +103,7 @@ class ChromaClient(VectorDB):
                 print(f"Connection to {self.host}/{self.port} is not alive !!")
         return response
 
-    def add_docs(self, docs: List[Document], verbose=True):
+    def add_docs(self, docs: List[Document], verbose=True) -> None:
         """Adds documents to chroma vectorstore
 
         Args:
@@ -105,7 +119,7 @@ class ChromaClient(VectorDB):
         ):
             _id = self.langchain_client.add_documents([doc])
 
-    async def aadd_docs(self, docs: List[Document], verbose=True):
+    async def aadd_docs(self, docs: List[Document], verbose=True) -> None:
         """Asynchronously adds documents to chroma vectorstore
 
         Args:
@@ -127,7 +141,8 @@ class ChromaClient(VectorDB):
             for doc in docs:
                 await self.langchain_client.aadd_documents([doc])
 
-    def get_chunk(self, query: str, with_score: bool = False, top_k: int = None):
+    def get_chunk(self, query: str, with_score: bool = False, top_k: int = None) -> Union[
+        List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the chroma database.
 
         Args:
@@ -148,7 +163,8 @@ class ChromaClient(VectorDB):
                 query=query, k=top_k if top_k else 1
             )
 
-    async def aget_chunk(self, query: str, with_score=False, top_k=None):
+    async def aget_chunk(self, query: str, with_score=False, top_k=None) -> Union[
+        List[Document], List[Tuple[Document, float]]]:
         """Returns the most (cosine) similar chunks from the vector database, asynchronously.
 
         Args:

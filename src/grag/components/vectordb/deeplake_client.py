@@ -1,7 +1,6 @@
 from pathlib import Path
-from typing import List, Union
+from typing import List, Tuple, Union
 
-from deeplake.core.vectorstore import VectorStore
 from grag.components.embedding import Embedding
 from grag.components.utils import get_config
 from grag.components.vectordb.base import VectorDB
@@ -34,11 +33,15 @@ class DeepLakeClient(VectorDB):
     """
 
     def __init__(self,
-                 store_path: Union[str, Path],
-                 embedding_model: str,
-                 embedding_type: str,
+                 collection_name: str = deeplake_conf["collection_name"],
+                 store_path: Union[str, Path] = deeplake_conf["store_path"],
+                 embedding_type: str = deeplake_conf["embedding_type"],
+                 embedding_model: str = deeplake_conf["embedding_model"],
+                 read_only: bool = False
                  ):
         self.store_path = Path(store_path)
+        self.collection_name = collection_name
+        self.read_only = read_only
         self.embedding_type: str = embedding_type
         self.embedding_model: str = embedding_model
 
@@ -46,12 +49,20 @@ class DeepLakeClient(VectorDB):
             embedding_model=self.embedding_model, embedding_type=self.embedding_type
         ).embedding_function
 
-        self.client = VectorStore(path=self.store_path)
-        self.langchain_client = DeepLake(path=self.store_path,
-                                         embedding=self.embedding_function)
+        # self.client = VectorStore(path=self.store_path / self.collection_name)
+        self.langchain_client = DeepLake(dataset_path=str(self.store_path / self.collection_name),
+                                         embedding=self.embedding_function,
+                                         read_only=self.read_only)
+        self.client = self.langchain_client.vectorstore
         self.allowed_metadata_types = (str, int, float, bool)
 
-    def add_docs(self, docs: List[Document], verbose=True):
+    def __len__(self) -> int:
+        return self.client.__len__()
+
+    def delete(self) -> None:
+        self.client.delete(delete_all=True)
+
+    def add_docs(self, docs: List[Document], verbose=True) -> None:
         """Adds documents to deeplake vectorstore
     
         Args:
@@ -65,9 +76,9 @@ class DeepLakeClient(VectorDB):
         for doc in (
                 tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
-            _id = self.langchain_chroma.add_documents([doc])
+            _id = self.langchain_client.add_documents([doc])
 
-    async def aadd_docs(self, docs: List[Document], verbose=True):
+    async def aadd_docs(self, docs: List[Document], verbose=True) -> None:
         """Asynchronously adds documents to chroma vectorstore
     
         Args:
@@ -84,12 +95,13 @@ class DeepLakeClient(VectorDB):
                     desc=f"Adding documents to {self.collection_name}",
                     total=len(docs),
             ):
-                await self.langchain_deeplake.aadd_documents([doc])
+                await self.langchain_client.aadd_documents([doc])
         else:
             for doc in docs:
-                await self.langchain_deeplake.aadd_documents([doc])
+                await self.langchain_client.aadd_documents([doc])
 
-    def get_chunk(self, query: str, with_score: bool = False, top_k: int = None):
+    def get_chunk(self, query: str, with_score: bool = False, top_k: int = None) -> Union[
+        List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database.
 
         Args:
@@ -102,7 +114,7 @@ class DeepLakeClient(VectorDB):
 
         """
         if with_score:
-            return self.langchain_client.similarity_search_with_relevance_scores(
+            return self.langchain_client.similarity_search_with_score(
                 query=query, k=top_k if top_k else 1
             )
         else:
@@ -110,7 +122,8 @@ class DeepLakeClient(VectorDB):
                 query=query, k=top_k if top_k else 1
             )
 
-    async def aget_chunk(self, query: str, with_score=False, top_k=None):
+    async def aget_chunk(self, query: str, with_score=False, top_k=None) -> Union[
+        List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database, asynchronously.
 
         Args:
@@ -123,7 +136,7 @@ class DeepLakeClient(VectorDB):
 
         """
         if with_score:
-            return await self.langchain_client.asimilarity_search_with_relevance_scores(
+            return await self.langchain_client.asimilarity_search_with_score(
                 query=query, k=top_k if top_k else 1
             )
         else:

@@ -1,17 +1,11 @@
 import asyncio
 
 import pytest
-from grag.components.vectordb.chroma_client import ChromaClient
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
 
 
-def test_chroma_connection():
-    chroma_client = ChromaClient()
-    response = chroma_client.test_connection()
-    assert isinstance(response, int)
-
-
-def test_chroma_add_docs():
+def test_deeplake_add_docs():
     docs = [
         """And so on this rainbow day, with storms all around them, and blue sky
     above, they rode only as far as the valley. But from there, before they
@@ -46,12 +40,13 @@ def test_chroma_add_docs():
     storm-clouds was split to the blinding zigzag of lightning, and the
     thunder rolled and boomed, like the Colorado in flood.""",
     ]
-    chroma_client = ChromaClient(collection_name="test")
-    if len(chroma_client) > 0:
-        chroma_client.delete()
+    deeplake_client = DeepLakeClient(collection_name="test")
+    if len(deeplake_client) > 0:
+        deeplake_client.delete()
     docs = [Document(page_content=doc) for doc in docs]
-    chroma_client.add_docs(docs)
-    assert len(chroma_client) == len(docs)
+    deeplake_client.add_docs(docs)
+    assert len(deeplake_client) == len(docs)
+    del (deeplake_client)
 
 
 def test_chroma_aadd_docs():
@@ -89,20 +84,21 @@ def test_chroma_aadd_docs():
     storm-clouds was split to the blinding zigzag of lightning, and the
     thunder rolled and boomed, like the Colorado in flood.""",
     ]
-    chroma_client = ChromaClient(collection_name="test")
-    if len(chroma_client) > 0:
-        chroma_client.delete()
+    deeplake_client = DeepLakeClient(collection_name="test")
+    if len(deeplake_client) > 0:
+        deeplake_client.delete()
     docs = [Document(page_content=doc) for doc in docs]
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(chroma_client.aadd_docs(docs))
-    assert len(chroma_client) == len(docs)
+    loop.run_until_complete(deeplake_client.aadd_docs(docs))
+    assert len(deeplake_client) == len(docs)
+    del (deeplake_client)
 
 
-chrome_get_chunk_params = [(1, False), (1, True), (2, False), (2, True)]
+deeplake_get_chunk_params = [(1, False), (1, True), (2, False), (2, True)]
 
 
-@pytest.mark.parametrize("top_k,with_score", chrome_get_chunk_params)
-def test_chroma_get_chunk(top_k, with_score):
+@pytest.mark.parametrize("top_k,with_score", deeplake_get_chunk_params)
+def test_deeplake_get_chunk(top_k, with_score):
     query = """Slone and Lucy never rode down so far as the stately monuments, though
     these held memories as hauntingly sweet as others were poignantly
     bitter. Lucy never rode the King again. But Slone rode him, learned to
@@ -112,18 +108,19 @@ def test_chroma_get_chunk(top_k, with_score):
     ankles from Joel Creech's lasso had never mended. The girl was
     unutterably happy, but it was possible that she would never race a
     horse again."""
-    chroma_client = ChromaClient(collection_name="test")
-    retrieved_chunks = chroma_client.get_chunk(query=query, top_k=top_k, with_score=with_score)
+    deeplake_client = DeepLakeClient(collection_name="test", read_only=True)
+    retrieved_chunks = deeplake_client.get_chunk(query=query, top_k=top_k, with_score=with_score)
     assert len(retrieved_chunks) == top_k
     if with_score:
         assert all(isinstance(doc[0], Document) for doc in retrieved_chunks)
         assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
     else:
         assert all(isinstance(doc, Document) for doc in retrieved_chunks)
+    del (deeplake_client)
 
 
-@pytest.mark.parametrize("top_k,with_score", chrome_get_chunk_params)
-def test_chroma_aget_chunk(top_k, with_score):
+@pytest.mark.parametrize("top_k,with_score", deeplake_get_chunk_params)
+def test_deeplake_aget_chunk(top_k, with_score):
     query = """Slone and Lucy never rode down so far as the stately monuments, though
     these held memories as hauntingly sweet as others were poignantly
     bitter. Lucy never rode the King again. But Slone rode him, learned to
@@ -133,10 +130,10 @@ def test_chroma_aget_chunk(top_k, with_score):
     ankles from Joel Creech's lasso had never mended. The girl was
     unutterably happy, but it was possible that she would never race a
     horse again."""
-    chroma_client = ChromaClient(collection_name="test")
+    deeplake_client = DeepLakeClient(collection_name="test", read_only=True)
     loop = asyncio.get_event_loop()
     retrieved_chunks = loop.run_until_complete(
-        chroma_client.aget_chunk(query=query, top_k=top_k, with_score=with_score)
+        deeplake_client.aget_chunk(query=query, top_k=top_k, with_score=with_score)
     )
     assert len(retrieved_chunks) == top_k
     if with_score:
@@ -144,3 +141,4 @@ def test_chroma_aget_chunk(top_k, with_score):
         assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
     else:
         assert all(isinstance(doc, Document) for doc in retrieved_chunks)
+    del (deeplake_client)
