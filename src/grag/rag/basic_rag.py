@@ -3,6 +3,7 @@
 This module provides:
 - BasicRAG
 """
+
 import json
 from typing import List, Union
 
@@ -19,7 +20,7 @@ conf = get_config()
 
 class BasicRAG:
     """Class for Basis RAG.
-    
+
     Attributes:
         model_name (str): Name of the llm model
         doc_chain (str): Name of the document chain, ("stuff", "refine"), defaults to "stuff"
@@ -30,13 +31,15 @@ class BasicRAG:
     """
 
     def __init__(
-            self,
-            model_name=None,
-            doc_chain="stuff",
-            task="QA",
-            llm_kwargs=None,
-            retriever_kwargs=None,
-            custom_prompt: Union[Prompt, FewShotPrompt, List[Prompt, FewShotPrompt], None] = None,
+        self,
+        model_name=None,
+        doc_chain="stuff",
+        task="QA",
+        llm_kwargs=None,
+        retriever_kwargs=None,
+        custom_prompt: Union[
+            Prompt, FewShotPrompt, List[Prompt, FewShotPrompt], None
+        ] = None,
     ):
         """Initialize BasicRAG."""
         if retriever_kwargs is None:
@@ -144,7 +147,7 @@ class BasicRAG:
     @staticmethod
     def stuff_docs(docs: List[Document]) -> str:
         r"""Concatenates docs into a string seperated by '\n\n'.
-        
+
         Args:
             docs: List of langchain_core.documents.Document
 

@@ -3,6 +3,7 @@
 This module provides:
 - Retriever
 """
+
 import asyncio
 import uuid
 from typing import List
@@ -19,9 +20,9 @@ multivec_retriever_conf = get_config()["multivec_retriever"]
 
 class Retriever:
     """A class for multi vector retriever.
-    
+
     It connects to a vector database and a local file store.
-    It is used to return most similar chunks from a vector store but has the additional functionality to return a 
+    It is used to return most similar chunks from a vector store but has the additional functionality to return a
     linked document, chunk, etc.
 
     Attributes:
@@ -37,14 +38,14 @@ class Retriever:
     """
 
     def __init__(
-            self,
-            store_path: str = multivec_retriever_conf["store_path"],
-            id_key: str = multivec_retriever_conf["id_key"],
-            namespace: str = multivec_retriever_conf["namespace"],
-            top_k=1,
+        self,
+        store_path: str = multivec_retriever_conf["store_path"],
+        id_key: str = multivec_retriever_conf["id_key"],
+        namespace: str = multivec_retriever_conf["namespace"],
+        top_k=1,
     ):
         """Initialize the Retriever.
-        
+
         Args:
         store_path: Path to the local file store, defaults to argument from config file
         id_key: A key prefix for identifying documents, defaults to argument from config file
@@ -67,7 +68,7 @@ class Retriever:
 
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.
-        
+
         This ensures that a  single document always gets the same unique id.
 
         Args:
@@ -92,7 +93,7 @@ class Retriever:
 
     def split_docs(self, docs: List[Document]) -> List[Document]:
         """Takes a list of documents and splits them into smaller chunks.
-         
+
         Using TextSplitter from components.text_splitter
         Also adds the unique parent document id into metadata
 

@@ -6,6 +6,7 @@ This module provides:
 - find_config_path: finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
 - get_config: retrieves and parses the configuration settings from the 'config.ini' file.
 """
+
 import json
 import os
 import textwrap
@@ -19,7 +20,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 def stuff_docs(docs: List[Document]) -> str:
     r"""Concatenates langchain documents into a string using '\n\n' seperator.
-    
+
     Args:
         docs: List of langchain_core.documents.Document
 

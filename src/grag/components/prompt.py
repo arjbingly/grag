@@ -4,6 +4,7 @@ This module provides:
 - Prompt - for generic prompts
 - FewShotPrompt - for few-shot prompts
 """
+
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
@@ -20,7 +21,7 @@ SUPPORTED_DOC_CHAINS = ["stuff", "refine"]
 
 class Prompt(BaseModel):
     """A class for generic prompts.
-    
+
     Attributes:
         name (str): The prompt name (Optional, defaults to "custom_prompt")
         llm_type (str): The type of llm, llama2, etc (Optional, defaults to "None")
@@ -32,6 +33,7 @@ class Prompt(BaseModel):
         input_keys (List[str]): The input keys for the prompt
     template (str): The template for the prompt
     """
+
     name: str = Field(default="custom_prompt")
     llm_type: str = Field(default="None")
     task: str = Field(default="QA")
@@ -82,7 +84,7 @@ class Prompt(BaseModel):
         )
 
     def save(
-            self, filepath: Union[Path, str, None], overwrite=False
+        self, filepath: Union[Path, str, None], overwrite=False
     ) -> Union[None, ValueError]:
         """Saves the prompt class into a json file."""
         dump = self.model_dump_json(indent=2, exclude_defaults=True, exclude_none=True)
@@ -128,6 +130,7 @@ class FewShotPrompt(Prompt):
         example_template (str): The template for formatting the examples
         examples (List[Dict[str, Any]]): The list of examples, each example is a dictionary with respective keys
     """
+
     output_keys: List[str]
     examples: List[Dict[str, Any]]
     prefix: str
