@@ -1,4 +1,8 @@
-# GRAG
+# GRAG (note: specify the abbreviation)
+
+(note: insert the interactive tags here, ask Amir about copyright and add the tags)
+
+(note: add overview on what the purpose of this project is here. Talk briefly about RAG. Maybe copy from the proposal)
 
 ## Project Overview
 
@@ -11,15 +15,16 @@
 
 ## To get started
 
-To run the projects make sure below instructions are followed.
+To run the projects, make sure the instructions below are followed.
 
-Moreover, further customization can be made on the config file, `src/config.ini`.
+Further customization can be made on the config file, `src/config.ini`.
 
 - `git clone` the repository
 - `pip install .` from the repository
 - _For Dev:_ `pip install -e .`
 
 ### Requirements
+
 Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 - PyTorch
@@ -99,13 +104,13 @@ To run: `streamlit run projects/retriver_app.py -server.port=8888`
 
 Refer to [BasicRAG/README.md](./projects/Basic-RAG/README.md)
 
-___
+---
 
 ![Watch the video](../Sample_Capstone/demo/fig/demo.gif)
 
 ## Repo Structure
 
-___
+---
 
 ```
 .
