@@ -1,3 +1,9 @@
+"""Class for Basic RAG.
+
+This module provides:
+- BasicRAG
+"""
+
 import json
 from typing import List, Union
 
@@ -13,6 +19,17 @@ conf = get_config()
 
 
 class BasicRAG:
+    """Class for Basis RAG.
+
+    Attributes:
+        model_name (str): Name of the llm model
+        doc_chain (str): Name of the document chain, ("stuff", "refine"), defaults to "stuff"
+        task (str): Name of task, defaults to "QA"
+        llm_kwargs (dict): Keyword arguments for LLM class
+        retriever_kwargs (dict): Keyword arguments for Retriever class
+        custom_prompt (Prompt): Prompt, defaults to None
+    """
+
     def __init__(
         self,
         model_name=None,
@@ -20,8 +37,11 @@ class BasicRAG:
         task="QA",
         llm_kwargs=None,
         retriever_kwargs=None,
-        custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
+        custom_prompt: Union[
+            Prompt, FewShotPrompt, List[Prompt, FewShotPrompt], None
+        ] = None,
     ):
+        """Initialize BasicRAG."""
         if retriever_kwargs is None:
             self.retriever = Retriever()
         else:
@@ -54,6 +74,7 @@ class BasicRAG:
 
     @property
     def model_name(self):
+        """Return the name of the model."""
         return self._model_name
 
     @model_name.setter
@@ -67,6 +88,7 @@ class BasicRAG:
 
     @property
     def doc_chain(self):
+        """Returns the doc_chain."""
         return self._doc_chain
 
     @doc_chain.setter
@@ -86,6 +108,7 @@ class BasicRAG:
 
     @property
     def task(self):
+        """Returns the task."""
         return self._task
 
     @task.setter
@@ -99,6 +122,7 @@ class BasicRAG:
         self.prompt_matcher()
 
     def prompt_matcher(self):
+        """Matches relvant prompt using model, task and doc_chain."""
         matcher_path = self.prompt_path.joinpath("matcher.json")
         with open(f"{matcher_path}", "r") as f:
             matcher_dict = json.load(f)
@@ -122,7 +146,9 @@ class BasicRAG:
 
     @staticmethod
     def stuff_docs(docs: List[Document]) -> str:
-        """Args:
+        r"""Concatenates docs into a string seperated by '\n\n'.
+
+        Args:
             docs: List of langchain_core.documents.Document
 
         Returns:
@@ -132,6 +158,8 @@ class BasicRAG:
 
     @staticmethod
     def output_parser(call_func):
+        """Decorator to format llm output."""
+
         def output_parser_wrapper(*args, **kwargs):
             response, sources = call_func(*args, **kwargs)
             if conf["llm"]["std_out"] == "False":
@@ -146,6 +174,7 @@ class BasicRAG:
 
     @output_parser
     def stuff_call(self, query: str):
+        """Call function for stuff chain."""
         retrieved_docs = self.retriever.get_chunk(query)
         context = self.stuff_docs(retrieved_docs)
         prompt = self.main_prompt.format(context=context, question=query)
@@ -155,6 +184,7 @@ class BasicRAG:
 
     @output_parser
     def refine_call(self, query: str):
+        """Call function for refine chain."""
         retrieved_docs = self.retriever.get_chunk(query)
         sources = [doc.metadata["source"] for doc in retrieved_docs]
         responses = []
@@ -176,6 +206,7 @@ class BasicRAG:
         return responses, sources
 
     def __call__(self, query: str):
+        """Call function for the class."""
         if self.doc_chain == "stuff":
             return self.stuff_call(query)
         elif self.doc_chain == "refine":
