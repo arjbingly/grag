@@ -1,3 +1,8 @@
+"""Class for Chroma vector database.
+
+This module provides:
+- ChromaClient
+"""
 from typing import List, Tuple, Union
 
 import chromadb
@@ -37,14 +42,16 @@ class ChromaClient(VectorDB):
     """
 
     def __init__(
-        self,
-        host=chroma_conf["host"],
-        port=chroma_conf["port"],
-        collection_name=chroma_conf["collection_name"],
-        embedding_type=chroma_conf["embedding_type"],
-        embedding_model=chroma_conf["embedding_model"],
+            self,
+            host=chroma_conf["host"],
+            port=chroma_conf["port"],
+            collection_name=chroma_conf["collection_name"],
+            embedding_type=chroma_conf["embedding_type"],
+            embedding_model=chroma_conf["embedding_model"],
     ):
-        """Args:
+        """Initialize a ChromaClient object.
+        
+        Args:
         host: IP Address of hosted Chroma Vectorstore, defaults to argument from config file
         port: port address of hosted Chroma Vectorstore, defaults to argument from config file
         collection_name: name of the collection in the Chroma Vectorstore, defaults to argument from config file
@@ -73,9 +80,11 @@ class ChromaClient(VectorDB):
         self.allowed_metadata_types = (str, int, float, bool)
 
     def __len__(self) -> int:
+        """Count the number of chunks in the database."""
         return self.collection.count()
 
     def delete(self) -> None:
+        """Delete all the chunks in the database collection."""
         self.client.delete_collection(self.collection_name)
         self.collection = self.client.get_or_create_collection(
             name=self.collection_name
@@ -87,7 +96,7 @@ class ChromaClient(VectorDB):
         )
 
     def test_connection(self, verbose=True) -> int:
-        """Tests connection with Chroma Vectorstore
+        """Tests connection with Chroma Vectorstore.
 
         Args:
             verbose: if True, prints connection status
@@ -104,7 +113,7 @@ class ChromaClient(VectorDB):
         return response
 
     def add_docs(self, docs: List[Document], verbose=True) -> None:
-        """Adds documents to chroma vectorstore
+        """Adds documents to chroma vectorstore.
 
         Args:
             docs: List of Documents
@@ -115,12 +124,12 @@ class ChromaClient(VectorDB):
         """
         docs = self._filter_metadata(docs)
         for doc in (
-            tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
+                tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
             _id = self.langchain_client.add_documents([doc])
 
     async def aadd_docs(self, docs: List[Document], verbose=True) -> None:
-        """Asynchronously adds documents to chroma vectorstore
+        """Asynchronously adds documents to chroma vectorstore.
 
         Args:
             docs: List of Documents
@@ -132,9 +141,9 @@ class ChromaClient(VectorDB):
         docs = self._filter_metadata(docs)
         if verbose:
             for doc in atqdm(
-                docs,
-                desc=f"Adding documents to {self.collection_name}",
-                total=len(docs),
+                    docs,
+                    desc=f"Adding documents to {self.collection_name}",
+                    total=len(docs),
             ):
                 await self.langchain_client.aadd_documents([doc])
         else:
@@ -142,7 +151,7 @@ class ChromaClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-        self, query: str, with_score: bool = False, top_k: int = None
+            self, query: str, with_score: bool = False, top_k: int = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the chroma database.
 
@@ -165,7 +174,7 @@ class ChromaClient(VectorDB):
             )
 
     async def aget_chunk(
-        self, query: str, with_score=False, top_k=None
+            self, query: str, with_score=False, top_k=None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most (cosine) similar chunks from the vector database, asynchronously.
 

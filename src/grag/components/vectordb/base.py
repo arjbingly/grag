@@ -1,3 +1,9 @@
+"""Abstract base class for vector database clients.
+
+This module provides:
+- VectorDB
+"""
+
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Union
 
@@ -6,6 +12,8 @@ from langchain_core.documents import Document
 
 
 class VectorDB(ABC):
+    """Abstract base class for vector database clients."""
+
     @abstractmethod
     def __len__(self) -> int:
         """Number of chunks in the vector database."""
@@ -43,7 +51,7 @@ class VectorDB(ABC):
 
     @abstractmethod
     def get_chunk(
-        self, query: str, with_score: bool = False, top_k: int = None
+            self, query: str, with_score: bool = False, top_k: int = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the vector database.
 
@@ -59,9 +67,9 @@ class VectorDB(ABC):
 
     @abstractmethod
     async def aget_chunk(
-        self, query: str, with_score: bool = False, top_k: int = None
+            self, query: str, with_score: bool = False, top_k: int = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
-        """Returns the most similar chunks from the vector database. (asynchronous)
+        """Returns the most similar chunks from the vector database (asynchronous).
 
         Args:
             query: A query string
