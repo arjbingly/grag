@@ -1,6 +1,6 @@
 """Class for embedding.
 
-This module provies:
+This module provides:
 - Embedding
 """
 
