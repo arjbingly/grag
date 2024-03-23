@@ -1,3 +1,5 @@
+"""Class for LLM."""
+
 import os
 from pathlib import Path
 
@@ -16,7 +18,7 @@ from transformers import (
 
 from .utils import get_config
 
-llm_conf = get_config()['llm']
+llm_conf = get_config()["llm"]
 
 print("CUDA: ", torch.cuda.is_available())
 
@@ -35,20 +37,22 @@ class LLM:
         n_gpu_layers (int): Number of GPU layers for CPP.
     """
 
-    def __init__(self,
-                 model_name=llm_conf["model_name"],
-                 device_map=llm_conf["device_map"],
-                 task=llm_conf["task"],
-                 max_new_tokens=llm_conf["max_new_tokens"],
-                 temperature=llm_conf["temperature"],
-                 n_batch=llm_conf["n_batch_gpu_cpp"],
-                 n_ctx=llm_conf["n_ctx_cpp"],
-                 n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
-                 std_out=llm_conf["std_out"],
-                 base_dir=llm_conf["base_dir"],
-                 quantization=llm_conf["quantization"],
-                 pipeline=llm_conf["pipeline"],
-                 ):
+    def __init__(
+        self,
+        model_name=llm_conf["model_name"],
+        device_map=llm_conf["device_map"],
+        task=llm_conf["task"],
+        max_new_tokens=llm_conf["max_new_tokens"],
+        temperature=llm_conf["temperature"],
+        n_batch=llm_conf["n_batch_gpu_cpp"],
+        n_ctx=llm_conf["n_ctx_cpp"],
+        n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
+        std_out=llm_conf["std_out"],
+        base_dir=llm_conf["base_dir"],
+        quantization=llm_conf["quantization"],
+        pipeline=llm_conf["pipeline"],
+    ):
+        """Initialize the LLM class using the given parameters."""
         self.base_dir = Path(base_dir)
         self._model_name = model_name
         self.quantization = quantization
@@ -74,7 +78,8 @@ class LLM:
     def model_path(self):
         """Sets the model name."""
         return str(
-            self.base_dir / self.model_name / f'ggml-model-{self.quantization}.gguf')
+            self.base_dir / self.model_name / f"ggml-model-{self.quantization}.gguf"
+        )
 
     @model_name.setter
     def model_name(self, value):
@@ -92,21 +97,24 @@ class LLM:
         else:
             hf_model = self.model_name
             match self.quantization:
-                case 'Q8':
+                case "Q8":
                     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-                case 'Q4':
+                case "Q4":
                     quantization_config = BitsAndBytesConfig(load_in_4bit=True)
                 case _:
                     raise ValueError(
-                        f'{self.quantization} is not a valid quantization. Non-local hf_pipeline takes only Q4 and Q8.')
+                        f"{self.quantization} is not a valid quantization. Non-local hf_pipeline takes only Q4 and Q8."
+                    )
 
         try:
             # Try to load the model without passing the token
             tokenizer = AutoTokenizer.from_pretrained(hf_model)
-            model = AutoModelForCausalLM.from_pretrained(hf_model,
-                                                         quantization_config=quantization_config,
-                                                         device_map=self.device_map,
-                                                         torch_dtype=torch.float16, )
+            model = AutoModelForCausalLM.from_pretrained(
+                hf_model,
+                quantization_config=quantization_config,
+                device_map=self.device_map,
+                torch_dtype=torch.float16,
+            )
         except OSError:  # LocalTokenNotFoundError:
             # If loading fails due to an auth token error, then load the token and retry
             load_dotenv()
@@ -114,24 +122,29 @@ class LLM:
             if not auth_token:
                 raise ValueError("Authentication token not provided.")
             tokenizer = AutoTokenizer.from_pretrained(hf_model, token=True)
-            model = AutoModelForCausalLM.from_pretrained(hf_model,
-                                                         quantization_config=quantization_config,
-                                                         device_map=self.device_map,
-                                                         torch_dtype=torch.float16,
-                                                         token=True)
+            model = AutoModelForCausalLM.from_pretrained(
+                hf_model,
+                quantization_config=quantization_config,
+                device_map=self.device_map,
+                torch_dtype=torch.float16,
+                token=True,
+            )
 
-        pipe = pipeline(self.task,
-                        model=model,
-                        tokenizer=tokenizer,
-                        torch_dtype=torch.bfloat16,
-                        device_map=self.device_map,
-                        max_new_tokens=self.max_new_tokens,
-                        do_sample=True,
-                        top_k=10,
-                        num_return_sequences=1,
-                        eos_token_id=tokenizer.eos_token_id
-                        )
-        llm = HuggingFacePipeline(pipeline=pipe, model_kwargs={'temperature': self.temperature})
+        pipe = pipeline(
+            self.task,
+            model=model,
+            tokenizer=tokenizer,
+            torch_dtype=torch.bfloat16,
+            device_map=self.device_map,
+            max_new_tokens=self.max_new_tokens,
+            do_sample=True,
+            top_k=10,
+            num_return_sequences=1,
+            eos_token_id=tokenizer.eos_token_id,
+        )
+        llm = HuggingFacePipeline(
+            pipeline=pipe, model_kwargs={"temperature": self.temperature}
+        )
         return llm
 
     def llama_cpp(self):
@@ -149,11 +162,9 @@ class LLM:
         )
         return llm
 
-    def load_model(self,
-                   model_name=None,
-                   pipeline=None,
-                   quantization=None,
-                   is_local=None):
+    def load_model(
+        self, model_name=None, pipeline=None, quantization=None, is_local=None
+    ):
         """Loads the model based on the specified pipeline and model name.
 
         Args:
@@ -172,7 +183,7 @@ class LLM:
             is_local = False
 
         match self.pipeline:
-            case 'llama_cpp':
+            case "llama_cpp":
                 return self.llama_cpp()
-            case 'hf':
+            case "hf":
                 return self.hf_pipeline(is_local=is_local)
