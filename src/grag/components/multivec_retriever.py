@@ -1,11 +1,11 @@
 import asyncio
 import uuid
-from typing import List
+from typing import Any, Dict, List, Optional
 
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
 from grag.components.vectordb.base import VectorDB
-from grag.components.vectordb.chroma_client import ChromaClient
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
@@ -31,11 +31,13 @@ class Retriever:
     """
 
     def __init__(
-        self,
-        store_path: str = multivec_retriever_conf["store_path"],
-        id_key: str = multivec_retriever_conf["id_key"],
-        namespace: str = multivec_retriever_conf["namespace"],
-        top_k=1,
+            self,
+            vectordb: Optional[VectorDB] = None,
+            store_path: str = multivec_retriever_conf["store_path"],
+            id_key: str = multivec_retriever_conf["id_key"],
+            namespace: str = multivec_retriever_conf["namespace"],
+            top_k=1,
+            client_kwargs: Optional[Dict[str, Any]] = None
     ):
         """Args:
         store_path: Path to the local file store, defaults to argument from config file
@@ -46,7 +48,13 @@ class Retriever:
         self.store_path = store_path
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
-        self.vectordb: VectorDB = ChromaClient()  # TODO - change to init argument
+        if vectordb is None:
+            if client_kwargs is not None:
+                self.vectordb = DeepLakeClient(**client_kwargs)
+            else:
+                self.vectordb = DeepLakeClient()
+        else:
+            self.vectordb = vectordb
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
             vectorstore=self.vectordb.langchain_client,

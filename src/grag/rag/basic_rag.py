@@ -1,10 +1,10 @@
 import json
-from typing import List, Union
+from typing import List, Optional, Union
 
 from grag import prompts
 from grag.components.llm import LLM
 from grag.components.multivec_retriever import Retriever
-from grag.components.prompt import Prompt, FewShotPrompt
+from grag.components.prompt import FewShotPrompt, Prompt
 from grag.components.utils import get_config
 from importlib_resources import files
 from langchain_core.documents import Document
@@ -14,18 +14,22 @@ conf = get_config()
 
 class BasicRAG:
     def __init__(
-        self,
-        model_name=None,
-        doc_chain="stuff",
-        task="QA",
-        llm_kwargs=None,
-        retriever_kwargs=None,
-        custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
+            self,
+            retriever: Optional[Retriever] = None,
+            model_name=None,
+            doc_chain="stuff",
+            task="QA",
+            llm_kwargs=None,
+            retriever_kwargs=None,
+            custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
-        if retriever_kwargs is None:
-            self.retriever = Retriever()
+        if retriever is None:
+            if retriever_kwargs is None:
+                self.retriever = Retriever()
+            else:
+                self.retriever = Retriever(**retriever_kwargs)
         else:
-            self.retriever = Retriever(**retriever_kwargs)
+            self.retriever = retriever
 
         if llm_kwargs is None:
             self.llm_ = LLM()
