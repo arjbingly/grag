@@ -17,7 +17,7 @@ if user_input != "":
 
 res = get_llamacpp_repo(root_path)
 
-if "Already up to date." in res.stdout:
+if "Already up to date." in str(res.stdout):
     print("Repository is already up to date. Skipping build.")
 else:
     print("Updates found. Starting build...")
