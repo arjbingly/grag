@@ -31,14 +31,14 @@ class BasicRAG:
     """
 
     def __init__(
-            self,
-            retriever: Optional[Retriever] = None,
-            model_name=None,
-            doc_chain="stuff",
-            task="QA",
-            llm_kwargs=None,
-            retriever_kwargs=None,
-            custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
+        self,
+        retriever: Optional[Retriever] = None,
+        model_name=None,
+        doc_chain="stuff",
+        task="QA",
+        llm_kwargs=None,
+        retriever_kwargs=None,
+        custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
         if retriever is None:
             if retriever_kwargs is None:

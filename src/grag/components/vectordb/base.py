@@ -51,7 +51,7 @@ class VectorDB(ABC):
 
     @abstractmethod
     def get_chunk(
-            self, query: str, with_score: bool = False, top_k: int = None
+        self, query: str, with_score: bool = False, top_k: int = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the vector database.
 
@@ -67,7 +67,7 @@ class VectorDB(ABC):
 
     @abstractmethod
     async def aget_chunk(
-            self, query: str, with_score: bool = False, top_k: int = None
+        self, query: str, with_score: bool = False, top_k: int = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the vector database (asynchronous).
 

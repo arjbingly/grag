@@ -39,13 +39,13 @@ class Retriever:
     """
 
     def __init__(
-            self,
-            vectordb: Optional[VectorDB] = None,
-            store_path: str = multivec_retriever_conf["store_path"],
-            id_key: str = multivec_retriever_conf["id_key"],
-            namespace: str = multivec_retriever_conf["namespace"],
-            top_k=1,
-            client_kwargs: Optional[Dict[str, Any]] = None
+        self,
+        vectordb: Optional[VectorDB] = None,
+        store_path: str = multivec_retriever_conf["store_path"],
+        id_key: str = multivec_retriever_conf["id_key"],
+        namespace: str = multivec_retriever_conf["namespace"],
+        top_k=1,
+        client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
