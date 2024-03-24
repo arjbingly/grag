@@ -1,6 +1,6 @@
 from grag.components.utils import get_config
 from grag.quantize.utils import (
-    building_llama,
+    building_llamacpp,
     fetch_model_repo,
     get_llamacpp_repo,
     quantize_model,
@@ -15,14 +15,13 @@ user_input = input(
 if user_input != "":
     root_path = user_input
 
-# noinspection PyNoneFunctionAssignment
 res = get_llamacpp_repo(root_path)
 
 if "Already up to date." in str(res.stdout):
     print("Repository is already up to date. Skipping build.")
 else:
     print("Updates found. Starting build...")
-    building_llama(root_path)
+    building_llamacpp(root_path)
 
 response = input("Do you want us to download the model? (y/n) [Enter for yes]: ").strip().lower()
 if response == "n":
