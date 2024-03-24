@@ -1,6 +1,6 @@
+import os
 import subprocess
 import sys
-import os
 
 
 def execute_commands(model_dir_path, quantization=None):
@@ -13,7 +13,7 @@ def execute_commands(model_dir_path, quantization=None):
         if quantization:
             model_file = f"llama.cpp/models/{model_dir_path}/ggml-model-f16.gguf"
             quantized_model_file = f"llama.cpp/models/{model_dir_path.split('/')[-1]}/ggml-model-{quantization}.gguf"
-            subprocess.run(["llama.cpp/llm_quantize", model_file, quantized_model_file, quantization], check=True)
+            subprocess.run(["llama.cpp/quantize", model_file, quantized_model_file, quantization], check=True)
 
     else:
         print("llama.cpp doesn't exist, check readme how to clone.")
