@@ -42,6 +42,7 @@ dependencies = [
     "huggingface_hub>=0.20.2",
     "pydantic>=2.5.0",
     "rouge-score>=0.1.2",
+    "deeplake>=3.8.27"
 ]
 
 [project.urls]
