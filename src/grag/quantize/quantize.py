@@ -15,6 +15,7 @@ user_input = input(
 if user_input != "":
     root_path = user_input
 
+# noinspection PyNoneFunctionAssignment
 res = get_llamacpp_repo(root_path)
 
 if "Already up to date." in str(res.stdout):

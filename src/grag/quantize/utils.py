@@ -72,6 +72,6 @@ def quantize_model(model_dir_path: str, quantization: str, root_path: str) -> No
     subprocess.run(["python3", "convert.py", f"models/{model_dir_path}/"], check=True)
     model_file = f"models/{model_dir_path}/ggml-model-f32.gguf"
     quantized_model_file = f"models/{model_dir_path.split('/')[-1]}/ggml-model-{quantization}.gguf"
-    subprocess.run(["quantize", model_file, quantized_model_file, quantization], check=True)
+    subprocess.run(["./quantize", model_file, quantized_model_file, quantization], check=True)
     print(f"Quantized model present at {root_path}/llama.cpp/{quantized_model_file}")
     os.chdir(Path(__file__).parent)  # Return to the root path after operation
