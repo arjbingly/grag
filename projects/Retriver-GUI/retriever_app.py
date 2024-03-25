@@ -46,7 +46,7 @@ class PageHome:
                     st.write(result.metadata)
 
     def check_connection(self):
-        response = self.app.retriever.client.test_connection()
+        response = self.app.retriever.vectordb.test_connection()
         if response:
             return True
         else:
@@ -55,14 +55,14 @@ class PageHome:
     def render_stats(self):
         st.write(f'''
         **Chroma Client Details:** \n
-            Host Address    : {self.app.retriever.client.host}:{self.app.retriever.client.port} \n
-            Collection Name : {self.app.retriever.client.collection_name} \n
-            Embeddings Type : {self.app.retriever.client.embedding_type} \n
-            Embeddings Model: {self.app.retriever.client.embedding_model} \n
-            Number of docs  : {self.app.retriever.client.collection.count()} \n
+            Host Address    : {self.app.retriever.vectordb.host}:{self.app.retriever.vectordb.port} \n
+            Collection Name : {self.app.retriever.vectordb.collection_name} \n
+            Embeddings Type : {self.app.retriever.vectordb.embedding_type} \n
+            Embeddings Model: {self.app.retriever.vectordb.embedding_model} \n
+            Number of docs  : {self.app.retriever.vectordb.collection.count()} \n
         ''')
         if st.button('Check Connection'):
-            response = self.app.retriever.client.test_connection()
+            response = self.app.retriever.vectordb.test_connection()
             if response:
                 st.write(':green[Connection Active]')
             else:
