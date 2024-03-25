@@ -1,12 +1,17 @@
+"""Class for retriever.
+
+This module provides:
+- Retriever
+"""
+
 import asyncio
 import uuid
-from pathlib import Path
-from typing import List, Union
+from typing import Any, Dict, List, Optional
 
-from grag.components.chroma_client import ChromaClient
-from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
+from grag.components.vectordb.base import VectorDB
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
@@ -17,15 +22,16 @@ multivec_retriever_conf = get_config()["multivec_retriever"]
 
 
 class Retriever:
-    """
-    A class for multi vector retriever, it connects to a vector database and a local file store.
-    It is used to return most similar chunks from a vector store but has the additional functionality
-    to return a linked document, chunk, etc.
+    """A class for multi vector retriever.
+
+    It connects to a vector database and a local file store.
+    It is used to return most similar chunks from a vector store but has the additional functionality to return a
+    linked document, chunk, etc.
 
     Attributes:
         store_path: Path to the local file store
         id_key: A key prefix for identifying documents
-        client: ChromaClient class instance from components.chroma_client
+        vectordb: ChromaClient class instance from components.client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
         retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
                     langchain's multi-vector retriever
@@ -37,25 +43,34 @@ class Retriever:
 
     def __init__(
         self,
+        vectordb: Optional[VectorDB] = None,
         store_path: str = multivec_retriever_conf["store_path"],
         id_key: str = multivec_retriever_conf["id_key"],
         namespace: str = multivec_retriever_conf["namespace"],
         top_k=1,
+        client_kwargs: Optional[Dict[str, Any]] = None,
     ):
-        """
+        """Initialize the Retriever.
+
         Args:
-            store_path: Path to the local file store, defaults to argument from config file
-            id_key: A key prefix for identifying documents, defaults to argument from config file
-            namespace: A namespace for producing unique id, defaults to argument from config file
-            top_k: Number of top chunks to return from similarity search, defaults to 1
+        store_path: Path to the local file store, defaults to argument from config file
+        id_key: A key prefix for identifying documents, defaults to argument from config file
+        namespace: A namespace for producing unique id, defaults to argument from congig file
+        top_k: Number of top chunks to return from similarity search, defaults to 1
         """
         self.store_path = store_path
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
-        self.client = ChromaClient()
+        if vectordb is None:
+            if client_kwargs is not None:
+                self.vectordb = DeepLakeClient(**client_kwargs)
+            else:
+                self.vectordb = DeepLakeClient()
+        else:
+            self.vectordb = vectordb
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
-            vectorstore=self.client.langchain_chroma,
+            vectorstore=self.vectordb.langchain_client,
             byte_store=self.store,
             id_key=self.id_key,
         )
@@ -64,8 +79,8 @@ class Retriever:
         self.retriever.search_kwargs = {"k": self.top_k}
 
     def id_gen(self, doc: Document) -> str:
-        """
-        Takes a document and returns a unique id (uuid5) using the namespace and document source.
+        """Takes a document and returns a unique id (uuid5) using the namespace and document source.
+
         This ensures that a  single document always gets the same unique id.
 
         Args:
@@ -77,8 +92,7 @@ class Retriever:
         return uuid.uuid5(self.namespace, doc.metadata["source"]).hex
 
     def gen_doc_ids(self, docs: List[Document]) -> List[str]:
-        """
-        Takes a list of documents and produces a list of unique id, refer id_gen method for more details.
+        """Takes a list of documents and produces a list of unique id, refer id_gen method for more details.
 
         Args:
             docs: List of langchain_core.documents.Document
@@ -90,8 +104,9 @@ class Retriever:
         return [self.id_gen(doc) for doc in docs]
 
     def split_docs(self, docs: List[Document]) -> List[Document]:
-        """
-        Takes a list of documents and splits them into smaller chunks using TextSplitter from components.text_splitter
+        """Takes a list of documents and splits them into smaller chunks.
+
+        Using TextSplitter from components.text_splitter
         Also adds the unique parent document id into metadata
 
         Args:
@@ -111,9 +126,8 @@ class Retriever:
         return chunks
 
     def add_docs(self, docs: List[Document]):
-        """
-        Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
-        and adds the parent document into the file store.
+        """Adds given documents into the vector database also adds the parent document into the file store.
+
         Args:
             docs: List of langchain_core.documents.Document
 
@@ -123,13 +137,12 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        self.client.add_docs(chunks)
+        self.vectordb.add_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
     async def aadd_docs(self, docs: List[Document]):
-        """
-        Takes a list of documents, splits them using the split_docs method and then adds them into the vector database
-        and adds the parent document into the file store.
+        """Adds given documents into the vector database also adds the parent document into the file store.
+
         Args:
             docs: List of langchain_core.documents.Document
 
@@ -139,12 +152,11 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        await asyncio.run(self.client.aadd_docs(chunks))
+        await asyncio.run(self.vectordb.aadd_docs(chunks))
         self.retriever.docstore.mset(list(zip(doc_ids)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
-        """
-        Returns the most (cosine) similar chunks from the vector database.
+        """Returns the most similar chunks from the vector database.
 
         Args:
             query: A query string
@@ -155,18 +167,11 @@ class Retriever:
             list of Documents
 
         """
-        if with_score:
-            return self.client.langchain_chroma.similarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
-        else:
-            return self.client.langchain_chroma.similarity_search(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
+        _top_k = top_k if top_k else self.retriever.search_kwargs["k"]
+        return self.vectordb.get_chunk(query=query, top_k=_top_k, with_score=with_score)
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
-        """
-        Returns the most (cosine) similar chunks from the vector database, asynchronously.
+        """Returns the most (cosine) similar chunks from the vector database, asynchronously.
 
         Args:
             query: A query string
@@ -177,18 +182,13 @@ class Retriever:
             list of Documents
 
         """
-        if with_score:
-            return await self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
-        else:
-            return await self.client.langchain_chroma.asimilarity_search(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
+        _top_k = top_k if top_k else self.retriever.search_kwargs["k"]
+        return await self.vectordb.aget_chunk(
+            query=query, top_k=_top_k, with_score=with_score
+        )
 
     def get_doc(self, query: str):
-        """
-        Returns the parent document of the most (cosine) similar chunk from the vector database.
+        """Returns the parent document of the most (cosine) similar chunk from the vector database.
 
         Args:
             query: A query string
@@ -199,8 +199,8 @@ class Retriever:
         return self.retriever.get_relevant_documents(query=query)
 
     async def aget_doc(self, query: str):
-        """
-        Returns the parent documents of the most (cosine) similar chunks from the vector database.
+        """Returns the parent documents of the most (cosine) similar chunks from the vector database.
+
         Args:
             query: A query string
         Returns:
@@ -210,8 +210,8 @@ class Retriever:
         return await self.retriever.aget_relevant_documents(query=query)
 
     def get_docs_from_chunks(self, chunks: List[Document], one_to_one=False):
-        """
-        Returns the parent documents of chunks.
+        """Returns the parent documents of chunks.
+
         Args:
             chunks: chunks from vector store
             one_to_one: if True, returns parent doc for each chunk

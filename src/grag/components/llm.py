@@ -1,3 +1,5 @@
+"""Class for LLM."""
+
 import os
 from pathlib import Path
 
@@ -7,8 +9,12 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-from transformers import pipeline
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    pipeline,
+)
 
 from .utils import get_config
 
@@ -43,9 +49,14 @@ class LLM:
         n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
         std_out=llm_conf["std_out"],
         base_dir=llm_conf["base_dir"],
+        quantization=llm_conf["quantization"],
+        pipeline=llm_conf["pipeline"],
     ):
+        """Initialize the LLM class using the given parameters."""
         self.base_dir = Path(base_dir)
         self._model_name = model_name
+        self.quantization = quantization
+        self.pipeline = pipeline
         self.device_map = device_map
         self.task = task
         self.max_new_tokens = int(max_new_tokens)
@@ -67,9 +78,7 @@ class LLM:
     def model_path(self):
         """Sets the model name."""
         return str(
-            self.base_dir
-            / self.model_name
-            / f'ggml-model-{llm_conf["quantization"]}.gguf'
+            self.base_dir / self.model_name / f"ggml-model-{self.quantization}.gguf"
         )
 
     @model_name.setter
@@ -83,12 +92,20 @@ class LLM:
         Args:
             is_local (bool): Whether to load the model from a local path.
         """
-
         if is_local:
-            hf_model = self.model_path
+            hf_model = Path(self.model_path).parent
         else:
             hf_model = self.model_name
-        quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+            match self.quantization:
+                case "Q8":
+                    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+                case "Q4":
+                    quantization_config = BitsAndBytesConfig(load_in_4bit=True)
+                case _:
+                    raise ValueError(
+                        f"{self.quantization} is not a valid quantization. Non-local hf_pipeline takes only Q4 and Q8."
+                    )
+
         try:
             # Try to load the model without passing the token
             tokenizer = AutoTokenizer.from_pretrained(hf_model)
@@ -132,7 +149,6 @@ class LLM:
 
     def llama_cpp(self):
         """Loads the model using a custom CPP pipeline."""
-
         # https://stackoverflow.com/a/77734908/13808323
         llm = LlamaCpp(
             model_path=self.model_path,
@@ -146,19 +162,27 @@ class LLM:
         )
         return llm
 
-    def load_model(self, model_name=None, pipeline="llama_cpp", is_local=True):
+    def load_model(
+        self, model_name=None, pipeline=None, quantization=None, is_local=None
+    ):
         """Loads the model based on the specified pipeline and model name.
 
         Args:
+            quantization (str): Quantization of the LLM model like Q5_K_M, f16, etc. Optional.
             model_name (str): The name of the model to load. Optional.
             pipeline (str): The pipeline to use for loading the model. Defaults to 'llama_cpp'.
             is_local (bool): Whether the model is loaded from a local directory. Defaults to True.
         """
-
         if model_name is not None:
             self.model_name = model_name
+        if pipeline is not None:
+            self.pipeline = pipeline
+        if quantization is not None:
+            self.quantization = quantization
+        if is_local is None:
+            is_local = False
 
-        match pipeline:
+        match self.pipeline:
             case "llama_cpp":
                 return self.llama_cpp()
             case "hf":
