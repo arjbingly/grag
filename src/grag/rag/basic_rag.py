@@ -5,7 +5,7 @@ This module provides:
 """
 
 import json
-from typing import List, Union
+from typing import List, Optional, Union
 
 from grag import prompts
 from grag.components.llm import LLM
@@ -32,20 +32,21 @@ class BasicRAG:
 
     def __init__(
         self,
+        retriever: Optional[Retriever] = None,
         model_name=None,
         doc_chain="stuff",
         task="QA",
         llm_kwargs=None,
         retriever_kwargs=None,
-        custom_prompt: Union[
-            Prompt, FewShotPrompt, List[Prompt, FewShotPrompt], None
-        ] = None,
+        custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
-        """Initialize BasicRAG."""
-        if retriever_kwargs is None:
-            self.retriever = Retriever()
+        if retriever is None:
+            if retriever_kwargs is None:
+                self.retriever = Retriever()
+            else:
+                self.retriever = Retriever(**retriever_kwargs)
         else:
-            self.retriever = Retriever(**retriever_kwargs)
+            self.retriever = retriever
 
         if llm_kwargs is None:
             self.llm_ = LLM()

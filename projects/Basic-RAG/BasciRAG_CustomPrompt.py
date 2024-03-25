@@ -1,5 +1,5 @@
+from grag.components.prompt import Prompt
 from grag.rag.basic_rag import BasicRAG
-from grap.components.prompt import Prompt
 
 custom_prompt = Prompt(
     input_keys={"context", "question"},

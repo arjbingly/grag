@@ -6,14 +6,19 @@ This module provides:
 
 import asyncio
 import uuid
-from typing import List
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
-from grag.components.chroma_client import ChromaClient
+from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
+from grag.components.vectordb.base import VectorDB
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
+from tqdm import tqdm
+from tqdm.asyncio import tqdm as atqdm
 
 multivec_retriever_conf = get_config()["multivec_retriever"]
 
@@ -28,9 +33,10 @@ class Retriever:
     Attributes:
         store_path: Path to the local file store
         id_key: A key prefix for identifying documents
-        client: ChromaClient class instance from components.chroma_client
+        vectordb: ChromaClient class instance from components.client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
-        retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance, langchain's multi-vector retriever
+        retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
+                    langchain's multi-vector retriever
         splitter: TextSplitter class instance from components.text_splitter
         namespace: Namespace for producing unique id
         top_k: Number of top chunks to return from similarity search.
@@ -39,26 +45,36 @@ class Retriever:
 
     def __init__(
         self,
+        vectordb: Optional[VectorDB] = None,
         store_path: str = multivec_retriever_conf["store_path"],
         id_key: str = multivec_retriever_conf["id_key"],
         namespace: str = multivec_retriever_conf["namespace"],
         top_k=1,
+        client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
         Args:
+        vectordb: Vector DB client instance
         store_path: Path to the local file store, defaults to argument from config file
         id_key: A key prefix for identifying documents, defaults to argument from config file
         namespace: A namespace for producing unique id, defaults to argument from congig file
         top_k: Number of top chunks to return from similarity search, defaults to 1
+        client_kwargs: kwargs to pass to the vectordb client
         """
         self.store_path = store_path
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
-        self.client = ChromaClient()
+        if vectordb is None:
+            if client_kwargs is not None:
+                self.vectordb = DeepLakeClient(**client_kwargs)
+            else:
+                self.vectordb = DeepLakeClient()
+        else:
+            self.vectordb = vectordb
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
-            vectorstore=self.client.langchain_chroma,
+            vectorstore=self.vectordb.langchain_client,
             byte_store=self.store,
             id_key=self.id_key,
         )
@@ -125,7 +141,7 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        self.client.add_docs(chunks)
+        self.vectordb.add_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
     async def aadd_docs(self, docs: List[Document]):
@@ -140,11 +156,11 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        await asyncio.run(self.client.aadd_docs(chunks))
+        await asyncio.run(self.vectordb.aadd_docs(chunks))
         self.retriever.docstore.mset(list(zip(doc_ids)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
-        """Returns the most (cosine) similar chunks from the vector database.
+        """Returns the most similar chunks from the vector database.
 
         Args:
             query: A query string
@@ -155,14 +171,8 @@ class Retriever:
             list of Documents
 
         """
-        if with_score:
-            return self.client.langchain_chroma.similarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
-        else:
-            return self.client.langchain_chroma.similarity_search(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
+        _top_k = top_k if top_k else self.retriever.search_kwargs["k"]
+        return self.vectordb.get_chunk(query=query, top_k=_top_k, with_score=with_score)
 
     async def aget_chunk(self, query: str, with_score=False, top_k=None):
         """Returns the most (cosine) similar chunks from the vector database, asynchronously.
@@ -176,14 +186,10 @@ class Retriever:
             list of Documents
 
         """
-        if with_score:
-            return await self.client.langchain_chroma.asimilarity_search_with_relevance_scores(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
-        else:
-            return await self.client.langchain_chroma.asimilarity_search(
-                query=query, **{"k": top_k} if top_k else self.retriever.search_kwargs
-            )
+        _top_k = top_k if top_k else self.retriever.search_kwargs["k"]
+        return await self.vectordb.aget_chunk(
+            query=query, top_k=_top_k, with_score=with_score
+        )
 
     def get_doc(self, query: str):
         """Returns the parent document of the most (cosine) similar chunk from the vector database.
@@ -228,3 +234,87 @@ class Retriever:
                     ids.append(d.metadata[self.id_key])
                 docs = self.retriever.docstore.mget(ids)
                 return [d for d in docs if d is not None]
+
+    def ingest(
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
+    ):
+        """Ingests the files in directory.
+
+        Args:
+            dir_path: path to the directory
+            glob_pattern: glob pattern to identify files
+            dry_run: if True, does not ingest any files
+            verbose: if True, shows progress
+            parser_kwargs: arguments to pass to the parser
+
+        """
+        _formats_to_add = ["Text", "Tables"]
+        filepath_gen = Path(dir_path).glob(glob_pattern)
+        if parser_kwargs:
+            parser = ParsePDF(parser_kwargs)
+        else:
+            parser = ParsePDF()
+        if verbose:
+            num_files = len(list(Path(dir_path).glob(glob_pattern)))
+            pbar = tqdm(filepath_gen, total=num_files, desc="Ingesting Files")
+            for filepath in pbar:
+                if not dry_run:
+                    pbar.set_postfix_str(
+                        f"Parsing file - {filepath.relative_to(dir_path)}"
+                    )
+                    docs = parser.load_file(filepath)
+                    pbar.set_postfix_str(
+                        f"Adding file - {filepath.relative_to(dir_path)}"
+                    )
+                    for format_key in _formats_to_add:
+                        self.add_docs(docs[format_key])
+                    print(f"Completed adding - {filepath.relative_to(dir_path)}")
+                else:
+                    print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
+
+    async def aingest(
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
+    ):
+        """Asynchronously ingests the files in directory.
+
+        Args:
+            dir_path: path to the directory
+            glob_pattern: glob pattern to identify files
+            dry_run: if True, does not ingest any files
+            verbose: if True, shows progress
+            parser_kwargs: arguments to pass to the parser
+
+        """
+        _formats_to_add = ["Text", "Tables"]
+        filepath_gen = Path(dir_path).glob(glob_pattern)
+        if parser_kwargs:
+            parser = ParsePDF(parser_kwargs)
+        else:
+            parser = ParsePDF()
+        if verbose:
+            num_files = len(list(Path(dir_path).glob(glob_pattern)))
+            pbar = atqdm(filepath_gen, total=num_files, desc="Ingesting Files")
+            for filepath in pbar:
+                if not dry_run:
+                    pbar.set_postfix_str(
+                        f"Parsing file - {filepath.relative_to(dir_path)}"
+                    )
+                    docs = parser.load_file(filepath)
+                    pbar.set_postfix_str(
+                        f"Adding file - {filepath.relative_to(dir_path)}"
+                    )
+                    for format_key in _formats_to_add:
+                        await self.aadd_docs(docs[format_key])
+                    print(f"Completed adding - {filepath.relative_to(dir_path)}")
+                else:
+                    print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
