@@ -1,3 +1,5 @@
+"""A cookbook demonstrating how to use custom prompts with Basic RAG."""
+
 from grag.components.multivec_retriever import Retriever
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from grag.rag.basic_rag import BasicRAG
