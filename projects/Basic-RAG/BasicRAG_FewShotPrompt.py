@@ -1,5 +1,5 @@
+from grag.components.prompt import FewShotPrompt
 from grag.rag.basic_rag import BasicRAG
-from grap.components.prompt import FewShotPrompt
 
 custom_few_shot_prompt = FewShotPrompt(
     input_keys={"context", "question"},
