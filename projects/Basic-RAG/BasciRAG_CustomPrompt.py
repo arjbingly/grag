@@ -1,14 +1,13 @@
-"""A cookbook demonstrating how to use a custom prompt with BasicRAG."""
-
 from grag.components.prompt import Prompt
 from grag.rag.basic_rag import BasicRAG
 
 custom_prompt = Prompt(
     input_keys={"context", "question"},
-    template="""Answer the following question based on the given context.
+    template='''Answer the following question based on the given context.
     question: {question}
     context: {context}
     answer: 
-    """,
+    '''
 )
-rag = BasicRAG(doc_chain="stuff", custom_prompt=custom_prompt)
+rag = BasicRAG(doc_chain="stuff",
+               custom_prompt=custom_prompt)
