@@ -6,8 +6,10 @@ This module provides:
 
 import asyncio
 import uuid
-from typing import Any, Dict, List, Optional
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
+from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
 from grag.components.vectordb.base import VectorDB
@@ -53,10 +55,12 @@ class Retriever:
         """Initialize the Retriever.
 
         Args:
+        vectordb: Vector DB client instance
         store_path: Path to the local file store, defaults to argument from config file
         id_key: A key prefix for identifying documents, defaults to argument from config file
         namespace: A namespace for producing unique id, defaults to argument from congig file
         top_k: Number of top chunks to return from similarity search, defaults to 1
+        client_kwargs: kwargs to pass to the vectordb client
         """
         self.store_path = store_path
         self.id_key = id_key
@@ -239,8 +243,8 @@ class Retriever:
         verbose: bool = True,
         parser_kwargs: dict = None,
     ):
-        """
-        Ingests the files in directory
+        """Ingests the files in directory.
+
         Args:
             dir_path: path to the directory
             glob_pattern: glob pattern to identify files
@@ -281,8 +285,8 @@ class Retriever:
         verbose: bool = True,
         parser_kwargs: dict = None,
     ):
-        """
-        Asynchronously ingests the files in directory
+        """Asynchronously ingests the files in directory.
+
         Args:
             dir_path: path to the directory
             glob_pattern: glob pattern to identify files
