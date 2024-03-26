@@ -1,3 +1,5 @@
+"""Class for LLM."""
+
 import os
 from pathlib import Path
 
@@ -50,6 +52,7 @@ class LLM:
         quantization=llm_conf["quantization"],
         pipeline=llm_conf["pipeline"],
     ):
+        """Initialize the LLM class using the given parameters."""
         self.base_dir = Path(base_dir)
         self._model_name = model_name
         self.quantization = quantization
