@@ -1,11 +1,14 @@
-# Basic RAG
+# Basic RAG Cookbook
 
-## BasicRAG v1
+Welcome to the Basic RAG Cookbook! This repository is dedicated to showcasing how to utilize the Retrieval-Augmented
+Generation (RAG) model for various applications using custom and few-shot prompts. For in depth understanding of RAG
+pipelines, chains, and prompts
+check [RAG-Piplines.md](https://github.com/arjbingly/Capstone_5/blob/main/projects/Basic-RAG/RAG-Piplines.md)
 
-- Stuff document chain (Refer [RAG-Pipelines.md](./RAG-Piplines.md))
-- Top-k retrival
+### Contents:
 
-## BasicRAG v2
-
-- Refine document chain (Refer [RAG-Pipelines.md](./RAG-Piplines.md))
-- Top-k retrival
+- **BasicRAG_CustomPrompt.py**: Learn to integrate custom prompts into Basic RAG for tailored query responses.
+- **BasicRAG_FewShotPrompt.py**: Explore the use of few-shot prompts to enhance Basic RAG's contextual understanding.
+- **BasicRAG_ingest.py**: Demonstrates the process of ingesting PDF files, making them searchable via Basic RAG.
+- **BasicRAG_stuff.py**: A guide on leveraging the stuff chain with Basic RAG for enriched data processing.
+- **BasicRAG_refine.py**: Discover how to refine queries using the refine chain for more precise results with Basic RAG.

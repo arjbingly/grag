@@ -6,8 +6,10 @@ This module provides:
 
 import asyncio
 import uuid
-from typing import Any, Dict, List, Optional
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
+from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
 from grag.components.utils import get_config
 from grag.components.vectordb.base import VectorDB
@@ -15,6 +17,8 @@ from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import LocalFileStore
 from langchain_core.documents import Document
+from tqdm import tqdm
+from tqdm.asyncio import tqdm as atqdm
 
 multivec_retriever_conf = get_config()["multivec_retriever"]
 
@@ -31,7 +35,8 @@ class Retriever:
         id_key: A key prefix for identifying documents
         vectordb: ChromaClient class instance from components.client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
-        retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance, langchain's multi-vector retriever
+        retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
+                    langchain's multi-vector retriever
         splitter: TextSplitter class instance from components.text_splitter
         namespace: Namespace for producing unique id
         top_k: Number of top chunks to return from similarity search.
@@ -50,10 +55,12 @@ class Retriever:
         """Initialize the Retriever.
 
         Args:
+        vectordb: Vector DB client instance
         store_path: Path to the local file store, defaults to argument from config file
         id_key: A key prefix for identifying documents, defaults to argument from config file
         namespace: A namespace for producing unique id, defaults to argument from congig file
         top_k: Number of top chunks to return from similarity search, defaults to 1
+        client_kwargs: kwargs to pass to the vectordb client
         """
         self.store_path = store_path
         self.id_key = id_key
@@ -227,3 +234,87 @@ class Retriever:
                     ids.append(d.metadata[self.id_key])
                 docs = self.retriever.docstore.mget(ids)
                 return [d for d in docs if d is not None]
+
+    def ingest(
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
+    ):
+        """Ingests the files in directory.
+
+        Args:
+            dir_path: path to the directory
+            glob_pattern: glob pattern to identify files
+            dry_run: if True, does not ingest any files
+            verbose: if True, shows progress
+            parser_kwargs: arguments to pass to the parser
+
+        """
+        _formats_to_add = ["Text", "Tables"]
+        filepath_gen = Path(dir_path).glob(glob_pattern)
+        if parser_kwargs:
+            parser = ParsePDF(parser_kwargs)
+        else:
+            parser = ParsePDF()
+        if verbose:
+            num_files = len(list(Path(dir_path).glob(glob_pattern)))
+            pbar = tqdm(filepath_gen, total=num_files, desc="Ingesting Files")
+            for filepath in pbar:
+                if not dry_run:
+                    pbar.set_postfix_str(
+                        f"Parsing file - {filepath.relative_to(dir_path)}"
+                    )
+                    docs = parser.load_file(filepath)
+                    pbar.set_postfix_str(
+                        f"Adding file - {filepath.relative_to(dir_path)}"
+                    )
+                    for format_key in _formats_to_add:
+                        self.add_docs(docs[format_key])
+                    print(f"Completed adding - {filepath.relative_to(dir_path)}")
+                else:
+                    print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
+
+    async def aingest(
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
+    ):
+        """Asynchronously ingests the files in directory.
+
+        Args:
+            dir_path: path to the directory
+            glob_pattern: glob pattern to identify files
+            dry_run: if True, does not ingest any files
+            verbose: if True, shows progress
+            parser_kwargs: arguments to pass to the parser
+
+        """
+        _formats_to_add = ["Text", "Tables"]
+        filepath_gen = Path(dir_path).glob(glob_pattern)
+        if parser_kwargs:
+            parser = ParsePDF(parser_kwargs)
+        else:
+            parser = ParsePDF()
+        if verbose:
+            num_files = len(list(Path(dir_path).glob(glob_pattern)))
+            pbar = atqdm(filepath_gen, total=num_files, desc="Ingesting Files")
+            for filepath in pbar:
+                if not dry_run:
+                    pbar.set_postfix_str(
+                        f"Parsing file - {filepath.relative_to(dir_path)}"
+                    )
+                    docs = parser.load_file(filepath)
+                    pbar.set_postfix_str(
+                        f"Adding file - {filepath.relative_to(dir_path)}"
+                    )
+                    for format_key in _formats_to_add:
+                        await self.aadd_docs(docs[format_key])
+                    print(f"Completed adding - {filepath.relative_to(dir_path)}")
+                else:
+                    print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
