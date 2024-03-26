@@ -1,4 +1,4 @@
-"""A cookbook demonstrating how to use Basic RAG with refine chain."""
+"""A cookbook demonstrating how to use Basic RAG with refine chain using DeepLake as client."""
 
 from grag.components.multivec_retriever import Retriever
 from grag.components.vectordb.deeplake_client import DeepLakeClient

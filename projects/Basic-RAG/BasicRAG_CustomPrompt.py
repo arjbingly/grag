@@ -1,4 +1,4 @@
-"""A cookbook demonstrating how to use Basic RAG with stuff chain."""
+"""A cookbook demonstrating how to use custom prompts with Basic RAG."""
 
 from grag.components.prompt import Prompt
 from grag.rag.basic_rag import BasicRAG
