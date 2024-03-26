@@ -40,6 +40,7 @@ class BasicRAG:
         retriever_kwargs=None,
         custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
+        """Initialize BasicRAG."""
         if retriever is None:
             if retriever_kwargs is None:
                 self.retriever = Retriever()
