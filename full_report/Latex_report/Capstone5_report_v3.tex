@@ -76,10 +76,8 @@ Our current main challenges include:
 % ------------------------------------------------------------------------------------------------------------------------
 
 \section{Related Work}
-The original inspiration was to create an end-to-end, open-sourced, self-hostable search engine. 
-insert citations like~\cite{byzantine-pki}, \cite{atomic-mcast-tcs01}, and also~\cite{sybilattack}, or even~\cite{psn-fail, verisign-fail}.
-
-Talk about the graph LLM papers here and how that could be usable implementation. Also cite git repos.
+The original inspiration was to create an end-to-end, open-sourced, self-hostable search engine. Companies that need an internal search engine would benefit from this implementation, as it requires no access to online resources.
+https://github.com/michaelthwan/searchGPT and https://github.com/GerevAI/gerev#integrations are open-sourced packages for LLM-powered semantic search engines. However, they leverage APIs, which makes the process reliant on online resources. We aim to localize all processes to ensure self-hostability.
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Solution and Methodology}
 \subsection{RAG Pipeline}
@@ -180,7 +178,7 @@ To address these challenges, we integrated PDFPlumber for parsing table elements
 (add example of output - original text vs output text)
 
 \subesection{LLM implementation}
-(needs revision) Quantize model first; currently cannot run without quantization. 
+(outline only, needs revision) Quantize model first; currently cannot run without quantization. 
 Use llama.cpp which provides quantization 
 Have text user interface (TUI) for users to easily download the model from HuggingFace and quantize
 Tested our implementation with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b
@@ -200,6 +198,7 @@ Could use any other model
 % ------------------------------------------------------------------------------------------------------------------------
 
 \section{Conclusion}
+
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 (add graph papers and Lewis et al. here)
