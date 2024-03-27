@@ -4,7 +4,7 @@ This module provides:
 - ChromaClient
 """
 
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 import chromadb
 from grag.components.embedding import Embedding
@@ -44,11 +44,11 @@ class ChromaClient(VectorDB):
 
     def __init__(
         self,
-        host=chroma_conf["host"],
-        port=chroma_conf["port"],
-        collection_name=chroma_conf["collection_name"],
-        embedding_type=chroma_conf["embedding_type"],
-        embedding_model=chroma_conf["embedding_model"],
+        host: str = chroma_conf["host"],
+        port: str = chroma_conf["port"],
+        collection_name: str = chroma_conf["collection_name"],
+        embedding_type: str = chroma_conf["embedding_type"],
+        embedding_model: str = chroma_conf["embedding_model"],
     ):
         """Initialize a ChromaClient object.
 
@@ -59,11 +59,11 @@ class ChromaClient(VectorDB):
         embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding', defaults to argument from config file
         embedding_model: model name of embedding used, should correspond to the embedding_type, defaults to argument from config file
         """
-        self.host: str = host
-        self.port: str = port
-        self.collection_name: str = collection_name
-        self.embedding_type: str = embedding_type
-        self.embedding_model: str = embedding_model
+        self.host = host
+        self.port = port
+        self.collection_name = collection_name
+        self.embedding_type = embedding_type
+        self.embedding_model = embedding_model
 
         self.embedding_function = Embedding(
             embedding_model=self.embedding_model, embedding_type=self.embedding_type
@@ -152,7 +152,7 @@ class ChromaClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-        self, query: str, with_score: bool = False, top_k: int = None
+        self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the chroma database.
 

@@ -33,10 +33,6 @@ def test_retriever_split_docs():
     pass
 
 
-def test_retriever_split_docs():
-    pass
-
-
 def test_retriever_add_docs():
     # small enough docs to not split.
     docs = [Document(page_content=

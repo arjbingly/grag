@@ -5,7 +5,7 @@ This module provides:
 """
 
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 from grag.components.embedding import Embedding
 from grag.components.utils import get_config
@@ -113,7 +113,7 @@ class DeepLakeClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-        self, query: str, with_score: bool = False, top_k: int = None
+        self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database.
 
