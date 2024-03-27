@@ -6,6 +6,7 @@ from grag.rag.basic_rag import BasicRAG
 
 client = DeepLakeClient(collection_name="test")
 retriever = Retriever(vectordb=client)
+
 rag = BasicRAG(doc_chain="stuff", retriever=retriever)
 
 if __name__ == "__main__":

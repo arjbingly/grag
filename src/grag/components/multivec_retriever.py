@@ -44,13 +44,13 @@ class Retriever:
     """
 
     def __init__(
-            self,
-            vectordb: Optional[VectorDB] = None,
-            store_path: str = multivec_retriever_conf["store_path"],
-            id_key: str = multivec_retriever_conf["id_key"],
-            namespace: str = multivec_retriever_conf["namespace"],
-            top_k=multivec_retriever_conf["top_k"],
-            client_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        vectordb: Optional[VectorDB] = None,
+        store_path: str = multivec_retriever_conf["store_path"],
+        id_key: str = multivec_retriever_conf["id_key"],
+        namespace: str = multivec_retriever_conf["namespace"],
+        top_k=int(multivec_retriever_conf["top_k"]),
+        client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
@@ -236,12 +236,12 @@ class Retriever:
                 return [d for d in docs if d is not None]
 
     def ingest(
-            self,
-            dir_path: Union[str, Path],
-            glob_pattern: str = "**/*.pdf",
-            dry_run: bool = False,
-            verbose: bool = True,
-            parser_kwargs: dict = None,
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
     ):
         """Ingests the files in directory.
 
@@ -278,12 +278,12 @@ class Retriever:
                     print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
     async def aingest(
-            self,
-            dir_path: Union[str, Path],
-            glob_pattern: str = "**/*.pdf",
-            dry_run: bool = False,
-            verbose: bool = True,
-            parser_kwargs: dict = None,
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: dict = None,
     ):
         """Asynchronously ingests the files in directory.
 
