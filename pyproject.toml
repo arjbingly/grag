@@ -45,6 +45,16 @@ dependencies = [
     "deeplake>=3.8.27"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "ruff",
+    "sphinx",
+    "sphinx-rtd-theme"
+]
+
 [project.urls]
 Documentation = "https://github.com/arjbingly/Capstone_5#readme"
 Issues = "https://github.com/arjbingly/Capstone_5/issues"
