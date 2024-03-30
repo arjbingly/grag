@@ -4,6 +4,8 @@ This module provides:
 - TextSplitter
 """
 
+from typing import Union
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from .utils import get_config
@@ -22,8 +24,8 @@ class TextSplitter:
 
     def __init__(
         self,
-        chunk_size: int = text_splitter_conf["chunk_size"],
-        chunk_overlap: int = text_splitter_conf["chunk_overlap"],
+        chunk_size: Union[int, str] = text_splitter_conf["chunk_size"],
+        chunk_overlap: Union[int, str] = text_splitter_conf["chunk_overlap"],
     ):
         """Initialize TextSplitter."""
         self.text_splitter = RecursiveCharacterTextSplitter(

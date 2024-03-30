@@ -74,17 +74,17 @@ class LLM:
         """Returns the name of the model."""
         return self._model_name
 
+    @model_name.setter
+    def model_name(self, value):
+        """Returns the path to the model."""
+        self._model_name = value
+
     @property
     def model_path(self):
         """Sets the model name."""
         return str(
             self.base_dir / self.model_name / f"ggml-model-{self.quantization}.gguf"
         )
-
-    @model_name.setter
-    def model_name(self, value):
-        """Returns the path to the model."""
-        self._model_name = value
 
     def hf_pipeline(self, is_local=False):
         """Loads the model using Hugging Face transformers.

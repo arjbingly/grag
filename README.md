@@ -8,7 +8,6 @@
 ![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
 
-
 ## Project Overview
 
 - A ready to deploy RAG pipeline for document retrival.
@@ -29,6 +28,7 @@ Moreover, further customization can be made on the config file, `src/config.ini`
 - _For Dev:_ `pip install -e .`
 
 ### Requirements
+
 Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 - PyTorch
@@ -40,7 +40,7 @@ Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 ### LLM Models
 
-- **To run models locally** refer the [LLM Quantize Readme](./llm_quantize/readme.md) for details on downloading and
+- **To run models locally** refer the [LLM Quantize Readme](./llm_quantize/README) for details on downloading and
   quantizing LLM models.
 - **To run models from Huggingface**, change the `model_name` under `llm` in `src/config.ini` to the huggingface
   repo-id (If
