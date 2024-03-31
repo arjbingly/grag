@@ -19,6 +19,7 @@ pipeline {
                 sh 'source .venv/bin/activate'
                 sh 'python3 -m pip install pip --upgrade'
                 sh 'pip install pyopenssl --upgrade'
+                sh 'pip install pdf2image'
             }
 
         }
