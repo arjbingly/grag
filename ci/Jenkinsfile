@@ -1,0 +1,91 @@
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scmGit(
+                    branches: [[name: 'tests']],
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
+                    )
+            }
+        }
+
+        stage('Create venv'){
+            steps {
+                sh 'python3 -m venv .venv'
+                sh 'source .venv/bin/activate'
+            }
+
+        }
+
+        stage('Install dependencies'){
+            steps {
+                sh "pip install ."
+            }
+
+        }
+
+        stage('Config'){
+            steps{
+                sh 'source .venv/bin/activate'
+                sh 'python3 ci/modify_config.py'
+                sh 'python3 ci/modify_config_test.py'
+            }
+        }
+
+        stage('Linting'){
+            steps {
+                sh 'source .venv/bin/activate'
+                sh 'pip install ruff'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                    sh '$JENKINS_HOME/.local/bin/ruff check --fix --output-format junit -o ruff-report.xml'
+                    sh '$JENKINS_HOME/.local/bin/ruff format'
+                }
+            }
+            post {
+                always{
+                    withChecks('Lint Checks'){
+                         junit 'ruff-report.xml'
+                     }
+                }
+            }
+        }
+
+        stage('Static type check'){
+            steps {
+                sh 'source .venv/bin/activate'
+                sh 'pip install mypy'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                    sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
+                }
+            }
+            post {
+                always{
+                     withChecks('Static Type Checks'){
+                         junit 'mypy-report.xml'
+                     }
+
+                }
+            }
+        }
+
+        stage('Tests'){
+            steps{
+                sh 'source .venv/bin/activate'
+                sh 'pip install pytest'
+                sh '$JENKINS_HOME/.local/bin/pytest src --junitxml=pytest-report.xml'
+            }
+            post {
+                always{
+                     withChecks('Integration Tests'){
+                        junit 'pytest-report.xml'
+                     }
+                }
+            }
+        }
+    }
+}
