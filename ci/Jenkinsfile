@@ -47,8 +47,8 @@ pipeline {
                 sh 'source .venv/bin/activate'
                 sh 'pip install ruff'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                    sh '$JENKINS_HOME/.local/bin/ruff check --fix --output-format junit -o ruff-report.xml'
-                    sh '$JENKINS_HOME/.local/bin/ruff format'
+                    sh '$JENKINS_HOME/.local/bin/ruff check --fix src --output-format junit -o ruff-report.xml'
+                    sh '$JENKINS_HOME/.local/bin/ruff format src'
                 }
             }
             post {
