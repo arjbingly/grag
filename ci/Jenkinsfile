@@ -23,6 +23,7 @@ pipeline {
 
         stage('Install dependencies'){
             steps {
+                sh 'source .venv/bin/activate'
                 sh "pip install ."
             }
 
