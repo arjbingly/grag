@@ -31,8 +31,9 @@ pipeline {
         stage('Config'){
             steps{
                 sh 'source .venv/bin/activate'
-                sh 'python3 ci/modify_config.py'
+                sh 'pwd'
                 sh 'python3 ci/modify_config_test.py'
+                sh 'python3 ci/modify_config.py'
             }
         }
 
