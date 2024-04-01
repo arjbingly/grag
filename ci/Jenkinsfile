@@ -25,7 +25,7 @@ pipeline {
 
         stage('Create venv'){
             steps {
-                sh 'python3 -m venv .venv'
+//                 sh 'python3 -m venv .venv'
                 withPythonEnv(myenv){
 //                     sh 'source .venv/bin/activate'
                     sh 'python3 -m pip install pip --upgrade'
