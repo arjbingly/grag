@@ -35,7 +35,7 @@ dependencies = [
     "sentence-transformers==2.2.2",
     "instructorembedding>=1.0.1",
     "streamlit>=1.31.1",
-    "unstructured>=0.12.3",
+    "unstructured[all]>=0.12.3",
     "pdfplumber>=0.10.3",
     "llama-cpp-python>=0.2.43",
     "tqdm>=4.65.0",
