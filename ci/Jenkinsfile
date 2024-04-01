@@ -50,7 +50,7 @@ pipeline {
                 withPythonEnv(PYTHONPATH){
                     sh 'python3 ci/modify_config.py'
                     sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/ci_test'
-                    sh 'cp -r $JENKINS_HOME/ci_test_data/data/backup_vectordb/ci_test $(JENKINS_HOME)/ci_test_data/data/vectordb'
+                    sh 'cp -r $JENKINS_HOME/ci_test_data/data/backup_vectordb/ci_test $JENKINS_HOME/ci_test_data/data/vectordb'
                 }
             }
         }
