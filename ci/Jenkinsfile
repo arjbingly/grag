@@ -46,6 +46,7 @@ pipeline {
 
         stage('Config'){
             steps{
+                sh 'echo $JENKINS_HOME'
                 withPythonEnv(PYTHONPATH){
                     sh 'python3 ci/modify_config.py'
                     sh 'rm -rf $(JENKINS_HOME)/ci_test_data/data/vectordb/ci_test'
