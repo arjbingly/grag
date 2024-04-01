@@ -3,16 +3,16 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-//                 checkout scmGit(
-//                     branches: [[name: 'tests']],
-//                     extensions: [],
-//                     userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
-//                     )
-                    checkout scm
-            }
-        }
+//         stage('Checkout') {
+//             steps {
+// //                 checkout scmGit(
+// //                     branches: [[name: 'tests']],
+// //                     extensions: [],
+// //                     userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
+// //                     )
+//                     checkout scm
+//             }
+//         }
 
         stage('Create venv'){
             steps {
