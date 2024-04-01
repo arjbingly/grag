@@ -35,7 +35,7 @@ dependencies = [
     "sentence-transformers==2.2.2",
     "instructorembedding>=1.0.1",
     "streamlit>=1.31.1",
-    "unstructured>=0.12.3",
+    "unstructured[pdf]>=0.12.3",
     "pdfplumber>=0.10.3",
     "llama-cpp-python>=0.2.43",
     "tqdm>=4.65.0",
@@ -112,7 +112,7 @@ exclude_lines = [
 [tool.ruff]
 line-length = 88
 indent-width = 4
-extend-exclude = ["tests", "others"]
+extend-exclude = ["tests", "others", "docs", "ci"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "D"]
