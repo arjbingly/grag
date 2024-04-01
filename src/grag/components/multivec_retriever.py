@@ -75,7 +75,7 @@ class Retriever:
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
             vectorstore=self.vectordb.langchain_client,
-            docstore=self.store,  # type: ignore
+            byte_store=self.store,  # type: ignore
             id_key=self.id_key,
         )
         self.splitter = TextSplitter()

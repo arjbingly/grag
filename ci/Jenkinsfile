@@ -37,7 +37,6 @@ pipeline {
 
         stage('Install dependencies'){
             steps {
-//                 sh 'source .venv/bin/activate'
                 withPythonEnv(PYTHONPATH){
                     sh "pip install -e ."
                 }
@@ -47,10 +46,7 @@ pipeline {
 
         stage('Config'){
             steps{
-//                 sh 'source .venv/bin/activate'
-//                 sh 'pwd'
                 withPythonEnv(PYTHONPATH){
-//                     sh 'python3 ci/modify_config_test.py'
                     sh 'python3 ci/modify_config.py'
                 }
             }
@@ -58,12 +54,11 @@ pipeline {
 
         stage('Linting'){
             steps {
-//                 sh 'source .venv/bin/activate'
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install ruff'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                        sh 'ruff check src --output-format junit -o ruff-report.xml'
-                        sh 'ruff format src'
+                        sh 'ruff check . --output-format junit -o ruff-report.xml'
+                        sh 'ruff format .'
                     }
                 }
 //                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
@@ -82,7 +77,6 @@ pipeline {
 
         stage('Static type check'){
             steps {
-//                 sh 'source .venv/bin/activate'
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install mypy'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
@@ -102,10 +96,12 @@ pipeline {
 
         stage('Tests'){
             steps{
+                sh 'docker pull chromadb/chroma'
+                sh 'docker run -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
-//                     sh 'source .venv/bin/activate'
                     sh 'pip install pytest'
-                    sh '$JENKINS_HOME/.local/bin/pytest src --junitxml=pytest-report.xml'
+                    sh 'python3 ci/unlock_deeplake.py'
+                    sh 'pytest src --junitxml=pytest-report.xml'
                 }
             }
             post {
@@ -113,6 +109,7 @@ pipeline {
                      withChecks('Integration Tests'){
                         junit 'pytest-report.xml'
                      }
+                    sh 'docker stop chromadb/chroma'
 
                      cleanWs(
                         cleanWhenNotBuilt: false,
