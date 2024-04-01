@@ -46,6 +46,7 @@ pipeline {
 
         stage('Config'){
             steps{
+                sh 'echo $env.JENKINS_HOME'
                 sh 'echo $JENKINS_HOME'
                 withPythonEnv(PYTHONPATH){
                     sh 'python3 ci/modify_config.py'
