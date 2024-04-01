@@ -96,8 +96,9 @@ pipeline {
 
         stage('Tests'){
             steps{
-                sh 'sudo docker pull chromadb/chroma'
-                sh 'sudo docker run -p 8000:8000 chromadb/chroma'
+                sh 'echo $USER'
+                sh 'docker pull chromadb/chroma'
+                sh 'docker run -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install pytest'
                     sh 'python3 ci/unlock_deeplake.py'
