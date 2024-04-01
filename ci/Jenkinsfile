@@ -26,7 +26,7 @@ pipeline {
 //         stage('Create venv'){
 //             steps {
 // //                 sh 'python3 -m venv .venv'
-//                 withPythonEnv('myenv'){
+//                 withPythonEnv('Python3'){
 // //                     sh 'source .venv/bin/activate'
 // //                     sh 'python3 -m pip install pip --upgrade'
 // //                     sh 'pip install pyopenssl --upgrade'
@@ -40,7 +40,7 @@ pipeline {
         stage('Install dependencies'){
             steps {
 //                 sh 'source .venv/bin/activate'
-                withPythonEnv('myenv'){
+                withPythonEnv('Python3'){
                     sh "pip install -e ."
                 }
             }
@@ -51,7 +51,7 @@ pipeline {
             steps{
 //                 sh 'source .venv/bin/activate'
 //                 sh 'pwd'
-                withPythonEnv('myenv'){
+                withPythonEnv('Python3'){
                     sh 'python3 ci/modify_config_test.py'
                     sh 'python3 ci/modify_config.py'
                 }
@@ -61,7 +61,7 @@ pipeline {
         stage('Linting'){
             steps {
 //                 sh 'source .venv/bin/activate'
-                withPythonEnv('myenv'){
+                withPythonEnv('Python3'){
                     sh 'pip install ruff'
                 }
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
