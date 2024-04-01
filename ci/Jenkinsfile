@@ -4,6 +4,10 @@ pipeline {
     options{
         skipDefaultCheckout(true)
     }
+    environment {
+        PYTHONPATH = "${env.WORKSPACE}/myenv"
+        }
+
 
     stages {
 
@@ -22,36 +26,44 @@ pipeline {
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
-                sh 'source .venv/bin/activate'
-                sh 'python3 -m pip install pip --upgrade'
-                sh 'pip install pyopenssl --upgrade'
-                sh 'pip install pdf2image'
-                sh 'pip install pillow-heif'
+                withPythonEnv(myenv){
+//                     sh 'source .venv/bin/activate'
+                    sh 'python3 -m pip install pip --upgrade'
+//                     sh 'pip install pyopenssl --upgrade'
+//                     sh 'pip install pdf2image'
+//                     sh 'pip install pillow-heif'
+                }
             }
 
         }
 
         stage('Install dependencies'){
             steps {
-                sh 'source .venv/bin/activate'
-                sh "pip install -e ."
+//                 sh 'source .venv/bin/activate'
+                withPythonEnv(myenv){
+                    sh "pip install -e ."
+                }
             }
 
         }
 
         stage('Config'){
             steps{
-                sh 'source .venv/bin/activate'
-                sh 'pwd'
-                sh 'python3 ci/modify_config_test.py'
-                sh 'python3 ci/modify_config.py'
+//                 sh 'source .venv/bin/activate'
+//                 sh 'pwd'
+                withPythonEnv(myenv){
+                    sh 'python3 ci/modify_config_test.py'
+                    sh 'python3 ci/modify_config.py'
+                }
             }
         }
 
         stage('Linting'){
             steps {
-                sh 'source .venv/bin/activate'
-                sh 'pip install ruff'
+//                 sh 'source .venv/bin/activate'
+                withPythonEnv(myenv){
+                    sh 'pip install ruff'
+                }
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
                     sh '$JENKINS_HOME/.local/bin/ruff check --fix src --output-format junit -o ruff-report.xml'
                     sh '$JENKINS_HOME/.local/bin/ruff format src'
@@ -107,6 +119,6 @@ pipeline {
                 }
             }
         }
-        
+
     }
 }
