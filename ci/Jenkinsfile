@@ -52,7 +52,7 @@ pipeline {
 //                 sh 'source .venv/bin/activate'
 //                 sh 'pwd'
                 withPythonEnv(PYTHONPATH){
-                    sh 'python3 ci/modify_config_test.py'
+//                     sh 'python3 ci/modify_config_test.py'
                     sh 'python3 ci/modify_config.py'
                 }
             }
@@ -61,13 +61,19 @@ pipeline {
         stage('Linting'){
             steps {
 //                 sh 'source .venv/bin/activate'
-                withPythonEnv('Python3'){
+                withPythonEnv(PYTHONPATH){
                     sh 'pip install ruff'
+
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                        sh 'ruff check --fix src --output-format junit -o ruff-report.xml'
+                        sh 'ruff format src'
                 }
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                    sh '$JENKINS_HOME/.local/bin/ruff check --fix src --output-format junit -o ruff-report.xml'
-                    sh '$JENKINS_HOME/.local/bin/ruff format src'
-                }
+            }
+
+//                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+//                     sh '$JENKINS_HOME/.local/bin/ruff check --fix src --output-format junit -o ruff-report.xml'
+//                     sh '$JENKINS_HOME/.local/bin/ruff format src'
+//                 }
             }
             post {
                 always{
