@@ -18,7 +18,7 @@ pipeline {
 //                     extensions: [],
 //                     userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
 //                     )
-//                     cleanWs()
+                    cleanWs()
                     checkout scm
             }
         }
@@ -32,9 +32,7 @@ pipeline {
 //                     sh 'pip install pyopenssl --upgrade'
 //                     sh 'pip install pdf2image'
 //                     sh 'pip install pillow-heif'
-
             }
-
         }
 
         stage('Install dependencies'){
@@ -63,13 +61,11 @@ pipeline {
 //                 sh 'source .venv/bin/activate'
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install ruff'
-
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                        sh 'ruff check --fix src --output-format junit -o ruff-report.xml'
+                        sh 'ruff check src --output-format junit -o ruff-report.xml'
                         sh 'ruff format src'
+                    }
                 }
-            }
-
 //                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
 //                     sh '$JENKINS_HOME/.local/bin/ruff check --fix src --output-format junit -o ruff-report.xml'
 //                     sh '$JENKINS_HOME/.local/bin/ruff format src'
@@ -86,10 +82,12 @@ pipeline {
 
         stage('Static type check'){
             steps {
-                sh 'source .venv/bin/activate'
-                sh 'pip install mypy'
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                    sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
+//                 sh 'source .venv/bin/activate'
+                withPythonEnv(PYTHONPATH){
+                    sh 'pip install mypy'
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                        sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
+                    }
                 }
             }
             post {
@@ -104,9 +102,11 @@ pipeline {
 
         stage('Tests'){
             steps{
-                sh 'source .venv/bin/activate'
-                sh 'pip install pytest'
-                sh '$JENKINS_HOME/.local/bin/pytest src --junitxml=pytest-report.xml'
+                withPythonEnv(PYTHONPATH){
+//                     sh 'source .venv/bin/activate'
+                    sh 'pip install pytest'
+                    sh '$JENKINS_HOME/.local/bin/pytest src --junitxml=pytest-report.xml'
+                }
             }
             post {
                 always{
