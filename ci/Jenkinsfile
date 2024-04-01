@@ -18,7 +18,7 @@ pipeline {
 //                     extensions: [],
 //                     userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
 //                     )
-                    cleanWs()
+//                     cleanWs()
                     checkout scm
             }
         }
@@ -57,7 +57,7 @@ pipeline {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install ruff'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                        sh 'ruff check . --output-format junit -o ruff-report.xml'
+                        sh 'ruff check . --exclude .pyenv-var-lib-jenkins-workspace-capstone_5-.venv-bin --output-format junit -o ruff-report.xml'
                         sh 'ruff format .'
                     }
                 }
@@ -96,8 +96,8 @@ pipeline {
 
         stage('Tests'){
             steps{
-                sh 'docker pull chromadb/chroma'
-                sh 'docker run -p 8000:8000 chromadb/chroma'
+                sh 'sudo docker pull chromadb/chroma'
+                sh 'sudo docker run -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install pytest'
                     sh 'python3 ci/unlock_deeplake.py'
@@ -111,14 +111,14 @@ pipeline {
                      }
                     sh 'docker stop chromadb/chroma'
 
-                     cleanWs(
-                        cleanWhenNotBuilt: false,
-                        deleteDirs: true,
-                        disableDeferredWipeout: true,
-                        notFailBuild: true,
-                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                                   [pattern: '.propsfile', type: 'EXCLUDE']]
-                             )
+//                      cleanWs(
+//                         cleanWhenNotBuilt: false,
+//                         deleteDirs: true,
+//                         disableDeferredWipeout: true,
+//                         notFailBuild: true,
+//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
+//                              )
                 }
             }
         }
