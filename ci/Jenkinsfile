@@ -18,7 +18,7 @@ pipeline {
 //                     extensions: [],
 //                     userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
 //                     )
-                    cleanWs()
+//                     cleanWs()
                     checkout scm
             }
         }
