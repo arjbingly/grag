@@ -23,19 +23,19 @@ pipeline {
             }
         }
 
-        stage('Create venv'){
-            steps {
-//                 sh 'python3 -m venv .venv'
-                withPythonEnv('myenv'){
-//                     sh 'source .venv/bin/activate'
-                    sh 'python3 -m pip install pip --upgrade'
-//                     sh 'pip install pyopenssl --upgrade'
-//                     sh 'pip install pdf2image'
-//                     sh 'pip install pillow-heif'
-                }
-            }
-
-        }
+//         stage('Create venv'){
+//             steps {
+// //                 sh 'python3 -m venv .venv'
+//                 withPythonEnv('myenv'){
+// //                     sh 'source .venv/bin/activate'
+// //                     sh 'python3 -m pip install pip --upgrade'
+// //                     sh 'pip install pyopenssl --upgrade'
+// //                     sh 'pip install pdf2image'
+// //                     sh 'pip install pillow-heif'
+//                 }
+//             }
+//
+//         }
 
         stage('Install dependencies'){
             steps {
