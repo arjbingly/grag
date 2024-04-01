@@ -13,12 +13,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-//                 checkout scmGit(
-//                     branches: [[name: 'tests']],
-//                     extensions: [],
-//                     userRemoteConfigs: [[url: 'https://github.com/arjbingly/Capstone_5.git']]
-//                     )
-//                     cleanWs()
+                    cleanWs()
                     checkout scm
             }
         }
@@ -26,12 +21,6 @@ pipeline {
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
-//                 withPythonEnv(PYTHONPATH){
-//                     sh 'source .venv/bin/activate'
-//                     sh 'python3 -m pip install pip --upgrade'
-//                     sh 'pip install pyopenssl --upgrade'
-//                     sh 'pip install pdf2image'
-//                     sh 'pip install pillow-heif'
             }
         }
 
@@ -64,10 +53,6 @@ pipeline {
                         sh 'ruff format .'
                     }
                 }
-//                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-//                     sh '$JENKINS_HOME/.local/bin/ruff check --fix src --output-format junit -o ruff-report.xml'
-//                     sh '$JENKINS_HOME/.local/bin/ruff format src'
-//                 }
             }
             post {
                 always{
@@ -116,14 +101,14 @@ pipeline {
                     sh 'docker stop jenkins-chroma'
                     sh 'docker rm jenkins-chroma'
 
-//                      cleanWs(
-//                         cleanWhenNotBuilt: false,
-//                         deleteDirs: true,
-//                         disableDeferredWipeout: true,
-//                         notFailBuild: true,
-//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
-//                              )
+                     cleanWs(
+                        cleanWhenNotBuilt: false,
+                        deleteDirs: true,
+                        disableDeferredWipeout: true,
+                        notFailBuild: true,
+                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                                   [pattern: '.propsfile', type: 'EXCLUDE']]
+                             )
                 }
             }
         }
