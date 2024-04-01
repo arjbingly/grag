@@ -32,7 +32,7 @@ pipeline {
 //                     sh 'pip install pyopenssl --upgrade'
 //                     sh 'pip install pdf2image'
 //                     sh 'pip install pillow-heif'
-                }
+                
             }
 
         }
