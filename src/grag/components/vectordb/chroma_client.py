@@ -69,7 +69,7 @@ class ChromaClient(VectorDB):
             embedding_model=self.embedding_model, embedding_type=self.embedding_type
         ).embedding_function
 
-        self.client = chromadb.HttpClient(host=self.host, port=self.port)
+        self.client = chromadb.HttpClient(host=self.host, port=self.port)  # type: ignore
         self.collection = self.client.get_or_create_collection(
             name=self.collection_name
         )

@@ -1,9 +1,11 @@
 import json
 
 from grag.components.multivec_retriever import Retriever
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
 
-retriever = Retriever()  # pass test collection
+client = DeepLakeClient(collection_name="ci_test")
+retriever = Retriever(vectordb=client)  # pass test collection
 
 doc = Document(page_content="Hello worlds", metadata={"source": "bars"})
 
