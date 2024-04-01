@@ -5,7 +5,7 @@ pipeline {
         skipDefaultCheckout(true)
     }
     environment {
-        PYTHONPATH = "${env.WORKSPACE}/myenv"
+        PYTHONPATH = "${env.WORKSPACE}/.venv"
         }
 
 
@@ -23,24 +23,24 @@ pipeline {
             }
         }
 
-//         stage('Create venv'){
-//             steps {
-// //                 sh 'python3 -m venv .venv'
-//                 withPythonEnv('Python3'){
-// //                     sh 'source .venv/bin/activate'
-// //                     sh 'python3 -m pip install pip --upgrade'
-// //                     sh 'pip install pyopenssl --upgrade'
-// //                     sh 'pip install pdf2image'
-// //                     sh 'pip install pillow-heif'
-//                 }
-//             }
-//
-//         }
+        stage('Create venv'){
+            steps {
+                sh 'python3 -m venv .venv'
+//                 withPythonEnv(PYTHONPATH){
+//                     sh 'source .venv/bin/activate'
+//                     sh 'python3 -m pip install pip --upgrade'
+//                     sh 'pip install pyopenssl --upgrade'
+//                     sh 'pip install pdf2image'
+//                     sh 'pip install pillow-heif'
+                }
+            }
+
+        }
 
         stage('Install dependencies'){
             steps {
 //                 sh 'source .venv/bin/activate'
-                withPythonEnv('Python3'){
+                withPythonEnv(PYTHONPATH){
                     sh "pip install -e ."
                 }
             }
