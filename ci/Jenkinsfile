@@ -5,7 +5,7 @@ pipeline {
         skipDefaultCheckout(true)
     }
     environment {
-        PYTHONPATH = "${env.WORKSPACE}/.venv"
+        PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
         }
 
 
@@ -32,7 +32,7 @@ pipeline {
 //                     sh 'pip install pyopenssl --upgrade'
 //                     sh 'pip install pdf2image'
 //                     sh 'pip install pillow-heif'
-                
+
             }
 
         }
@@ -51,7 +51,7 @@ pipeline {
             steps{
 //                 sh 'source .venv/bin/activate'
 //                 sh 'pwd'
-                withPythonEnv('Python3'){
+                withPythonEnv(PYTHONPATH){
                     sh 'python3 ci/modify_config_test.py'
                     sh 'python3 ci/modify_config.py'
                 }
