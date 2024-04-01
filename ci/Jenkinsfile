@@ -107,7 +107,6 @@ pipeline {
             }
             post {
                 always{
-                    sh
                      withChecks('Integration Tests'){
                         junit 'pytest-report.xml'
                      }
