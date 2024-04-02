@@ -29,7 +29,7 @@ doc = Document(page_content="Hello worlds", metadata={"source": "bars"})
 def test_retriever_id_gen():
     doc = Document(page_content="Hello world", metadata={"source": "bar"})
     id_ = retriever.id_gen(doc)
-    assert isinstance(id, str)
+    assert isinstance(id_, str)
     assert len(id_) == 32
     doc.page_content = doc.page_content + 'ABC'
     id_1 = retriever.id_gen(doc)
@@ -95,7 +95,7 @@ def test_retriever_add_docs():
     assert len(retrieved) == len(ids)
     for i, doc in enumerate(docs):
         retrieved_doc = json.loads(retrieved[i].decode())
-        assert doc.metadata == retrieved_doc.metadata
+        assert doc.metadata == retrieved_doc['metadata']
 
 
 def test_retriever_aadd_docs():
