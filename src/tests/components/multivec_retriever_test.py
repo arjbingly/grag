@@ -1,16 +1,32 @@
 import json
+import os
+import subprocess
+from pathlib import Path
 
 from grag.components.multivec_retriever import Retriever
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
 
-client = DeepLakeClient(collection_name="ci_test")
+res = subprocess.run(["echo", "$JENKINS_HOME"], check=True, capture_output=True)
+if res.stdout == "JENKINS_HOME":
+    jenkins_home = os.getenv('JENKINS_HOME')
+    test_path = Path(jenkins_home) / 'ci_test_data/data/vectordb/test_retriever'
+    if os.path.exists(test_path):
+        shutil.rmtree(test_path)
+        print('Deleting test retriever: {}'.format(test_path))
+else:
+    test_path = dir_path = Path(__file__).parents[5] / 'data/vectordb/test_retriever'
+    if os.path.exists(test_path):
+        shutil.rmtree(test_path)
+        print('Deleting test retriever: {}'.format(test_path))
+
+client = DeepLakeClient(collection_name="test_retriever")
 retriever = Retriever(vectordb=client)  # pass test collection
 
 doc = Document(page_content="Hello worlds", metadata={"source": "bars"})
 
 
-def test_retriver_id_gen():
+def test_retriever_id_gen():
     doc = Document(page_content="Hello world", metadata={"source": "bar"})
     id_ = retriever.id_gen(doc)
     assert isinstance(id, str)
