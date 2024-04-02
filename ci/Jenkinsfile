@@ -8,6 +8,7 @@ pipeline {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
         AUTH_TOKEN = credentials('hf_token')
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
+        CMAKE_ARGS = "-DLLAMA_CUDA=on"
         }
 
 
@@ -30,7 +31,7 @@ pipeline {
             steps {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install -e .'
-                    sh 'CMAKE_ARGS="-DLLAMA_CUDA=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
+//                     sh 'CMAKE_ARGS="-DLLAMA_CUDA=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
                 }
             }
 
@@ -39,6 +40,7 @@ pipeline {
         stage('Config'){
             steps{
                 withPythonEnv(PYTHONPATH){
+                    sh 'cp $JENKINS_HOME/hf_token'
                     sh 'python3 ci/modify_config.py'
                     sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/ci_test'
                     sh 'cp -r $JENKINS_HOME/ci_test_data/data/backup_vectordb/ci_test $JENKINS_HOME/ci_test_data/data/vectordb'

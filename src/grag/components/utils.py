@@ -12,6 +12,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 from pathlib import Path
 from typing import List
 
+from dotenv import load_dotenv
 from langchain_core.documents import Document
 
 
@@ -67,9 +68,10 @@ def get_config() -> ConfigParser:
     else:
         config_path = find_config_path(script_location)
         os.environ["CONFIG_PATH"] = str(config_path)
-    print(f"Loaded config from {config_path}.")
+
     # Initialize parser and read config
     config = ConfigParser(interpolation=ExtendedInterpolation())
     config.read(config_path)
-
+    print(f"Loaded config from {config_path}.")
+    load_dotenv(config['env']['env_path'])
     return config
