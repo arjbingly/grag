@@ -1,9 +1,11 @@
 import json
 
 from grag.components.multivec_retriever import Retriever
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
 
-retriever = Retriever()  # pass test collection
+client = DeepLakeClient(collection_name="ci_test")
+retriever = Retriever(vectordb=client)  # pass test collection
 
 doc = Document(page_content="Hello worlds", metadata={"source": "bars"})
 
@@ -27,10 +29,6 @@ def test_retriever_gen_doc_ids():
     ids = retriever.gen_doc_ids(docs)
     assert len(ids) == len(docs)
     assert all(isinstance(id, str) for id in ids)
-
-
-def test_retriever_split_docs():
-    pass
 
 
 def test_retriever_split_docs():

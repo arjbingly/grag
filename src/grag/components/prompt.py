@@ -109,7 +109,9 @@ class Prompt(BaseModel):
 
     def format(self, **kwargs) -> str:
         """Formats the prompt with provided keys and returns a string."""
-        return self.prompt.format(**kwargs)
+        if self.prompt is not None:
+            return self.prompt.format(**kwargs)
+        raise ValueError("Prompt is not defined.")
 
 
 class FewShotPrompt(Prompt):
@@ -136,9 +138,6 @@ class FewShotPrompt(Prompt):
     prefix: str
     suffix: str
     example_template: str
-    prompt: Optional[FewShotPromptTemplate] = Field(
-        exclude=True, repr=False, default=None
-    )
 
     def __init__(self, **kwargs):
         """Initialize the prompt."""

@@ -1,4 +1,12 @@
-# GRAG
+<h1 align="center">GRAG</h1>
+
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![Static Badge](https://img.shields.io/badge/docstring%20style-google-yellow)
+![Static Badge](https://img.shields.io/badge/linter%20-ruff-yellow)
+![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/ruff_linting.yml?label=Docs&labelColor=yellow)
+![Static Badge](https://img.shields.io/badge/buildstyle-hatchling-purple?labelColor=white)
+![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
 
 ## Project Overview
 
@@ -20,6 +28,7 @@ Moreover, further customization can be made on the config file, `src/config.ini`
 - _For Dev:_ `pip install -e .`
 
 ### Requirements
+
 Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 - PyTorch
@@ -31,7 +40,7 @@ Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 ### LLM Models
 
-- **To run models locally** refer the [LLM Quantize Readme](./llm_quantize/readme.md) for details on downloading and
+- **To run models locally** refer the [LLM Quantize Readme](./llm_quantize/README) for details on downloading and
   quantizing LLM models.
 - **To run models from Huggingface**, change the `model_name` under `llm` in `src/config.ini` to the huggingface
   repo-id (If
