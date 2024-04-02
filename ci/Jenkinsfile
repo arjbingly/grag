@@ -28,7 +28,8 @@ pipeline {
         stage('Install dependencies'){
             steps {
                 withPythonEnv(PYTHONPATH){
-                    sh "pip install -e ."
+                    sh 'pip install -e .'
+                    sh 'CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
                 }
             }
 
@@ -89,7 +90,7 @@ pipeline {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install pytest'
                     sh 'python3 ci/unlock_deeplake.py'
-                    sh 'pytest src --junitxml=pytest-report.xml'
+                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
                 }
             }
             post {

@@ -42,7 +42,7 @@ def find_config_path(current_path: Path) -> Path:
     Raises:
         FileNotFoundError: If 'config.ini' cannot be found in any of the parent directories.
     """
-    config_path = Path("src/config.ini")
+    config_path = Path("config.ini")
     while not (current_path / config_path).exists():
         current_path = current_path.parent
         if current_path == current_path.parent:
