@@ -1,4 +1,3 @@
-import json
 import os
 import subprocess
 from pathlib import Path
@@ -91,11 +90,10 @@ def test_retriever_add_docs():
             ]
     ids = retriever.gen_doc_ids(docs)
     retriever.add_docs(docs)
-    retrieved = retriever.store.mget(ids)
+    retrieved = retriever.docstore.mget(ids)
     assert len(retrieved) == len(ids)
-    for i, doc in enumerate(docs):
-        retrieved_doc = json.loads(retrieved[i].decode())
-        assert doc.metadata == retrieved_doc['metadata']
+    for ret, doc in zip(retrieved, docs):
+        assert ret.metadata == doc.metadata
 
 
 def test_retriever_aadd_docs():

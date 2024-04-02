@@ -7,6 +7,7 @@ pipeline {
     environment {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
         AUTH_TOKEN = credentials('hf_token')
+        CUDACXX = '/usr/local/cuda-12/bin/nvcc'
         }
 
 
@@ -14,7 +15,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                    cleanWs()
+//                     cleanWs()
                     checkout scm
             }
         }
@@ -103,14 +104,14 @@ pipeline {
                     sh 'docker stop jenkins-chroma'
                     sh 'docker rm jenkins-chroma'
 
-                     cleanWs(
-                        cleanWhenNotBuilt: false,
-                        deleteDirs: true,
-                        disableDeferredWipeout: true,
-                        notFailBuild: true,
-                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                                   [pattern: '.propsfile', type: 'EXCLUDE']]
-                             )
+//                      cleanWs(
+//                         cleanWhenNotBuilt: false,
+//                         deleteDirs: true,
+//                         disableDeferredWipeout: true,
+//                         notFailBuild: true,
+//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
+//                              )
                 }
             }
         }
