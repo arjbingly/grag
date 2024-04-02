@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 
 import torch
-from dotenv import load_dotenv
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
@@ -117,7 +116,7 @@ class LLM:
             )
         except OSError:  # LocalTokenNotFoundError:
             # If loading fails due to an auth token error, then load the token and retry
-            load_dotenv()
+            # load_dotenv()
             auth_token = os.getenv("AUTH_TOKEN")
             if not auth_token:
                 raise ValueError("Authentication token not provided.")
