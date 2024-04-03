@@ -1,3 +1,3 @@
 import os
 
-print(os.environ['AUTH_TOKEN'])
+print(os.environ['HF_TOKEN'])
