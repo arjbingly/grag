@@ -8,7 +8,7 @@ pipeline {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
         AUTH_TOKEN = credentials('hf_token')
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
-        CMAKE_ARGS = "-DLLAMA_CUDA=on"
+//         CMAKE_ARGS = "-DLLAMA_CUDA=on"
         }
 
 
@@ -16,7 +16,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-//                     cleanWs()
+                    cleanWs()
                     checkout scm
             }
         }
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install -e .'
-//                     sh 'CMAKE_ARGS="-DLLAMA_CUDA=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
+                    sh 'CMAKE_ARGS="-DLLAMA_CUDA=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
                 }
             }
 
@@ -105,14 +105,14 @@ pipeline {
                     sh 'docker stop jenkins-chroma'
                     sh 'docker rm jenkins-chroma'
 
-//                      cleanWs(
-//                         cleanWhenNotBuilt: false,
-//                         deleteDirs: true,
-//                         disableDeferredWipeout: true,
-//                         notFailBuild: true,
-//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
-//                              )
+                     cleanWs(
+                        cleanWhenNotBuilt: false,
+                        deleteDirs: true,
+                        disableDeferredWipeout: true,
+                        notFailBuild: true,
+                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                                   [pattern: '.propsfile', type: 'EXCLUDE']]
+                             )
                 }
             }
         }
