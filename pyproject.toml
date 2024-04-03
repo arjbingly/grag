@@ -43,7 +43,8 @@ dependencies = [
     "pydantic>=2.5.0",
     "rouge-score>=0.1.2",
     "deeplake>=3.8.27",
-    "bitsandbytes>=0.43",
+    "bitsandbytes>=0.43.0",
+    "accelerate>=0.28.0"
 ]
 
 [project.urls]
