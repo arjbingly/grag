@@ -4,7 +4,7 @@ import pytest
 from grag.components.llm import LLM
 from grag.components.utils import get_config
 
-config = get_config()
+config = get_config(load_env=True)
 
 llama_models = [
     "Llama-2-7b-chat",
