@@ -1,23 +1,24 @@
 import os
-import subprocess
-from pathlib import Path
 
 from grag.components.multivec_retriever import Retriever
+from grag.components.utils import get_config
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
 
-res = subprocess.run(["echo", "$JENKINS_HOME"], check=True, capture_output=True)
-if res.stdout == "JENKINS_HOME":
-    jenkins_home = os.getenv('JENKINS_HOME')
-    test_path = Path(jenkins_home) / 'ci_test_data/data/vectordb/test_retriever'
-    if os.path.exists(test_path):
-        shutil.rmtree(test_path)
-        print('Deleting test retriever: {}'.format(test_path))
-else:
-    test_path = dir_path = Path(__file__).parents[5] / 'data/vectordb/test_retriever'
-    if os.path.exists(test_path):
-        shutil.rmtree(test_path)
-        print('Deleting test retriever: {}'.format(test_path))
+# res = subprocess.run(["echo", "$JENKINS_HOME"], check=True, capture_output=True)
+# if res.stdout == "JENKINS_HOME":
+#     jenkins_home = os.getenv('JENKINS_HOME')
+#     test_path = Path(jenkins_home) / 'ci_test_data/data/vectordb/test_retriever'
+#     if os.path.exists(test_path):
+#         shutil.rmtree(test_path)
+#         print('Deleting test retriever: {}'.format(test_path))
+# else:
+config = get_config()
+
+test_path = dir_path = config['data']['data_path'] / 'vectordb/test_retriever'
+if os.path.exists(test_path):
+    shutil.rmtree(test_path)
+    print('Deleting test retriever: {}'.format(test_path))
 
 client = DeepLakeClient(collection_name="test_retriever")
 retriever = Retriever(vectordb=client)  # pass test collection
