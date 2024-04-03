@@ -98,7 +98,7 @@ pipeline {
 //                     sh 'python3 ci/env_test.py'
                     sh 'python3 ci/unlock_deeplake.py'
 //                     sh 'pytest src -vvv --junitxml=pytest-report.xml'
-                    sh 'pytest src/tests/components/utils_test.py -vvv  --junitxml=pytest-report.xml'
+                    sh 'pytest src/tests/components/llm_test.py -vvv  --junitxml=pytest-report.xml'
 //                     }
                 }
             }
