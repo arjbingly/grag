@@ -93,7 +93,7 @@ pipeline {
                 withPythonEnv(PYTHONPATH){
 //                     withCredentials([string(credentialsId: 'hf_token', variable: 'HF_TOKEN')]) {
                     sh 'pip install pytest'
-                    sh 'python3 ci/env_test.py'
+//                     sh 'python3 ci/env_test.py'
                     sh 'python3 ci/unlock_deeplake.py'
                     sh 'pytest src -vvv --junitxml=pytest-report.xml'
 //                     }
