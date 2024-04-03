@@ -21,7 +21,7 @@ hf_models = [
 ]
 cpp_quantization = ["Q5_K_M", "Q5_K_M", "f16", "Q4_K_M"]
 # cpp_quantization = ["Q5_K_M", "f16", "Q4_K_M"]  # , "f16"]
-gpu_layers = ['-1', '-1', '16', '16']
+gpu_layers = ['-1', '-1', '18', '18']
 hf_quantization = ["Q8", "Q4", "Q4"]  # , 'Q4']
 params = [(model, quant) for model, quant in zip(hf_models, hf_quantization)]
 

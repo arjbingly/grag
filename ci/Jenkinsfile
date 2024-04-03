@@ -91,12 +91,12 @@ pipeline {
                 sh 'docker pull chromadb/chroma'
                 sh 'docker run -d --name jenkins-chroma -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
-                    withCredentials([string(credentialsId: 'hf_token', variable: 'HF_TOKEN')]) {
-                        sh 'pip install pytest'
-                        sh 'python3 ci/env_test.py'
-                        sh 'python3 ci/unlock_deeplake.py'
-                        sh 'pytest src -vvv --junitxml=pytest-report.xml'
-                    }
+//                     withCredentials([string(credentialsId: 'hf_token', variable: 'HF_TOKEN')]) {
+                    sh 'pip install pytest'
+                    sh 'python3 ci/env_test.py'
+                    sh 'python3 ci/unlock_deeplake.py'
+                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
+//                     }
                 }
             }
             post {
