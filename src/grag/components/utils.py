@@ -51,7 +51,7 @@ def find_config_path(current_path: Path) -> Path:
     return current_path / config_path
 
 
-def get_config() -> ConfigParser:
+def get_config(load_env=False) -> ConfigParser:
     """Retrieves and parses the configuration settings from the 'config.ini' file.
 
     This function locates the 'config.ini' file by calling `find_config_path` using the script's current location.
@@ -74,7 +74,8 @@ def get_config() -> ConfigParser:
     config.read(config_path)
     print(f"Loaded config from {config_path}.")
     # load_dotenv(config['env']['env_path'])
-    env_path = Path(config['env']['env_path'])
-    if env_path.exists():
-        load_dotenv()
+    if load_env:
+        env_path = Path(config['env']['env_path'])
+        if env_path.exists():
+            load_dotenv()
     return config
