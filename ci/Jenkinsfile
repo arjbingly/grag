@@ -19,7 +19,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                    cleanWs()
+//                     cleanWs()
                     checkout scm
             }
         }
@@ -33,7 +33,7 @@ pipeline {
         stage('Install dependencies'){
             steps {
                 withPythonEnv(PYTHONPATH){
-                    sh 'pip install -e . --no-cache-dir'
+                    sh 'pip install -e .'
 //                     sh 'CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
                 }
             }
@@ -98,7 +98,7 @@ pipeline {
 //                     sh 'python3 ci/env_test.py'
                     sh 'python3 ci/unlock_deeplake.py'
 //                     sh 'pytest src -vvv --junitxml=pytest-report.xml'
-                    sh 'pytest src/tests/components/llm_test.py src/tests/quantize/quantize_test.py -vvv  --junitxml=pytest-report.xml'
+                    sh 'pytest src/tests/components/utils_test.py -vvv  --junitxml=pytest-report.xml'
 //                     }
                 }
             }
@@ -110,14 +110,14 @@ pipeline {
                         junit 'pytest-report.xml'
                      }
 
-                     cleanWs(
-                        cleanWhenNotBuilt: false,
-                        deleteDirs: true,
-                        disableDeferredWipeout: true,
-                        notFailBuild: true,
-                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                                   [pattern: '.propsfile', type: 'EXCLUDE']]
-                             )
+//                      cleanWs(
+//                         cleanWhenNotBuilt: false,
+//                         deleteDirs: true,
+//                         disableDeferredWipeout: true,
+//                         notFailBuild: true,
+//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
+//                              )
                 }
             }
         }
