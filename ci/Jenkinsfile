@@ -32,7 +32,7 @@ pipeline {
             steps {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install -e .'
-//                     sh 'CMAKE_ARGS="-DLLAMA_CUDA=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
+                    sh 'CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
                 }
             }
 
@@ -93,6 +93,7 @@ pipeline {
                 withPythonEnv(PYTHONPATH){
                     withCredentials([string(credentialsId: 'hf_token', variable: 'AUTH_TOKEN')]) {
                         sh 'pip install pytest'
+                        sh 'python3 ci/env_test.py'
                         sh 'python3 ci/unlock_deeplake.py'
                         sh 'pytest src -vvv --junitxml=pytest-report.xml'
                     }
