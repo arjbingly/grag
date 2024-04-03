@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 from grag.components.multivec_retriever import Retriever
