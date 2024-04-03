@@ -77,6 +77,6 @@ def get_config(load_env=False) -> ConfigParser:
     if load_env:
         env_path = Path(config['env']['env_path'])
         if env_path.exists():
-            load_dotenv()
+            load_dotenv(env_path)
             print(f"Loaded environment variables from {env_path}")
     return config
