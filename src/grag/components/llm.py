@@ -120,13 +120,13 @@ class LLM:
             auth_token = os.getenv("AUTH_TOKEN")
             if not auth_token:
                 raise ValueError("Authentication token not provided.")
-            tokenizer = AutoTokenizer.from_pretrained(hf_model, token=True)
+            tokenizer = AutoTokenizer.from_pretrained(hf_model, token=auth_token)
             model = AutoModelForCausalLM.from_pretrained(
                 hf_model,
                 quantization_config=quantization_config,
                 device_map=self.device_map,
                 torch_dtype=torch.float16,
-                token=True,
+                token=auth_token,
             )
 
         pipe = pipeline(
