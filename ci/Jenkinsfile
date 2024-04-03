@@ -6,7 +6,8 @@ pipeline {
     }
     environment {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
-        AUTH_TOKEN = credentials('hf_token')
+//         AUTH_TOKEN = credentials('hf_token')
+        AUTH_TOKEN = 'ARJUN'
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         }
