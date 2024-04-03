@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from grag.components.multivec_retriever import Retriever
 from grag.components.utils import get_config
