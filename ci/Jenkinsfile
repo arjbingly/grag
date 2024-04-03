@@ -17,7 +17,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                    cleanWs()
+//                     cleanWs()
                     checkout scm
             }
         }
@@ -109,14 +109,14 @@ pipeline {
 //                     sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/test_client'
 
 
-                     cleanWs(
-                        cleanWhenNotBuilt: false,
-                        deleteDirs: true,
-                        disableDeferredWipeout: true,
-                        notFailBuild: true,
-                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                                   [pattern: '.propsfile', type: 'EXCLUDE']]
-                             )
+//                      cleanWs(
+//                         cleanWhenNotBuilt: false,
+//                         deleteDirs: true,
+//                         disableDeferredWipeout: true,
+//                         notFailBuild: true,
+//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
+//                              )
                 }
             }
         }
