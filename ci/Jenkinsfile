@@ -12,7 +12,6 @@ pipeline {
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         PATH="/usr/local/cuda-12.3/bin:$PATH"
         LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
-        PATH="/usr/local/cuda-12.3/bin${PATH:+:${PATH}}"
         }
 
 
