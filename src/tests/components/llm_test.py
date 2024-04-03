@@ -2,6 +2,9 @@ from typing import Text
 
 import pytest
 from grag.components.llm import LLM
+from grag.components.utils import get_config
+
+config = get_config()
 
 llama_models = [
     "Llama-2-7b-chat",
