@@ -24,6 +24,8 @@ pipeline {
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
+                sh 'python3 env_test.py'
+                sh 'exit 1'
             }
         }
 

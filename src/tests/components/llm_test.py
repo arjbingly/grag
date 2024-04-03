@@ -7,7 +7,7 @@ from grag.components.utils import get_config
 config = get_config()
 
 llama_models = [
-    # "Llama-2-7b-chat",
+    "Llama-2-7b-chat",
     # "Llama-2-13b-chat",
     "gemma-7b-it",
     "Mixtral-8x7B-Instruct-v0.1",
@@ -20,7 +20,7 @@ hf_models = [
     "google/gemma-7b-it",
 ]
 # cpp_quantization = ["Q5_K_M", "Q5_K_M",
-cpp_quantization = ["f16", "Q4_K_M"]  # , "f16"]
+cpp_quantization = ["Q5_K_M", "f16", "Q4_K_M"]  # , "f16"]
 gpu_layers = ['-1', '-1', '16', '16']
 hf_quantization = ["Q8", "Q4", "Q4"]  # , 'Q4']
 params = [(model, quant) for model, quant in zip(hf_models, hf_quantization)]
