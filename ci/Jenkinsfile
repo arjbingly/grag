@@ -97,13 +97,14 @@ pipeline {
             }
             post {
                 always{
+                    sh 'docker stop jenkins-chroma'
+                    sh 'docker rm jenkins-chroma'
                      withChecks('Integration Tests'){
                         junit 'pytest-report.xml'
                      }
 //                     sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/test_retriever'
 //                     sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/test_client'
-                    sh 'docker stop jenkins-chroma'
-                    sh 'docker rm jenkins-chroma'
+
 
 //                      cleanWs(
 //                         cleanWhenNotBuilt: false,
