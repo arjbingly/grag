@@ -6,8 +6,6 @@ pipeline {
     }
     environment {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
-//         AUTH_TOKEN = credentials('hf_token')
-//         AUTH_TOKEN = 'ARJUN'
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         PATH="/usr/local/cuda-12.3/bin:$PATH"
@@ -19,7 +17,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-//                     cleanWs()
+                    cleanWs()
                     checkout scm
             }
         }
@@ -34,7 +32,6 @@ pipeline {
             steps {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install -e .'
-//                     sh 'CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir'
                 }
             }
 
@@ -93,13 +90,9 @@ pipeline {
                 sh 'docker pull chromadb/chroma'
                 sh 'docker run -d --name jenkins-chroma -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
-//                     withCredentials([string(credentialsId: 'hf_token', variable: 'HF_TOKEN')]) {
                     sh 'pip install pytest'
-//                     sh 'python3 ci/env_test.py'
                     sh 'python3 ci/unlock_deeplake.py'
-//                     sh 'pytest src -vvv --junitxml=pytest-report.xml'
-                    sh 'pytest src/tests/components/llm_test.py -vvv  --junitxml=pytest-report.xml'
-//                     }
+                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
                 }
             }
             post {
@@ -110,14 +103,14 @@ pipeline {
                         junit 'pytest-report.xml'
                      }
 
-//                      cleanWs(
-//                         cleanWhenNotBuilt: false,
-//                         deleteDirs: true,
-//                         disableDeferredWipeout: true,
-//                         notFailBuild: true,
-//                         patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-//                                    [pattern: '.propsfile', type: 'EXCLUDE']]
-//                              )
+                     cleanWs(
+                        cleanWhenNotBuilt: false,
+                        deleteDirs: true,
+                        disableDeferredWipeout: true,
+                        notFailBuild: true,
+                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                                   [pattern: '.propsfile', type: 'EXCLUDE']]
+                             )
                 }
             }
         }
