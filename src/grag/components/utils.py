@@ -73,5 +73,8 @@ def get_config() -> ConfigParser:
     config = ConfigParser(interpolation=ExtendedInterpolation())
     config.read(config_path)
     print(f"Loaded config from {config_path}.")
-    load_dotenv(config['env']['env_path'])
+    # load_dotenv(config['env']['env_path'])
+    env_path = Path(config['env']['env_path'])
+    if env_path.exists():
+        load_dotenv()
     return config

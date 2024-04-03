@@ -7,7 +7,7 @@ pipeline {
     environment {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
 //         AUTH_TOKEN = credentials('hf_token')
-        AUTH_TOKEN = 'ARJUN'
+//         AUTH_TOKEN = 'ARJUN'
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         }
@@ -25,8 +25,6 @@ pipeline {
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
-                sh 'python3 ci/env_test.py'
-                sh 'exit 1'
             }
         }
 
@@ -93,9 +91,11 @@ pipeline {
                 sh 'docker pull chromadb/chroma'
                 sh 'docker run -d --name jenkins-chroma -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
-                    sh 'pip install pytest'
-                    sh 'python3 ci/unlock_deeplake.py'
-                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
+                    withCredentials([string(credentialsId: 'hf_token', variable: 'AUTH_TOKEN')]) {
+                        sh 'pip install pytest'
+                        sh 'python3 ci/unlock_deeplake.py'
+                        sh 'pytest src -vvv --junitxml=pytest-report.xml'
+                    }
                 }
             }
             post {
