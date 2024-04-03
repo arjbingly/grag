@@ -20,7 +20,7 @@ from langchain_core.documents import Document
 #         print('Deleting test retriever: {}'.format(test_path))
 
 config = get_config()
-test_path = dir_path = config['data']['data_path'] / 'vectordb/test_client'
+test_path = Path(config['data']['data_path']) / 'vectordb/test_client'
 if os.path.exists(test_path):
     shutil.rmtree(test_path)
     print('Deleting test retriever: {}'.format(test_path))
