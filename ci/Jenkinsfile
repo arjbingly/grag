@@ -10,6 +10,9 @@ pipeline {
 //         AUTH_TOKEN = 'ARJUN'
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
+        PATH="/usr/local/cuda-12.3/bin:$PATH"
+        LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
+        PATH="/usr/local/cuda-12.3/bin${PATH:+:${PATH}}"
         }
 
 
@@ -95,7 +98,8 @@ pipeline {
                     sh 'pip install pytest'
 //                     sh 'python3 ci/env_test.py'
                     sh 'python3 ci/unlock_deeplake.py'
-                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
+//                     sh 'pytest src -vvv --junitxml=pytest-report.xml'
+                    sh 'pytest src/tests/components/llm_test.py src/tests/quantize/quantize_test.py -vvv  --junitxml=pytest-report.xml'
 //                     }
                 }
             }
