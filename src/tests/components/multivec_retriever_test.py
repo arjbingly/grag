@@ -14,13 +14,15 @@ if os.path.exists(test_path):
     shutil.rmtree(test_path)
     print('Deleting test retriever: {}'.format(test_path))
 
-client = DeepLakeClient(collection_name="test_retriever")
-retriever = Retriever(vectordb=client)  # pass test collection
+# client = DeepLakeClient(collection_name="test_retriever")
+# retriever = Retriever(vectordb=client)  # pass test collection
 
 doc = Document(page_content="Hello worlds", metadata={"source": "bars"})
 
 
 def test_retriever_id_gen():
+    client = DeepLakeClient(collection_name="test_retriever")
+    retriever = Retriever(vectordb=client)
     doc = Document(page_content="Hello world", metadata={"source": "bar"})
     id_ = retriever.id_gen(doc)
     assert isinstance(id_, str)
@@ -31,14 +33,18 @@ def test_retriever_id_gen():
     doc.metadata["source"] = "bars"
     id_1 = retriever.id_gen(doc)
     assert id_ != id_1
+    del client, retriever
 
 
 def test_retriever_gen_doc_ids():
+    client = DeepLakeClient(collection_name="test_retriever")
+    retriever = Retriever(vectordb=client)
     docs = [Document(page_content="Hello world", metadata={"source": "bar"}),
             Document(page_content="Hello", metadata={"source": "foo"})]
     ids = retriever.gen_doc_ids(docs)
     assert len(ids) == len(docs)
     assert all(isinstance(id, str) for id in ids)
+    del client, retriever
 
 
 def test_retriever_split_docs():
@@ -46,6 +52,8 @@ def test_retriever_split_docs():
 
 
 def test_retriever_add_docs():
+    client = DeepLakeClient(collection_name="test_retriever")
+    retriever = Retriever(vectordb=client)
     # small enough docs to not split.
     docs = [Document(page_content=
                      """And so on this rainbow day, with storms all around them, and blue sky
@@ -89,7 +97,7 @@ def test_retriever_add_docs():
     assert len(retrieved) == len(ids)
     for ret, doc in zip(retrieved, docs):
         assert ret.metadata == doc.metadata
-    del client
+    del client, retriever
 
 
 def test_retriever_aadd_docs():
