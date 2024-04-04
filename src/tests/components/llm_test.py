@@ -18,7 +18,7 @@ hf_models = [
     "google/gemma-7b-it",
 ]
 cpp_quantization = ["Q5_K_M", "Q5_K_M", "f16", "Q4_K_M"]
-gpu_layers = ['-1', '-1', '18', '18']
+gpu_layers = ['-1', '-1', '18', '16']
 hf_quantization = ["Q8", "Q4", "Q4"]
 params = [(model, quant) for model, quant in zip(hf_models, hf_quantization)]
 
