@@ -12,6 +12,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 from pathlib import Path
 from typing import List
 
+from dotenv import load_dotenv
 from langchain_core.documents import Document
 
 
@@ -42,7 +43,7 @@ def find_config_path(current_path: Path) -> Path:
     Raises:
         FileNotFoundError: If 'config.ini' cannot be found in any of the parent directories.
     """
-    config_path = Path("src/config.ini")
+    config_path = Path("config.ini")
     while not (current_path / config_path).exists():
         current_path = current_path.parent
         if current_path == current_path.parent:
@@ -50,7 +51,7 @@ def find_config_path(current_path: Path) -> Path:
     return current_path / config_path
 
 
-def get_config() -> ConfigParser:
+def get_config(load_env=False) -> ConfigParser:
     """Retrieves and parses the configuration settings from the 'config.ini' file.
 
     This function locates the 'config.ini' file by calling `find_config_path` using the script's current location.
@@ -67,9 +68,15 @@ def get_config() -> ConfigParser:
     else:
         config_path = find_config_path(script_location)
         os.environ["CONFIG_PATH"] = str(config_path)
-    print(f"Loaded config from {config_path}.")
+
     # Initialize parser and read config
     config = ConfigParser(interpolation=ExtendedInterpolation())
     config.read(config_path)
-
+    print(f"Loaded config from {config_path}.")
+    # load_dotenv(config['env']['env_path'])
+    if load_env:
+        env_path = Path(config['env']['env_path'])
+        if env_path.exists():
+            load_dotenv(env_path)
+            print(f"Loaded environment variables from {env_path}")
     return config
