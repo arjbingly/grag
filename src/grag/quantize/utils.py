@@ -51,7 +51,7 @@ def building_llamacpp(root_path: Union[str, Path]) -> None:
     os.chdir(f"{root_path}/llama.cpp/")
     try:
         subprocess.run(["which", "make"], check=True, stdout=subprocess.DEVNULL)
-        subprocess.run(["make", "LLAMA_CUDA=1"], check=True)
+        subprocess.run(["make", "LLAMA_CUBLAS=1"], check=True)
         print("Llama.cpp build successful.")
     except subprocess.CalledProcessError:
         try:
@@ -64,7 +64,7 @@ def building_llamacpp(root_path: Union[str, Path]) -> None:
                     "&&",
                     "cmake",
                     "..",
-                    "-DLLAMA_CUDA=ON",
+                    "-DLLAMA_CUBLAS=ON",
                     "&&",
                     "cmake",
                     "--build",

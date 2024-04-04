@@ -78,7 +78,6 @@ class Retriever:
             byte_store=self.store,  # type: ignore
             id_key=self.id_key,
         )
-        self.docstore = self.retriever.docstore
         self.splitter = TextSplitter()
         self.top_k: int = top_k
         self.retriever.search_kwargs = {"k": self.top_k}

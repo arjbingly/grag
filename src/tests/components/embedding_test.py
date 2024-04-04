@@ -47,4 +47,3 @@ def test_embeddings(embedding_config):
             cosine_similarity(doc_vecs[0], doc_vecs[2]),
         ]
     assert similarity_scores[0] > similarity_scores[1]
-    del embedding

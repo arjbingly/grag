@@ -1,18 +1,8 @@
 import asyncio
-import os
-import shutil
-from pathlib import Path
 
 import pytest
-from grag.components.utils import get_config
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
-
-config = get_config()
-test_path = Path(config['data']['data_path']) / 'vectordb/test_client'
-if os.path.exists(test_path):
-    shutil.rmtree(test_path)
-    print('Deleting test retriever: {}'.format(test_path))
 
 
 def test_deeplake_add_docs():
@@ -50,7 +40,7 @@ def test_deeplake_add_docs():
     storm-clouds was split to the blinding zigzag of lightning, and the
     thunder rolled and boomed, like the Colorado in flood.""",
     ]
-    deeplake_client = DeepLakeClient(collection_name="test_client")
+    deeplake_client = DeepLakeClient(collection_name="test")
     if len(deeplake_client) > 0:
         deeplake_client.delete()
     docs = [Document(page_content=doc) for doc in docs]
@@ -59,7 +49,7 @@ def test_deeplake_add_docs():
     del deeplake_client
 
 
-def test_deeplake_aadd_docs():
+def test_chroma_aadd_docs():
     docs = [
         """And so on this rainbow day, with storms all around them, and blue sky
     above, they rode only as far as the valley. But from there, before they
@@ -94,7 +84,7 @@ def test_deeplake_aadd_docs():
     storm-clouds was split to the blinding zigzag of lightning, and the
     thunder rolled and boomed, like the Colorado in flood.""",
     ]
-    deeplake_client = DeepLakeClient(collection_name="test_client")
+    deeplake_client = DeepLakeClient(collection_name="test")
     if len(deeplake_client) > 0:
         deeplake_client.delete()
     docs = [Document(page_content=doc) for doc in docs]
@@ -118,7 +108,7 @@ def test_deeplake_get_chunk(top_k, with_score):
     ankles from Joel Creech's lasso had never mended. The girl was
     unutterably happy, but it was possible that she would never race a
     horse again."""
-    deeplake_client = DeepLakeClient(collection_name="test_client", read_only=True)
+    deeplake_client = DeepLakeClient(collection_name="test", read_only=True)
     retrieved_chunks = deeplake_client.get_chunk(
         query=query, top_k=top_k, with_score=with_score
     )
@@ -142,7 +132,7 @@ def test_deeplake_aget_chunk(top_k, with_score):
     ankles from Joel Creech's lasso had never mended. The girl was
     unutterably happy, but it was possible that she would never race a
     horse again."""
-    deeplake_client = DeepLakeClient(collection_name="test_client", read_only=True)
+    deeplake_client = DeepLakeClient(collection_name="test", read_only=True)
     loop = asyncio.get_event_loop()
     retrieved_chunks = loop.run_until_complete(
         deeplake_client.aget_chunk(query=query, top_k=top_k, with_score=with_score)

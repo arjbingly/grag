@@ -9,7 +9,6 @@ def test_chroma_connection():
     chroma_client = ChromaClient()
     response = chroma_client.test_connection()
     assert isinstance(response, int)
-    del chroma_client
 
 
 def test_chroma_add_docs():
@@ -53,7 +52,6 @@ def test_chroma_add_docs():
     docs = [Document(page_content=doc) for doc in docs]
     chroma_client.add_docs(docs)
     assert len(chroma_client) == len(docs)
-    del chroma_client
 
 
 def test_chroma_aadd_docs():
@@ -98,7 +96,6 @@ def test_chroma_aadd_docs():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(chroma_client.aadd_docs(docs))
     assert len(chroma_client) == len(docs)
-    del chroma_client
 
 
 chrome_get_chunk_params = [(1, False), (1, True), (2, False), (2, True)]
@@ -125,7 +122,6 @@ def test_chroma_get_chunk(top_k, with_score):
         assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
     else:
         assert all(isinstance(doc, Document) for doc in retrieved_chunks)
-    del chroma_client
 
 
 @pytest.mark.parametrize("top_k,with_score", chrome_get_chunk_params)
@@ -150,4 +146,3 @@ def test_chroma_aget_chunk(top_k, with_score):
         assert all(isinstance(doc[1], float) for doc in retrieved_chunks)
     else:
         assert all(isinstance(doc, Document) for doc in retrieved_chunks)
-    del chroma_client
