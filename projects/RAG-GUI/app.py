@@ -1,46 +1,66 @@
-import streamlit as st
+
 
 import os
+import sys
+from pathlib import Path
 
-# App title
-st.set_page_config(page_title="RAG")
-with st.sidebar:
-    st.title('RAG ')
-    st.subheader('Models and parameters')
-    selected_model = st.sidebar.selectbox('Choose a model', ['Llama2-7B', 'Llama2-13B', 'Mixtral 8x7B','Gemma 7B'], key='selected_model')
-    temperature = st.sidebar.slider('temperature', min_value=0.01, max_value=5.0, value=0.1, step=0.01)
-    top_k = st.sidebar.slider('top_k', min_value=1.0, max_value=5.0, value=1.0, step=1.0)
+import streamlit as st
 
+sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 
-st.title("Welcome to the RAG App")
+from grag.rag.basic_rag import BasicRAG
+from grag.components.utils import get_config
+from grag.components.llm import LLM
+from grag.components.multivec_retriever import Retriever
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 
-st.write(f"You have selected the {selected_model} model with the following parameters:")
-st.write(f"Temperature: {temperature}")
-st.write(f"Top-k: {top_k}")
-# st.write(f"Max Length: {max_length}")
-if "messages" not in st.session_state.keys():
-    st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
+class RAGApp:
+    def __init__(self):
+        self.conf = get_config()
+        self.selected_model = None
+        self.temperature = None
+        self.top_k = None
+        self.rag = None
+        self.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
+    def render_sidebar(self):
+        with st.sidebar:
+            st.title('RAG')
+            st.subheader('Models and parameters')
+            self.selected_model = st.sidebar.selectbox('Choose a model', ['Llama-2-13b-chat', 'Llama-2-7b-chat', 'Mixtral-8x7B-Instruct-v0.1', 'Gemma 7B'], key='selected_model')
+            self.temperature = st.sidebar.slider('Temperature', min_value=0.01, max_value=5.0, value=0.1, step=0.01)
+            self.top_k = st.sidebar.slider('Top-k', min_value=1.0, max_value=5.0, value=1.0, step=1.0)
 
+    def render_main(self):
+        st.title("Welcome to the RAG App")
+        st.write(f"You have selected the {self.selected_model} model with the following parameters:")
+        st.write(f"Temperature: {self.temperature}")
+        st.write(f"Top-k: {self.top_k}")
+        llm_kwargs = {"temperature": self.temperature}
+        self.rag = BasicRAG(model_name=self.selected_model,llm_kwargs=llm_kwargs)
 
-# def generate_response(user_input, model, temperature, top_k, max_length):
-#     # inputs = tokenizer(user_input, return_tensors="pt")
-#     outputs = model.generate(user_input, max_length=max_length, do_sample=True, top_k=top_k, temperature=temperature)
-#     # response = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-#     return outputs
+        for message in self.messages:
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
+        user_input = st.text_area("Enter your query:", height=20)
+        submit_button = st.button("Submit")
+        if submit_button and user_input:
+            self.messages.append({"role": "user", "content": user_input})
+            response, sources = self.rag(user_input)
 
-# User input
-user_input = st.text_area("Enter your query:", height=200)
+            for index, resp in enumerate(response):
+                with st.chat_message("assistant"):
+                    st.write(f"Response {index + 1}: {resp}")
+                    st.write("Retrieved Chunks:")
+                    for src_index, source in enumerate(sources[index]):
+                        st.write(f"\t{src_index + 1}: {source.page_content}")
 
-# Process user input
-if user_input:
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    # Here you can add the code to process the user input and generate a response using the selected model and parameters
-    # For example:
-    # response = generate_response(user_input, selected_model, temperature, top_k, max_length)
-    # st.session_state.messages.append({"role": "assistant", "content": response})
+    def render(self):
+        st.set_page_config(page_title="RAG")
+        self.render_sidebar()
+        self.render_main()
 
+if __name__ == "__main__":
+    app = RAGApp()
+    app.render()
