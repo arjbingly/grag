@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 
 import torch
-from dotenv import load_dotenv
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
@@ -18,7 +17,7 @@ from transformers import (
 
 from .utils import get_config
 
-llm_conf = get_config()["llm"]
+llm_conf = get_config(load_env=True)["llm"]
 
 print("CUDA: ", torch.cuda.is_available())
 
@@ -74,17 +73,17 @@ class LLM:
         """Returns the name of the model."""
         return self._model_name
 
+    @model_name.setter
+    def model_name(self, value):
+        """Returns the path to the model."""
+        self._model_name = value
+
     @property
     def model_path(self):
         """Sets the model name."""
         return str(
             self.base_dir / self.model_name / f"ggml-model-{self.quantization}.gguf"
         )
-
-    @model_name.setter
-    def model_name(self, value):
-        """Returns the path to the model."""
-        self._model_name = value
 
     def hf_pipeline(self, is_local=False):
         """Loads the model using Hugging Face transformers.
@@ -117,9 +116,8 @@ class LLM:
             )
         except OSError:  # LocalTokenNotFoundError:
             # If loading fails due to an auth token error, then load the token and retry
-            load_dotenv()
-            auth_token = os.getenv("AUTH_TOKEN")
-            if not auth_token:
+            # load_dotenv()
+            if not os.getenv("HF_TOKEN"):
                 raise ValueError("Authentication token not provided.")
             tokenizer = AutoTokenizer.from_pretrained(hf_model, token=True)
             model = AutoModelForCausalLM.from_pretrained(

@@ -49,7 +49,7 @@ class Retriever:
         store_path: str = multivec_retriever_conf["store_path"],
         id_key: str = multivec_retriever_conf["id_key"],
         namespace: str = multivec_retriever_conf["namespace"],
-        top_k=1,
+        top_k=int(multivec_retriever_conf["top_k"]),
         client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
@@ -75,9 +75,10 @@ class Retriever:
         self.store = LocalFileStore(self.store_path)
         self.retriever = MultiVectorRetriever(
             vectorstore=self.vectordb.langchain_client,
-            byte_store=self.store,
+            byte_store=self.store,  # type: ignore
             id_key=self.id_key,
         )
+        self.docstore = self.retriever.docstore
         self.splitter = TextSplitter()
         self.top_k: int = top_k
         self.retriever.search_kwargs = {"k": self.top_k}
@@ -157,7 +158,7 @@ class Retriever:
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
         await asyncio.run(self.vectordb.aadd_docs(chunks))
-        self.retriever.docstore.mset(list(zip(doc_ids)))
+        self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
         """Returns the most similar chunks from the vector database.
@@ -241,7 +242,7 @@ class Retriever:
         glob_pattern: str = "**/*.pdf",
         dry_run: bool = False,
         verbose: bool = True,
-        parser_kwargs: dict = None,
+        parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Ingests the files in directory.
 
@@ -283,7 +284,7 @@ class Retriever:
         glob_pattern: str = "**/*.pdf",
         dry_run: bool = False,
         verbose: bool = True,
-        parser_kwargs: dict = None,
+        parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Asynchronously ingests the files in directory.
 

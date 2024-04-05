@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>grag.components.parse_pdf &mdash; GRAG 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            GRAG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../grag.html">grag package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GRAG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">grag.components.parse_pdf</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for grag.components.parse_pdf</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Classes for parsing files.</span>
+
+<span class="sd">This module provides:</span>
+<span class="sd">- ParsePDF</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">unstructured.partition.pdf</span> <span class="kn">import</span> <span class="n">partition_pdf</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_config</span>
+
+<span class="n">parser_conf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()[</span><span class="s2">&quot;parser&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ParsePDF">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF">[docs]</a>
+<span class="k">class</span> <span class="nc">ParsePDF</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parsing and partitioning PDF documents into Text, Table or Image elements.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        single_text_out (bool): Whether to combine all text elements into a single output document.</span>
+<span class="sd">        strategy (str): The strategy for PDF partitioning; default is &quot;hi_res&quot; for better accuracy.</span>
+<span class="sd">        extract_image_block_types (list): Elements to be extracted as image blocks.</span>
+<span class="sd">        infer_table_structure (bool): Whether to extract tables during partitioning.</span>
+<span class="sd">        extract_images (bool): Whether to extract images.</span>
+<span class="sd">        image_output_dir (str): Directory to save extracted images, if any.</span>
+<span class="sd">        add_captions_to_text (bool): Whether to include figure captions in text output. Default is True.</span>
+<span class="sd">        add_captions_to_blocks (bool): Whether to add captions to table and image blocks. Default is True.</span>
+<span class="sd">        add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. Default is True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">single_text_out</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;single_text_out&quot;</span><span class="p">],</span>
+        <span class="n">strategy</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;strategy&quot;</span><span class="p">],</span>
+        <span class="n">infer_table_structure</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;infer_table_structure&quot;</span><span class="p">],</span>
+        <span class="n">extract_images</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;extract_images&quot;</span><span class="p">],</span>
+        <span class="n">image_output_dir</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;image_output_dir&quot;</span><span class="p">],</span>
+        <span class="n">add_captions_to_text</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;add_captions_to_text&quot;</span><span class="p">],</span>
+        <span class="n">add_captions_to_blocks</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;add_captions_to_blocks&quot;</span><span class="p">],</span>
+        <span class="n">table_as_html</span><span class="o">=</span><span class="n">parser_conf</span><span class="p">[</span><span class="s2">&quot;table_as_html&quot;</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize instance variables with parameters.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
+        <span class="k">if</span> <span class="n">extract_images</span><span class="p">:</span>  <span class="c1"># by default always extract Table</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extract_image_block_types</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">&quot;Image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Table&quot;</span><span class="p">,</span>
+            <span class="p">]</span>  <span class="c1"># extracting Image and Table as image blocks</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extract_image_block_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Table&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infer_table_structure</span> <span class="o">=</span> <span class="n">infer_table_structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_captions_to_text</span> <span class="o">=</span> <span class="n">add_captions_to_text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_captions_to_blocks</span> <span class="o">=</span> <span class="n">add_captions_to_blocks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_output_dir</span> <span class="o">=</span> <span class="n">image_output_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">single_text_out</span> <span class="o">=</span> <span class="n">single_text_out</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_caption_first</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_as_html</span> <span class="o">=</span> <span class="n">table_as_html</span>
+
+<div class="viewcode-block" id="ParsePDF.partition">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.partition">[docs]</a>
+    <span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Partitions a PDF document into elements based on the instance&#39;s configuration.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            path (str): The file path of the PDF document to be parsed and partitioned.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of partitioned elements from the PDF document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="n">partitions</span> <span class="o">=</span> <span class="n">partition_pdf</span><span class="p">(</span>
+            <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">strategy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="p">,</span>
+            <span class="c1"># extract_images_in_pdf=True,  # Not required if specifies extract_image_block_type</span>
+            <span class="n">extract_image_block_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extract_image_block_types</span><span class="p">,</span>
+            <span class="n">infer_table_structure</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infer_table_structure</span><span class="p">,</span>
+            <span class="n">extract_image_block_to_payload</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extract_image_block_output_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_output_dir</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">partitions</span></div>
+
+
+<div class="viewcode-block" id="ParsePDF.classify">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.classify">[docs]</a>
+    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partitions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Classifies the partitioned elements into Text, Tables, and Images list in a dictionary.</span>
+
+<span class="sd">        Also adds captions for each element (if available).</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            partitions (list): The list of partitioned elements from the PDF document.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary with keys &#39;Text&#39;, &#39;Tables&#39;, and &#39;Images&#39;, each containing a list of corresponding elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize lists for each type of element</span>
+        <span class="n">classified_elements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;Tables&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;Images&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">partitions</span><span class="p">):</span>
+            <span class="c1"># enumerate, classify and add element + caption (when available) to respective list</span>
+            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;Table&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_captions_to_blocks</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">partitions</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">partitions</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;FigureCaption&quot;</span>
+                    <span class="p">):</span>  <span class="c1"># check for caption</span>
+                        <span class="n">caption_element</span> <span class="o">=</span> <span class="n">partitions</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">caption_element</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Tables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">element</span><span class="p">,</span> <span class="n">caption_element</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Tables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">element</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">element</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;Image&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_captions_to_blocks</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">partitions</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">partitions</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;FigureCaption&quot;</span>
+                    <span class="p">):</span>  <span class="c1"># check for caption</span>
+                        <span class="n">caption_element</span> <span class="o">=</span> <span class="n">partitions</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">caption_element</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">element</span><span class="p">,</span> <span class="n">caption_element</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">element</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_captions_to_text</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">category</span> <span class="o">!=</span> <span class="s2">&quot;FigureCaption&quot;</span><span class="p">:</span>
+                        <span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">classified_elements</span></div>
+
+
+<div class="viewcode-block" id="ParsePDF.text_concat">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.text_concat">[docs]</a>
+    <span class="k">def</span> <span class="nf">text_concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context aware concatenates all elements into a single string.&quot;&quot;&quot;</span>
+        <span class="n">full_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">current_element</span><span class="p">,</span> <span class="n">next_element</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">elements</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="n">curr_type</span> <span class="o">=</span> <span class="n">current_element</span><span class="o">.</span><span class="n">category</span>
+            <span class="n">next_type</span> <span class="o">=</span> <span class="n">next_element</span><span class="o">.</span><span class="n">category</span>
+
+            <span class="c1"># if curr_type in [&quot;FigureCaption&quot;, &quot;NarrativeText&quot;, &quot;Title&quot;, &quot;Address&quot;, &#39;Table&#39;, &quot;UncategorizedText&quot;, &quot;Formula&quot;]:</span>
+            <span class="c1">#     full_text += str(current_element) + &quot;\n\n&quot;</span>
+
+            <span class="k">if</span> <span class="n">curr_type</span> <span class="o">==</span> <span class="s2">&quot;Title&quot;</span> <span class="ow">and</span> <span class="n">next_type</span> <span class="o">==</span> <span class="s2">&quot;NarrativeText&quot;</span><span class="p">:</span>
+                <span class="n">full_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_element</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">elif</span> <span class="n">curr_type</span> <span class="o">==</span> <span class="s2">&quot;NarrativeText&quot;</span> <span class="ow">and</span> <span class="n">next_type</span> <span class="o">==</span> <span class="s2">&quot;NarrativeText&quot;</span><span class="p">:</span>
+                <span class="n">full_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_element</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">elif</span> <span class="n">curr_type</span> <span class="o">==</span> <span class="s2">&quot;ListItem&quot;</span><span class="p">:</span>
+                <span class="n">full_text</span> <span class="o">+=</span> <span class="s2">&quot;- &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_element</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">next_element</span> <span class="o">==</span> <span class="s2">&quot;Title&quot;</span><span class="p">:</span>
+                    <span class="n">full_text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">elif</span> <span class="n">next_element</span> <span class="o">==</span> <span class="s2">&quot;Title&quot;</span><span class="p">:</span>
+                <span class="n">full_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_element</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+            <span class="k">elif</span> <span class="n">curr_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Header&quot;</span><span class="p">,</span> <span class="s2">&quot;Footer&quot;</span><span class="p">,</span> <span class="s2">&quot;PageBreak&quot;</span><span class="p">]:</span>
+                <span class="n">full_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_element</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">full_text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">full_text</span></div>
+
+
+<div class="viewcode-block" id="ParsePDF.process_text">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.process_text">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes text elements into langchain Documents.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            elements (list): The list of text elements to be processed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            docs (list): A list of Document instances containing the extracted Text content and their metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_text_out</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">}</span>  <span class="c1"># Check for more metadata</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">])</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+                <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">category</span><span class="p">}</span>
+                <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+                <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="p">),</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">docs</span></div>
+
+
+<div class="viewcode-block" id="ParsePDF.process_tables">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.process_tables">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes table elements into Documents, including handling of captions if specified.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            elements (list): The list of table elements (and optional captions) to be processed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            docs (list): A list of Document instances containing Tables, their captions and metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">block_element</span><span class="p">,</span> <span class="n">caption_element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">block_element</span><span class="o">.</span><span class="n">category</span><span class="p">}</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block_element</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_as_html</span><span class="p">:</span>
+                <span class="n">table_data</span> <span class="o">=</span> <span class="n">block_element</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">text_as_html</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">table_data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">block_element</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">caption_element</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_caption_first</span>
+                <span class="p">):</span>  <span class="c1"># if there is a caption, add that before the element</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">caption_element</span><span class="p">),</span> <span class="n">table_data</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">table_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">caption_element</span><span class="p">)])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">table_data</span>
+            <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">docs</span></div>
+
+
+<div class="viewcode-block" id="ParsePDF.process_images">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.process_images">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes image elements into Documents, including handling of captions if specified.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            elements (list): The list of image elements (and optional captions) to be processed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            docs (list): A list of Document instances containing the Images, their caption and metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">block_element</span><span class="p">,</span> <span class="n">caption_element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">block_element</span><span class="o">.</span><span class="n">category</span><span class="p">}</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block_element</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">caption_element</span><span class="p">:</span>  <span class="c1"># if there is a caption, add that before the element</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_caption_first</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">caption_element</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">block_element</span><span class="p">)])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">block_element</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">caption_element</span><span class="p">)])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">block_element</span><span class="p">)</span>
+            <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">docs</span></div>
+
+
+<div class="viewcode-block" id="ParsePDF.load_file">
+<a class="viewcode-back" href="../../../grag.components.html#grag.components.parse_pdf.ParsePDF.load_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads a PDF file, partitions and classifies its elements, and processes these elements into Documents.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            path (str): The file path of the PDF document to be loaded and processed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary with keys &#39;Text&#39;, &#39;Tables&#39;, and &#39;Images&#39;, each containing a list of processed Document instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="n">classified_elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">partitions</span><span class="p">)</span>
+        <span class="n">text_docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_text</span><span class="p">(</span><span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Text&quot;</span><span class="p">])</span>
+        <span class="n">table_docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_tables</span><span class="p">(</span><span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Tables&quot;</span><span class="p">])</span>
+        <span class="n">image_docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_images</span><span class="p">(</span><span class="n">classified_elements</span><span class="p">[</span><span class="s2">&quot;Images&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="n">text_docs</span><span class="p">,</span> <span class="s2">&quot;Tables&quot;</span><span class="p">:</span> <span class="n">table_docs</span><span class="p">,</span> <span class="s2">&quot;Images&quot;</span><span class="p">:</span> <span class="n">image_docs</span><span class="p">}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
