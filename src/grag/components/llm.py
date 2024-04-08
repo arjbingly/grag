@@ -67,7 +67,7 @@ class LLM:
         if std_out:
             self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         else:
-            self.callback_manager = None
+            self.callback_manager = None  # type: ignore
 
     @property
     def model_name(self):
