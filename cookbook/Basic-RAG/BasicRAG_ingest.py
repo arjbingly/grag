@@ -13,3 +13,5 @@ retriever = Retriever(vectordb=client)
 
 dir_path = Path(__file__).parents[2] / "data/test/pdfs/new_papers"
 retriever.ingest(dir_path)
+
+# retriever.aingest(dir_path)
