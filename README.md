@@ -11,7 +11,7 @@
 This GitRepo provides an open-sourced implementation of a Retrival-Augmented Generation pipeline, using a graph data structure in place of a vector database.
 
 <figure>
-    <img src="documentation/basic_RAG_pipeline.drawio.svg" alt="Diagram of a basic RAG pipeline">
+    <img src="documentation/basic_RAG_pipeline.png" alt="Diagram of a basic RAG pipeline">
     <figcaption style="text-align: center;"
     >Diagram of a basic RAG pipeline</figcaption>
 </figure>
