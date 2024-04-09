@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>grag.components package &mdash; GRAG 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/autoclasstoc.css?v=08871587" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="grag.components.vectordb package" href="grag.components.vectordb.html" />
+    <link rel="prev" title="grag package" href="grag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GRAG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="grag.html">grag package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="grag.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">grag.components package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.embedding">grag.components.embedding module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.llm">grag.components.llm module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.multivec_retriever">grag.components.multivec_retriever module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.parse_pdf">grag.components.parse_pdf module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.prompt">grag.components.prompt module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.text_splitter">grag.components.text_splitter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.utils">grag.components.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-grag.components">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="grag.prompts.html">grag.prompts package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.quantize.html">grag.quantize package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.rag.html">grag.rag package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.html#module-grag">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GRAG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="grag.html">grag package</a></li>
+      <li class="breadcrumb-item active">grag.components package</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/arjbingly/Capstone_5/blob/main/src/grag.components.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="grag-components-package">
+<h1>grag.components package<a class="headerlink" href="#grag-components-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="grag.components.vectordb.html">grag.components.vectordb package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb.base">grag.components.vectordb.base module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB"><code class="docutils literal notranslate"><span class="pre">VectorDB</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.aadd_docs"><code class="docutils literal notranslate"><span class="pre">VectorDB.aadd_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.add_docs"><code class="docutils literal notranslate"><span class="pre">VectorDB.add_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.aget_chunk"><code class="docutils literal notranslate"><span class="pre">VectorDB.aget_chunk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.delete"><code class="docutils literal notranslate"><span class="pre">VectorDB.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.get_chunk"><code class="docutils literal notranslate"><span class="pre">VectorDB.get_chunk()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb.chroma_client">grag.components.vectordb.chroma_client module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient"><code class="docutils literal notranslate"><span class="pre">ChromaClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.host"><code class="docutils literal notranslate"><span class="pre">ChromaClient.host</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.port"><code class="docutils literal notranslate"><span class="pre">ChromaClient.port</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.collection_name"><code class="docutils literal notranslate"><span class="pre">ChromaClient.collection_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.embedding_type"><code class="docutils literal notranslate"><span class="pre">ChromaClient.embedding_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.embedding_model"><code class="docutils literal notranslate"><span class="pre">ChromaClient.embedding_model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.embedding_function"><code class="docutils literal notranslate"><span class="pre">ChromaClient.embedding_function</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.client"><code class="docutils literal notranslate"><span class="pre">ChromaClient.client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.collection"><code class="docutils literal notranslate"><span class="pre">ChromaClient.collection</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.langchain_client"><code class="docutils literal notranslate"><span class="pre">ChromaClient.langchain_client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.aadd_docs"><code class="docutils literal notranslate"><span class="pre">ChromaClient.aadd_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.add_docs"><code class="docutils literal notranslate"><span class="pre">ChromaClient.add_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.aget_chunk"><code class="docutils literal notranslate"><span class="pre">ChromaClient.aget_chunk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.delete"><code class="docutils literal notranslate"><span class="pre">ChromaClient.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.get_chunk"><code class="docutils literal notranslate"><span class="pre">ChromaClient.get_chunk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient.test_connection"><code class="docutils literal notranslate"><span class="pre">ChromaClient.test_connection()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb.deeplake_client">grag.components.vectordb.deeplake_client module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.store_path"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.store_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.embedding_type"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.embedding_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.embedding_model"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.embedding_model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.embedding_function"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.embedding_function</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.client"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.collection"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.collection</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.langchain_client"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.langchain_client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.aadd_docs"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.aadd_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.add_docs"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.add_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.aget_chunk"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.aget_chunk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.delete"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient.get_chunk"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient.get_chunk()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-grag.components.embedding">
+<span id="grag-components-embedding-module"></span><h2>grag.components.embedding module<a class="headerlink" href="#module-grag.components.embedding" title="Link to this heading"></a></h2>
+<p>Class for embedding.</p>
+<p>This module provides:
+- Embedding</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.embedding.</span></span><span class="sig-name descname"><span class="pre">Embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for vector embeddings.</p>
+<dl class="simple">
+<dt>Supports:</dt><dd><p>huggingface sentence transformers -&gt; model_type = ‘sentence-transformers’
+huggingface instructor embeddings -&gt; model_type = ‘instructor-embedding’</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding.embedding_type">
+<span class="sig-name descname"><span class="pre">embedding_type</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding.embedding_type" title="Link to this definition"></a></dt>
+<dd><p>embedding model type, refer above for supported types</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding.embedding_model">
+<span class="sig-name descname"><span class="pre">embedding_model</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding.embedding_model" title="Link to this definition"></a></dt>
+<dd><p>huggingface model name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding.embedding_function">
+<span class="sig-name descname"><span class="pre">embedding_function</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding.embedding_function" title="Link to this definition"></a></dt>
+<dd><p>langchain embedding type</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.llm">
+<span id="grag-components-llm-module"></span><h2>grag.components.llm module<a class="headerlink" href="#module-grag.components.llm" title="Link to this heading"></a></h2>
+<p>Class for LLM.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.llm.LLM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">LLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Llama-2-13b-chat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'text-generation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_new_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1024'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1024'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_ctx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_gpu_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/ubuntu/volume_2k/Capstone_5/models'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Q5_K_M'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'llama_cpp'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for managing and utilizing large language models (LLMs).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.model_name" title="Link to this definition"></a></dt>
+<dd><p>Name of the model to be loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.device_map">
+<span class="sig-name descname"><span class="pre">device_map</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.device_map" title="Link to this definition"></a></dt>
+<dd><p>Device mapping for model execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.task">
+<span class="sig-name descname"><span class="pre">task</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.task" title="Link to this definition"></a></dt>
+<dd><p>The task for which the model is being used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.max_new_tokens">
+<span class="sig-name descname"><span class="pre">max_new_tokens</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.max_new_tokens" title="Link to this definition"></a></dt>
+<dd><p>Maximum new tokens to be generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.temperature" title="Link to this definition"></a></dt>
+<dd><p>Sampling temperature for generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.n_batch">
+<span class="sig-name descname"><span class="pre">n_batch</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.n_batch" title="Link to this definition"></a></dt>
+<dd><p>Number of batches for GPU CPP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.n_ctx">
+<span class="sig-name descname"><span class="pre">n_ctx</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.n_ctx" title="Link to this definition"></a></dt>
+<dd><p>Context size for CPP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.n_gpu_layers">
+<span class="sig-name descname"><span class="pre">n_gpu_layers</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.n_gpu_layers" title="Link to this definition"></a></dt>
+<dd><p>Number of GPU layers for CPP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.hf_pipeline">
+<span class="sig-name descname"><span class="pre">hf_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.hf_pipeline" title="Link to this definition"></a></dt>
+<dd><p>Loads the model using Hugging Face transformers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>is_local</strong> (<em>bool</em>) – Whether to load the model from a local path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.llama_cpp">
+<span class="sig-name descname"><span class="pre">llama_cpp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.llama_cpp" title="Link to this definition"></a></dt>
+<dd><p>Loads the model using a custom CPP pipeline.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.load_model" title="Link to this definition"></a></dt>
+<dd><p>Loads the model based on the specified pipeline and model name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quantization</strong> (<em>str</em>) – Quantization of the LLM model like Q5_K_M, f16, etc. Optional.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the model to load. Optional.</p></li>
+<li><p><strong>pipeline</strong> (<em>str</em>) – The pipeline to use for loading the model. Defaults to ‘llama_cpp’.</p></li>
+<li><p><strong>is_local</strong> (<em>bool</em>) – Whether the model is loaded from a local directory. Defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Returns the name of the model.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="grag.components.llm.LLM.model_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM.model_path" title="Link to this definition"></a></dt>
+<dd><p>Sets the model name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.multivec_retriever">
+<span id="grag-components-multivec-retriever-module"></span><h2>grag.components.multivec_retriever module<a class="headerlink" href="#module-grag.components.multivec_retriever" title="Link to this heading"></a></h2>
+<p>Class for retriever.</p>
+<p>This module provides:
+- Retriever</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">Retriever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectordb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB" title="grag.components.vectordb.base.VectorDB"><span class="pre">VectorDB</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ubuntu/volume_2k/Capstone_5/data/docs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'doc_id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8c9040b0b5cd4d7cbc2e737da1b24ebf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for multi vector retriever.</p>
+<p>It connects to a vector database and a local file store.
+It is used to return most similar chunks from a vector store but has the additional functionality to return a
+linked document, chunk, etc.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.store_path">
+<span class="sig-name descname"><span class="pre">store_path</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.store_path" title="Link to this definition"></a></dt>
+<dd><p>Path to the local file store</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.id_key">
+<span class="sig-name descname"><span class="pre">id_key</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.id_key" title="Link to this definition"></a></dt>
+<dd><p>A key prefix for identifying documents</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.vectordb">
+<span class="sig-name descname"><span class="pre">vectordb</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.vectordb" title="Link to this definition"></a></dt>
+<dd><p>ChromaClient class instance from components.client</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.store">
+<span class="sig-name descname"><span class="pre">store</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.store" title="Link to this definition"></a></dt>
+<dd><p>langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.retriever">
+<span class="sig-name descname"><span class="pre">retriever</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.retriever" title="Link to this definition"></a></dt>
+<dd><p>langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
+langchain’s multi-vector retriever</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.splitter">
+<span class="sig-name descname"><span class="pre">splitter</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.splitter" title="Link to this definition"></a></dt>
+<dd><p>TextSplitter class instance from components.text_splitter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.namespace">
+<span class="sig-name descname"><span class="pre">namespace</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.namespace" title="Link to this definition"></a></dt>
+<dd><p>Namespace for producing unique id</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.top_k">
+<span class="sig-name descname"><span class="pre">top_k</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.top_k" title="Link to this definition"></a></dt>
+<dd><p>Number of top chunks to return from similarity search.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.aadd_docs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aadd_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.aadd_docs" title="Link to this definition"></a></dt>
+<dd><p>Adds given documents into the vector database also adds the parent document into the file store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docs</strong> – List of langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.add_docs">
+<span class="sig-name descname"><span class="pre">add_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.add_docs" title="Link to this definition"></a></dt>
+<dd><p>Adds given documents into the vector database also adds the parent document into the file store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docs</strong> – List of langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.aget_chunk">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aget_chunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.aget_chunk" title="Link to this definition"></a></dt>
+<dd><p>Returns the most (cosine) similar chunks from the vector database, asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – A query string</p></li>
+<li><p><strong>with_score</strong> – Outputs scores of returned chunks</p></li>
+<li><p><strong>top_k</strong> – Number of top similar chunks to return, if None defaults to self.top_k</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of Documents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.aget_doc">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aget_doc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.aget_doc" title="Link to this definition"></a></dt>
+<dd><p>Returns the parent documents of the most (cosine) similar chunks from the vector database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>query</strong> – A query string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Documents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.aingest">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aingest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">glob_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*.pdf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.aingest" title="Link to this definition"></a></dt>
+<dd><p>Asynchronously ingests the files in directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir_path</strong> – path to the directory</p></li>
+<li><p><strong>glob_pattern</strong> – glob pattern to identify files</p></li>
+<li><p><strong>dry_run</strong> – if True, does not ingest any files</p></li>
+<li><p><strong>verbose</strong> – if True, shows progress</p></li>
+<li><p><strong>parser_kwargs</strong> – arguments to pass to the parser</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.gen_doc_ids">
+<span class="sig-name descname"><span class="pre">gen_doc_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.gen_doc_ids" title="Link to this definition"></a></dt>
+<dd><p>Takes a list of documents and produces a list of unique id, refer id_gen method for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docs</strong> – List of langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of hexadecimal uuid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.get_chunk">
+<span class="sig-name descname"><span class="pre">get_chunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.get_chunk" title="Link to this definition"></a></dt>
+<dd><p>Returns the most similar chunks from the vector database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – A query string</p></li>
+<li><p><strong>with_score</strong> – Outputs scores of returned chunks</p></li>
+<li><p><strong>top_k</strong> – Number of top similar chunks to return, if None defaults to self.top_k</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of Documents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.get_doc">
+<span class="sig-name descname"><span class="pre">get_doc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.get_doc" title="Link to this definition"></a></dt>
+<dd><p>Returns the parent document of the most (cosine) similar chunk from the vector database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>query</strong> – A query string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Documents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.get_docs_from_chunks">
+<span class="sig-name descname"><span class="pre">get_docs_from_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_to_one</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.get_docs_from_chunks" title="Link to this definition"></a></dt>
+<dd><p>Returns the parent documents of chunks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunks</strong> – chunks from vector store</p></li>
+<li><p><strong>one_to_one</strong> – if True, returns parent doc for each chunk</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>parent documents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.id_gen">
+<span class="sig-name descname"><span class="pre">id_gen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Document</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.id_gen" title="Link to this definition"></a></dt>
+<dd><p>Takes a document and returns a unique id (uuid5) using the namespace and document source.</p>
+<p>This ensures that a  single document always gets the same unique id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>doc</strong> – langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string of hexadecimal uuid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.ingest">
+<span class="sig-name descname"><span class="pre">ingest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">glob_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*.pdf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.ingest" title="Link to this definition"></a></dt>
+<dd><p>Ingests the files in directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir_path</strong> – path to the directory</p></li>
+<li><p><strong>glob_pattern</strong> – glob pattern to identify files</p></li>
+<li><p><strong>dry_run</strong> – if True, does not ingest any files</p></li>
+<li><p><strong>verbose</strong> – if True, shows progress</p></li>
+<li><p><strong>parser_kwargs</strong> – arguments to pass to the parser</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever.split_docs">
+<span class="sig-name descname"><span class="pre">split_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever.split_docs" title="Link to this definition"></a></dt>
+<dd><p>Takes a list of documents and splits them into smaller chunks.</p>
+<p>Using TextSplitter from components.text_splitter
+Also adds the unique parent document id into metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docs</strong> – List of langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of chunks after splitting</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.parse_pdf">
+<span id="grag-components-parse-pdf-module"></span><h2>grag.components.parse_pdf module<a class="headerlink" href="#module-grag.components.parse_pdf" title="Link to this heading"></a></h2>
+<p>Classes for parsing files.</p>
+<p>This module provides:
+- ParsePDF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">ParsePDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_text_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hi_res'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_table_structure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_captions_to_text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_captions_to_blocks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_as_html</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parsing and partitioning PDF documents into Text, Table or Image elements.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.single_text_out">
+<span class="sig-name descname"><span class="pre">single_text_out</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.single_text_out" title="Link to this definition"></a></dt>
+<dd><p>Whether to combine all text elements into a single output document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.strategy">
+<span class="sig-name descname"><span class="pre">strategy</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.strategy" title="Link to this definition"></a></dt>
+<dd><p>The strategy for PDF partitioning; default is “hi_res” for better accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.extract_image_block_types">
+<span class="sig-name descname"><span class="pre">extract_image_block_types</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.extract_image_block_types" title="Link to this definition"></a></dt>
+<dd><p>Elements to be extracted as image blocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.infer_table_structure">
+<span class="sig-name descname"><span class="pre">infer_table_structure</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.infer_table_structure" title="Link to this definition"></a></dt>
+<dd><p>Whether to extract tables during partitioning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.extract_images">
+<span class="sig-name descname"><span class="pre">extract_images</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.extract_images" title="Link to this definition"></a></dt>
+<dd><p>Whether to extract images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.image_output_dir">
+<span class="sig-name descname"><span class="pre">image_output_dir</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.image_output_dir" title="Link to this definition"></a></dt>
+<dd><p>Directory to save extracted images, if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.add_captions_to_text">
+<span class="sig-name descname"><span class="pre">add_captions_to_text</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.add_captions_to_text" title="Link to this definition"></a></dt>
+<dd><p>Whether to include figure captions in text output. Default is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.add_captions_to_blocks">
+<span class="sig-name descname"><span class="pre">add_captions_to_blocks</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.add_captions_to_blocks" title="Link to this definition"></a></dt>
+<dd><p>Whether to add captions to table and image blocks. Default is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.add_caption_first">
+<span class="sig-name descname"><span class="pre">add_caption_first</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.add_caption_first" title="Link to this definition"></a></dt>
+<dd><p>Whether to place captions before their corresponding image or table in the output. Default is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.classify">
+<span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partitions</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.classify" title="Link to this definition"></a></dt>
+<dd><p>Classifies the partitioned elements into Text, Tables, and Images list in a dictionary.</p>
+<p>Also adds captions for each element (if available).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>partitions</strong> (<em>list</em>) – The list of partitioned elements from the PDF document.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with keys ‘Text’, ‘Tables’, and ‘Images’, each containing a list of corresponding elements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.load_file">
+<span class="sig-name descname"><span class="pre">load_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.load_file" title="Link to this definition"></a></dt>
+<dd><p>Loads a PDF file, partitions and classifies its elements, and processes these elements into Documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The file path of the PDF document to be loaded and processed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with keys ‘Text’, ‘Tables’, and ‘Images’, each containing a list of processed Document instances.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.partition">
+<span class="sig-name descname"><span class="pre">partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.partition" title="Link to this definition"></a></dt>
+<dd><p>Partitions a PDF document into elements based on the instance’s configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The file path of the PDF document to be parsed and partitioned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of partitioned elements from the PDF document.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.process_images">
+<span class="sig-name descname"><span class="pre">process_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.process_images" title="Link to this definition"></a></dt>
+<dd><p>Processes image elements into Documents, including handling of captions if specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>elements</strong> (<em>list</em>) – The list of image elements (and optional captions) to be processed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of Document instances containing the Images, their caption and metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>docs (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.process_tables">
+<span class="sig-name descname"><span class="pre">process_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.process_tables" title="Link to this definition"></a></dt>
+<dd><p>Processes table elements into Documents, including handling of captions if specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>elements</strong> (<em>list</em>) – The list of table elements (and optional captions) to be processed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of Document instances containing Tables, their captions and metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>docs (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.process_text">
+<span class="sig-name descname"><span class="pre">process_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.process_text" title="Link to this definition"></a></dt>
+<dd><p>Processes text elements into langchain Documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>elements</strong> (<em>list</em>) – The list of text elements to be processed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of Document instances containing the extracted Text content and their metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>docs (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF.text_concat">
+<span class="sig-name descname"><span class="pre">text_concat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF.text_concat" title="Link to this definition"></a></dt>
+<dd><p>Context aware concatenates all elements into a single string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.prompt">
+<span id="grag-components-prompt-module"></span><h2>grag.components.prompt module<a class="headerlink" href="#module-grag.components.prompt" title="Link to this heading"></a></h2>
+<p>Classes for prompts.</p>
+<p>This module provides:
+- Prompt - for generic prompts
+- FewShotPrompt - for few-shot prompts</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.prompt.</span></span><span class="sig-name descname"><span class="pre">FewShotPrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'custom_prompt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'QA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NoSource'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stuff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FewShotPromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">example_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#grag.components.prompt.Prompt" title="grag.components.prompt.Prompt"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a></p>
+<p>A class for generic prompts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.name" title="Link to this definition"></a></dt>
+<dd><p>The prompt name (Optional, defaults to “custom_prompt”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.llm_type">
+<span class="sig-name descname"><span class="pre">llm_type</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.llm_type" title="Link to this definition"></a></dt>
+<dd><p>The type of llm, llama2, etc (Optional, defaults to “None”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.task">
+<span class="sig-name descname"><span class="pre">task</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.task" title="Link to this definition"></a></dt>
+<dd><p>The task (Optional, defaults to QA) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.source" title="Link to this definition"></a></dt>
+<dd><p>The source of the prompt (Optional, defaults to “NoSource”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.doc_chain">
+<span class="sig-name descname"><span class="pre">doc_chain</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.doc_chain" title="Link to this definition"></a></dt>
+<dd><p>The doc chain for the prompt (“stuff”, “refine”) (Optional, defaults to “stuff”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.language" title="Link to this definition"></a></dt>
+<dd><p>The language of the prompt (Optional, defaults to “en”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.filepath">
+<span class="sig-name descname"><span class="pre">filepath</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.filepath" title="Link to this definition"></a></dt>
+<dd><p>The filepath of the prompt (Optional) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.input_keys">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.input_keys" title="Link to this definition"></a></dt>
+<dd><p>The input keys for the prompt (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>The output keys for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.prefix" title="Link to this definition"></a></dt>
+<dd><p>The template prefix for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.suffix">
+<span class="sig-name descname"><span class="pre">suffix</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.suffix" title="Link to this definition"></a></dt>
+<dd><p>The template suffix for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.example_template">
+<span class="sig-name descname"><span class="pre">example_template</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.example_template" title="Link to this definition"></a></dt>
+<dd><p>The template for formatting the examples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.examples">
+<span class="sig-name descname"><span class="pre">examples</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.examples" title="Link to this definition"></a></dt>
+<dd><p>The list of examples, each example is a dictionary with respective keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">example_template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">examples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'doc_chain':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='stuff'),</span> <span class="pre">'example_template':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'examples':</span> <span class="pre">FieldInfo(annotation=List[Dict[str,</span> <span class="pre">Any]],</span> <span class="pre">required=True),</span> <span class="pre">'filepath':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">exclude=True),</span> <span class="pre">'input_keys':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True),</span> <span class="pre">'language':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='en'),</span> <span class="pre">'llm_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='None'),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='custom_prompt'),</span> <span class="pre">'output_keys':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True),</span> <span class="pre">'prefix':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'prompt':</span> <span class="pre">FieldInfo(annotation=Union[FewShotPromptTemplate,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">exclude=True,</span> <span class="pre">repr=False),</span> <span class="pre">'source':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='NoSource'),</span> <span class="pre">'suffix':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'task':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='QA'),</span> <span class="pre">'template':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.output_keys">
+<span class="sig-name descname"><span class="pre">output_keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.output_keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.prompt">
+<span class="sig-name descname"><span class="pre">prompt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">FewShotPromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.prompt" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">suffix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.validate_examples">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_examples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.validate_examples" title="Link to this definition"></a></dt>
+<dd><p>Validate the examples field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.validate_output_keys">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_output_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.validate_output_keys" title="Link to this definition"></a></dt>
+<dd><p>Validate the output_keys field.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.prompt.</span></span><span class="sig-name descname"><span class="pre">Prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'custom_prompt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'QA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NoSource'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stuff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A class for generic prompts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.name" title="Link to this definition"></a></dt>
+<dd><p>The prompt name (Optional, defaults to “custom_prompt”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.llm_type">
+<span class="sig-name descname"><span class="pre">llm_type</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.llm_type" title="Link to this definition"></a></dt>
+<dd><p>The type of llm, llama2, etc (Optional, defaults to “None”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.task">
+<span class="sig-name descname"><span class="pre">task</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.task" title="Link to this definition"></a></dt>
+<dd><p>The task (Optional, defaults to QA)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.source" title="Link to this definition"></a></dt>
+<dd><p>The source of the prompt (Optional, defaults to “NoSource”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.doc_chain">
+<span class="sig-name descname"><span class="pre">doc_chain</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.doc_chain" title="Link to this definition"></a></dt>
+<dd><p>The doc chain for the prompt (“stuff”, “refine”) (Optional, defaults to “stuff”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.language" title="Link to this definition"></a></dt>
+<dd><p>The language of the prompt (Optional, defaults to “en”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.filepath">
+<span class="sig-name descname"><span class="pre">filepath</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.filepath" title="Link to this definition"></a></dt>
+<dd><p>The filepath of the prompt (Optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.input_keys">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.input_keys" title="Link to this definition"></a></dt>
+<dd><p>The input keys for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>template (str): The template for the prompt</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">doc_chain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.format" title="Link to this definition"></a></dt>
+<dd><p>Formats the prompt with provided keys and returns a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">llm_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.load" title="Link to this definition"></a></dt>
+<dd><p>Loads a json file and returns a Prompt class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'doc_chain':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='stuff'),</span> <span class="pre">'filepath':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">exclude=True),</span> <span class="pre">'input_keys':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True),</span> <span class="pre">'language':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='en'),</span> <span class="pre">'llm_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='None'),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='custom_prompt'),</span> <span class="pre">'prompt':</span> <span class="pre">FieldInfo(annotation=Union[PromptTemplate,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">exclude=True,</span> <span class="pre">repr=False),</span> <span class="pre">'source':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='NoSource'),</span> <span class="pre">'task':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='QA'),</span> <span class="pre">'template':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.prompt">
+<span class="sig-name descname"><span class="pre">prompt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.prompt" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ValueError</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.save" title="Link to this definition"></a></dt>
+<dd><p>Saves the prompt class into a json file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.template">
+<span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.template" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.validate_doc_chain">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_doc_chain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.validate_doc_chain" title="Link to this definition"></a></dt>
+<dd><p>Validate the doc_chain field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.validate_input_keys">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_input_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.validate_input_keys" title="Link to this definition"></a></dt>
+<dd><p>Validate the input_keys field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.validate_task">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.validate_task" title="Link to this definition"></a></dt>
+<dd><p>Validate the task field.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.text_splitter">
+<span id="grag-components-text-splitter-module"></span><h2>grag.components.text_splitter module<a class="headerlink" href="#module-grag.components.text_splitter" title="Link to this heading"></a></h2>
+<p>Class for splitting/chunking text.</p>
+<p>This module provides:
+- TextSplitter</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.text_splitter.TextSplitter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.text_splitter.</span></span><span class="sig-name descname"><span class="pre">TextSplitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'5000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'400'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.TextSplitter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for recursively chunking text, it prioritizes ‘/n/n then ‘/n’ and so on.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.text_splitter.TextSplitter.chunk_size">
+<span class="sig-name descname"><span class="pre">chunk_size</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.TextSplitter.chunk_size" title="Link to this definition"></a></dt>
+<dd><p>maximum size of chunk</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.text_splitter.TextSplitter.chunk_overlap">
+<span class="sig-name descname"><span class="pre">chunk_overlap</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.TextSplitter.chunk_overlap" title="Link to this definition"></a></dt>
+<dd><p>chunk overlap size</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.text_splitter.TextSplitter.text_splitter">
+<span class="sig-name descname"><span class="pre">text_splitter</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.TextSplitter.text_splitter" title="Link to this definition"></a></dt>
+<dd><p>Initialize TextSplitter using chunk_size and chunk_overlap</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.utils">
+<span id="grag-components-utils-module"></span><h2>grag.components.utils module<a class="headerlink" href="#module-grag.components.utils" title="Link to this heading"></a></h2>
+<p>Utils functions.</p>
+<p>This module provides:
+- stuff_docs: concats langchain documents into string
+- load_prompt: loads json prompt to langchain prompt
+- find_config_path: finds the path of the ‘config.ini’ file by traversing up the directory tree from the current path.
+- get_config: retrieves and parses the configuration settings from the ‘config.ini’ file.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.display_llm_output_and_sources">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">display_llm_output_and_sources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_from_llm</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.display_llm_output_and_sources" title="Link to this definition"></a></dt>
+<dd><p>Displays the result from an LLM response and lists the sources.</p>
+<p>Args:
+response_from_llm (dict): The response object from an LLM which includes the result and source documents.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.find_config_path">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">find_config_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.find_config_path" title="Link to this definition"></a></dt>
+<dd><p>Finds the path of the ‘config.ini’ file by traversing up the directory tree from the current path.</p>
+<p>This function starts at the current path and moves up the directory tree until it finds a file named ‘config.ini’.
+If ‘config.ini’ is not found by the time the root of the directory tree is reached, a FileNotFoundError is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_path</strong> (<em>Path</em>) – The starting point for the search, typically the location of the script being executed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the found ‘config.ini’ file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If ‘config.ini’ cannot be found in any of the parent directories.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.get_config">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ConfigParser</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.get_config" title="Link to this definition"></a></dt>
+<dd><p>Retrieves and parses the configuration settings from the ‘config.ini’ file.</p>
+<p>This function locates the ‘config.ini’ file by calling <cite>find_config_path</cite> using the script’s current location.
+It initializes a <cite>ConfigParser</cite> object to read the configuration settings from the located ‘config.ini’ file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A parser object containing the configuration settings from ‘config.ini’.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ConfigParser</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.load_prompt">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">load_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_input_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.load_prompt" title="Link to this definition"></a></dt>
+<dd><p>Loads a prompt template from json file and returns a langchain ChatPromptTemplate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_file</strong> – path to the prompt template json file.</p></li>
+<li><p><strong>return_input_vars</strong> – if true returns a list of expected input variables for the prompt.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>langchain_core.prompts.ChatPromptTemplate (and a list of input vars if return_input_vars is True)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.reformat_text_with_line_breaks">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">reformat_text_with_line_breaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">110</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.reformat_text_with_line_breaks" title="Link to this definition"></a></dt>
+<dd><p>Reformat the given text to ensure each line does not exceed a specific width, preserving existing line breaks.</p>
+<p>Args:
+input_text (str): The text to be reformatted.
+max_width (int): The maximum width of each line.</p>
+<p>Returns:
+str: The reformatted text with preserved line breaks and adjusted line width.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.stuff_docs">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">stuff_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.stuff_docs" title="Link to this definition"></a></dt>
+<dd><p>Concatenates langchain documents into a string using ‘nn’ seperator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docs</strong> – List of langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string of document page content joined by ‘nn’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-grag.components">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-grag.components" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="grag.html" class="btn btn-neutral float-left" title="grag package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="grag.components.vectordb.html" class="btn btn-neutral float-right" title="grag.components.vectordb package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

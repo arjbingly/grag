@@ -1,0 +1,26 @@
+name: Build - linting
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  linting:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff
+        run: |
+          ruff check src/ 
+          ruff format src/

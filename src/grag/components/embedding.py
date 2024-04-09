@@ -30,13 +30,13 @@ class Embedding:
         match self.embedding_type:
             case "sentence-transformers":
                 self.embedding_function = SentenceTransformerEmbeddings(
-                    model_name=self.embedding_model
+                    model_name=self.embedding_model  # type: ignore
                 )
             case "instructor-embedding":
                 self.embedding_instruction = "Represent the document for retrival"
                 self.embedding_function = HuggingFaceInstructEmbeddings(
-                    model_name=self.embedding_model
+                    model_name=self.embedding_model  # type: ignore
                 )
-                self.embedding_function.embed_instruction = self.embedding_instruction
+                self.embedding_function.embed_instruction = self.embedding_instruction  # type: ignore
             case _:
                 raise Exception("embedding_type is invalid")
