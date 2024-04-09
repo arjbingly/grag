@@ -4,7 +4,11 @@
 
 (note: add overview on what the purpose of this project is here. Talk briefly about RAG. Maybe copy from the proposal)
 
-## Project Overview
+Need to include steps or a diagram of steps here.
+
+## Table of Content
+
+## Project Overview (change this to Features?)
 
 - A ready to deploy RAG pipeline for document retrival.
 - Basic GUI _(Under Development)_
@@ -13,19 +17,21 @@
 
 ---
 
-## To get started
+## Getting Started
 
 To run the projects, make sure the instructions below are followed.
 
 Further customization can be made on the config file, `src/config.ini`.
 
 - `git clone` the repository
-- `pip install .` from the repository
+- `pip install .` from the repository (note: add - then change directory to the cloned repo)
 - _For Dev:_ `pip install -e .`
+
+If you need to set up `conda` in your environment,
 
 ### Requirements
 
-Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
+Required packages to install includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 - PyTorch
 - LangChain
@@ -36,21 +42,23 @@ Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 ### LLM Models
 
-- **To run models locally** refer the [LLM Quantize Readme](./llm_quantize/readme.md) for details on downloading and
-  quantizing LLM models.
-- **To run models from Huggingface**, change the `model_name` under `llm` in `src/config.ini` to the huggingface
-  repo-id (If
-  models are not public, make sure you have the auth token).
+To quantize model, run:
+`python -m grag.quantize.quantize`
 
+For more details, go to [.\llm_quantize\readme.md](.\llm_quantize\readme.md)
 **Tested models:**
 
 1. Llama-2 7B, 13B
 2. Mixtral 8x7B
 3. Gemma 7B
 
+**Model Compatibility**
+
+Refer to [llama.cpp](https://github.com/ggerganov/llama.cpp) Supported Models (under Description) for list of compatible models.
+
 ### Data
 
-The project utilized ArXiv papers pdfs. Refer to [ArXiv Bulk Data](https://info.arxiv.org/help/bulk_data/index.html) for
+Any PDF can be used for this project. We personally tested the project using ArXiv papers. Refer [ArXiv Bulk Data](https://info.arxiv.org/help/bulk_data/index.html) for
 details on how to download.
 
 ```
@@ -60,57 +68,85 @@ details on how to download.
 
 **Make sure to specify `data_path` under `data` in `src/config.ini`**
 
-### Vector Database (Chroma) - Data Ingestion
+### Supported Vector Databases
 
-The vector database of choice os [Chroma](https://www.trychroma.com). Though most vector databases supported by
-LangChain should work with minimal changes.
+**1. [Chroma](https://www.trychroma.com)**
 
-For ingesting data to the vector db:
+Since Chroma is a server-client based vector database, make sure to run the server.
 
 - To run Chroma locally, move to `src/scripts` then run `source run_chroma.sh`. This by default runs on port 8000.
 - If Chroma is not run locally, change `host` and `port` under `chroma` in `src/config.ini`.
+
+**2. [Deeplake](https://www.deeplake.ai/)**
+
+#### Embeddings
+
 - By default, the embedding model is `instructor-xl`. Can be changed by changing `embedding_type` and `embedding_model`
   in `src/config.ini'. Any huggingface embeddings can be used.
-- To add files to Chroma, run `projects/Basic-RAG/BasicRAG-ingest_data.py`. Make sure that the data-path in the python
-  file is correct.
+
+### Data Ingestion
+
+For ingesting data to the vector db:
+
+```
+client = DeepLakeClient() # Any vectordb client
+retriever = Retriever(vectordb=client)
+
+dir_path = Path(__file__).parents[2] # path to folder containing pdf files
+
+retriever.ingest(dir_path)
+```
+
+Refer to ['cookbook/basicRAG/BasicRAG_ingest'](./cookbook/basicRAG/BasicRAG_ingest)
 
 ---
 
-## Other Features
+## Main Features
 
-### PDF Parser
+### 1. PDF Parser
+
+(note: need to rewrite this. Under contruction: test suites and documentation for every iteration)
 
 - The pdf parser is implemented using [Unstructured.io](https://unstructured.io).
 - It effectively parses any pdf including OCR documents and categorises all elements including tables and images.
-- Contextual text parsing, it ensures that the chunking process does not separate items like list items, and keeps
-  titles intact with text.
+- Enables contextual text parsing: it ensures that the chunking process does not separate items like list items, and keeps titles together with text.
 - Tables are not chunked.
 
-### Multi Vector Retriever
+### 2. Multi-Vector Retriever
 
-- It enables to easily retrieve not only the most similar chunks (to a query) but easily retrieve the source document.
+- It easily retrieves not only the most similar chunks (to a query) but also the source document of the chunks.
+
+### 3. BasicRAG
+
+Refer to [BasicRAG/README.md](./cookbook/Basic-RAG/README.md)
+(note: fix the RAGPipeline.md link)
 
 ---
 
-## Projects
+## GUI
 
 ### 1. Retriever GUI
 
-A simple GUI for retrieving documents and viewing config of the vector database
+A simple GUI for retrieving documents and viewing config of the vector database.
 
 To run: `streamlit run projects/retriver_app.py -server.port=8888`
 
-### 2. BasicRAG
+### 2. BasicRAG GUI
 
-Refer to [BasicRAG/README.md](./projects/Basic-RAG/README.md)
+Under development.
 
 ---
 
+## Demo
+
+(to be added)
 ![Watch the video](../Sample_Capstone/demo/fig/demo.gif)
 
 ## Repo Structure
 
 ---
+
+(note: update the repo structure)
 
 ```
 .
