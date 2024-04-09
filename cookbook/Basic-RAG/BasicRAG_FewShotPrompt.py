@@ -1,8 +1,4 @@
-<<<<<<< HEAD:projects/Basic-RAG/BasicRAG_FewShotPrompt.py
-"""A cookbook demonstrating how to use a custom few-shot prompt with BasicRAG."""
-=======
 """A cookbook demonstrating how to use custom few-shot prompts with Basic RAG."""
->>>>>>> origin/main:cookbook/Basic-RAG/BasicRAG_FewShotPrompt.py
 
 from grag.components.prompt import FewShotPrompt
 from grag.rag.basic_rag import BasicRAG

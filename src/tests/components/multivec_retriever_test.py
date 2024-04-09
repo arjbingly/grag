@@ -1,19 +1,31 @@
-import json
+import os
+import shutil
+from pathlib import Path
 
 from grag.components.multivec_retriever import Retriever
+from grag.components.utils import get_config
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain_core.documents import Document
 
-client = DeepLakeClient(collection_name="ci_test")
-retriever = Retriever(vectordb=client)  # pass test collection
+config = get_config()
+
+test_path = Path(config['data']['data_path']) / 'vectordb/test_retriever'
+if os.path.exists(test_path):
+    shutil.rmtree(test_path)
+    print('Deleting test retriever: {}'.format(test_path))
+
+# client = DeepLakeClient(collection_name="test_retriever")
+# retriever = Retriever(vectordb=client)  # pass test collection
 
 doc = Document(page_content="Hello worlds", metadata={"source": "bars"})
 
 
-def test_retriver_id_gen():
+def test_retriever_id_gen():
+    client = DeepLakeClient(collection_name="test_retriever")
+    retriever = Retriever(vectordb=client)
     doc = Document(page_content="Hello world", metadata={"source": "bar"})
     id_ = retriever.id_gen(doc)
-    assert isinstance(id, str)
+    assert isinstance(id_, str)
     assert len(id_) == 32
     doc.page_content = doc.page_content + 'ABC'
     id_1 = retriever.id_gen(doc)
@@ -21,14 +33,18 @@ def test_retriver_id_gen():
     doc.metadata["source"] = "bars"
     id_1 = retriever.id_gen(doc)
     assert id_ != id_1
+    del client, retriever
 
 
 def test_retriever_gen_doc_ids():
+    client = DeepLakeClient(collection_name="test_retriever")
+    retriever = Retriever(vectordb=client)
     docs = [Document(page_content="Hello world", metadata={"source": "bar"}),
             Document(page_content="Hello", metadata={"source": "foo"})]
     ids = retriever.gen_doc_ids(docs)
     assert len(ids) == len(docs)
     assert all(isinstance(id, str) for id in ids)
+    del client, retriever
 
 
 def test_retriever_split_docs():
@@ -36,6 +52,8 @@ def test_retriever_split_docs():
 
 
 def test_retriever_add_docs():
+    client = DeepLakeClient(collection_name="test_retriever")
+    retriever = Retriever(vectordb=client)
     # small enough docs to not split.
     docs = [Document(page_content=
                      """And so on this rainbow day, with storms all around them, and blue sky
@@ -75,11 +93,11 @@ def test_retriever_add_docs():
             ]
     ids = retriever.gen_doc_ids(docs)
     retriever.add_docs(docs)
-    retrieved = retriever.store.mget(ids)
+    retrieved = retriever.docstore.mget(ids)
     assert len(retrieved) == len(ids)
-    for i, doc in enumerate(docs):
-        retrieved_doc = json.loads(retrieved[i].decode())
-        assert doc.metadata == retrieved_doc.metadata
+    for ret, doc in zip(retrieved, docs):
+        assert ret.metadata == doc.metadata
+    del client, retriever
 
 
 def test_retriever_aadd_docs():

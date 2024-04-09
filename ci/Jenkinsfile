@@ -6,6 +6,10 @@ pipeline {
     }
     environment {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
+        CUDACXX = '/usr/local/cuda-12/bin/nvcc'
+        CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
+        PATH="/usr/local/cuda-12.3/bin:$PATH"
+        LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
         }
 
 
@@ -27,7 +31,7 @@ pipeline {
         stage('Install dependencies'){
             steps {
                 withPythonEnv(PYTHONPATH){
-                    sh "pip install -e ."
+                    sh 'pip install -e .'
                 }
             }
 
@@ -35,7 +39,6 @@ pipeline {
 
         stage('Config'){
             steps{
-                sh 'echo $env.JENKINS_HOME'
                 withPythonEnv(PYTHONPATH){
                     sh 'python3 ci/modify_config.py'
                     sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/ci_test'
@@ -84,22 +87,21 @@ pipeline {
 
         stage('Tests'){
             steps{
-                sh 'echo $USER'
                 sh 'docker pull chromadb/chroma'
                 sh 'docker run -d --name jenkins-chroma -p 8000:8000 chromadb/chroma'
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install pytest'
                     sh 'python3 ci/unlock_deeplake.py'
-                    sh 'pytest src --junitxml=pytest-report.xml'
+                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
                 }
             }
             post {
                 always{
+                    sh 'docker stop jenkins-chroma'
+                    sh 'docker rm jenkins-chroma'
                      withChecks('Integration Tests'){
                         junit 'pytest-report.xml'
                      }
-                    sh 'docker stop jenkins-chroma'
-                    sh 'docker rm jenkins-chroma'
 
                      cleanWs(
                         cleanWhenNotBuilt: false,
