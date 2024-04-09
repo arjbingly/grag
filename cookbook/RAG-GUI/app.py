@@ -1,14 +1,16 @@
 import os
 import sys
 from pathlib import Path
-
+import time
 import streamlit as st
 import tracemalloc
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
-
+import shutil
+import psutil
 st.set_page_config(page_title="RAG")
 from grag.rag.basic_rag import BasicRAG
 from grag.components.utils import get_config
+from pathlib import Path
 from grag.components.llm import LLM
 from grag.components.multivec_retriever import Retriever
 from grag.components.vectordb.deeplake_client import DeepLakeClient
@@ -26,33 +28,48 @@ class RAGApp:
         self.conf = conf
         self.selected_model = None
         self.temperature = None
-        self.top_k = None
-        self.rag = None
+        self.exit_app = False
+        if 'temperature' in st.session_state:
+            self.temperature = st.session_state['temperature']
+        else:
+            self.temperature = 0.1
+
+        if 'top_k' in st.session_state:
+            self.top_k = st.session_state['top_k']
+        else:
+            self.top_k = 1.0
         self.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
         # if 'rag' in st.session_state:
         #     del st.session_state['rag']
         # self.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
-
     def render_sidebar(self):
         with st.sidebar:
             st.title('RAG')
             st.subheader('Models and parameters')
-            self.selected_model = st.sidebar.selectbox('Choose a model', ['Llama-2-13b-chat', 'Llama-2-7b-chat', 'Mixtral-8x7B-Instruct-v0.1', 'Gemma 7B'], key='selected_model')
-            self.temperature = st.sidebar.slider('Temperature', min_value=0.01, max_value=5.0, value=0.1, step=0.01)
-            self.top_k = st.sidebar.slider('Top-k', min_value=1.0, max_value=5.0, value=1.0, step=1.0)
-
+            self.selected_model = st.sidebar.selectbox('Choose a model', ['Llama-2-13b-chat', 'Llama-2-7b-chat',
+                                                                          'Mixtral-8x7B-Instruct-v0.1', 'Gemma 7B'],
+                                                       key='selected_model')
+            self.temperature = st.sidebar.slider('Temperature', min_value=0.01, max_value=5.0, value=self.temperature,
+                                                 step=0.01)
+            self.top_k = st.sidebar.slider('Top-k', min_value=1.0, max_value=5.0, value=self.top_k, step=1.0)
+            st.session_state['temperature'] = self.temperature
+            st.session_state['top_k'] = self.top_k
 
     def initialize_rag(self):
         llm_kwargs = {"temperature": self.temperature}
-        return BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs)
+        retriever_kwargs = {
+            "client_kwargs" : {"read_only": True,
+                               "top_k": self.top_k}
+        }
+        return BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs,retriever_kwargs=retriever_kwargs)
 
 
     def clear_cache(self):
         st.cache_data.clear()
 
     # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
-
+    @st.cache(ignore_hash=True)
     def render_main(self):
 
         st.title("Welcome to the RAG App")
@@ -90,17 +107,44 @@ class RAGApp:
 
     def render(self):
 
+
         self.clear_cache()
         self.render_sidebar()
 
 
         self.render_main()
+        st.cache_data.clear()
+        st.cache_resource.clear()
+        self.exit_app = st.sidebar.button("Shut Down")
 
 
 
 
 if __name__ == "__main__":
+    lock_path = Path(conf['root']['root_path']) / '/data/vectordb/test/dataset_lock.lock'
+
+
+    if os.path.exists(lock_path):
+        shutil.rmtree(lock_path)
+        print('Deleting lock file: {}'.format(lock_path))
+    latest_iteration = st.empty()
+    bar = st.progress(0)
+
+    for i in range(100):
+        # Update the progress bar with each iteration.
+        latest_iteration.text(f'Iteration {i + 1}')
+        bar.progress(i + 1)
+        time.sleep(0.1)
+
     tracemalloc.start()
     app = RAGApp(st,conf)
     app.render()
+    if app.exit_app:
+        time.sleep(5)  # Give a bit of delay for user experience
+        pid = os.getpid()
+        p = psutil.Process(pid)
+        p.terminate()
+
+
+
 
