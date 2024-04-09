@@ -1,14 +1,42 @@
-# GRAG (note: specify the abbreviation)
+<h1 align="center">Graph Retrieval-Augmented Generation - GRAG</h1>
 
-(note: insert the interactive tags here, ask Amir about copyright and add the tags)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![Static Badge](https://img.shields.io/badge/docstring%20style-google-yellow)
+![Static Badge](https://img.shields.io/badge/linter%20-ruff-yellow)
+![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/ruff_linting.yml?label=Docs&labelColor=yellow)
+![Static Badge](https://img.shields.io/badge/buildstyle-hatchling-purple?labelColor=white)
+![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
 
-(note: add overview on what the purpose of this project is here. Talk briefly about RAG. Maybe copy from the proposal)
+This GitRepo provides an implementation of a Retrival-Augmented Generation pipeline, using a graph data structure in place of a vector database.
 
-Need to include steps or a diagram of steps here.
+<figure>
+    <img src="documentation/basic_RAG_pipeline.drawio.svg" alt="Diagram of a basic RAG pipeline">
+    <figcaption style="text-align: center;"
+    >Diagram of a basic RAG pipeline</figcaption>
+</figure>
 
 ## Table of Content
 
-## Project Overview (change this to Features?)
+- [Project Overview](#project-overview--change-this-to-features--)
+- [Getting Started](#getting-started)
+  - [Requirements](#requirements)
+  - [LLM Models](#llm-models)
+  - [Data](#data)
+  - [Supported Vector Databases](#supported-vector-databases)
+    - [Embeddings](#embeddings)
+  - [Data Ingestion](#data-ingestion)
+- [Main Features](#main-features)
+  - [1. PDF Parser](#1-pdf-parser)
+  - [2. Multi-Vector Retriever](#2-multi-vector-retriever)
+  - [3. BasicRAG](#3-basicrag)
+- [GUI](#gui)
+  - [1. Retriever GUI](#1-retriever-gui)
+  - [2. BasicRAG GUI](#2-basicrag-gui)
+- [Demo](#demo)
+- [Repo Structure](#repo-structure)
+
+## Project Overview
 
 - A ready to deploy RAG pipeline for document retrival.
 - Basic GUI _(Under Development)_
