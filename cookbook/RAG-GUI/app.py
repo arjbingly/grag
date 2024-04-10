@@ -3,10 +3,10 @@ import sys
 from pathlib import Path
 import time
 import streamlit as st
-import tracemalloc
+
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 import shutil
-import psutil
+
 st.set_page_config(page_title="RAG")
 from grag.rag.basic_rag import BasicRAG
 from grag.components.utils import get_config
@@ -39,9 +39,6 @@ class RAGApp:
         else:
             self.top_k = 1.0
         self.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
-        # if 'rag' in st.session_state:
-        #     del st.session_state['rag']
-        # self.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
     def render_sidebar(self):
         with st.sidebar:
@@ -136,14 +133,9 @@ if __name__ == "__main__":
         bar.progress(i + 1)
         time.sleep(0.1)
 
-    tracemalloc.start()
+
     app = RAGApp(st,conf)
     app.render()
-    if app.exit_app:
-        time.sleep(5)  # Give a bit of delay for user experience
-        pid = os.getpid()
-        p = psutil.Process(pid)
-        p.terminate()
 
 
 
