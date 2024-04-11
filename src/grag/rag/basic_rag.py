@@ -31,19 +31,19 @@ class BasicRAG:
     """
 
     def __init__(
-        self,
-        retriever: Optional[Retriever] = None,
-        model_name=None,
-        doc_chain="stuff",
-        task="QA",
-        llm_kwargs=None,
-        retriever_kwargs=None,
-        custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
+            self,
+            retriever: Optional[Retriever] = None,
+            model_name=None,
+            doc_chain="stuff",
+            task="QA",
+            llm_kwargs=None,
+            retriever_kwargs=None,
+            custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
         """Initialize BasicRAG."""
         if retriever is None:
             if retriever_kwargs is None:
-                self.retriever = Retriever()
+                self.retriever = Retriever(client_kwargs={'read_only': True})
             else:
                 self.retriever = Retriever(**retriever_kwargs)
         else:
