@@ -5,13 +5,37 @@
 - Make sure that your doc strings follow a standard, eg. PEP, Google, Numpy, etc.
 - Highly recommended to use a linter for both your code and docs. I use Ruff.
 
-## 1. Install sphinx 
+## 1. Install Sphinx 
 *refer: https://www.sphinx-doc.org/en/master/usage/installation.html*
 
 - **for Ubuntu/Debian** : `sudo apt install python3-sphinx`
 
 ## 1.1 Folder Structure (Recommended)
 I like my docs as a separate folder in `src`. Therefore I create a new directory `docs`. Move here for the next step.
+
+```
+├── src
+│   ├── build
+│   ├── package_dir
+│   │   ├── __init__.py
+│   │   ├── module_1.py
+│   │   ├── module_2.py
+│   │   ├── subpackage_dir
+│   │   │   ├── __init__.py
+│   │   │   ├── module_1.py
+│   │   │   ├── module_2.py
+├── other directories and files not documented
+│   ├── css
+│   │   ├── **/*.css
+│   ├── images
+│   ├── js
+│   ├── index.html
+├── pyproject.toml
+├── requirements.txt
+├── package-lock.json
+└── .gitignore
+
+```
 
 ## 2. Quickstart
 Run: 
@@ -38,13 +62,13 @@ sphinx-apidoc -o docs package_dir
 ``` 
 Note that: here `-o` flag is the output folder, in our structure it is the `docs` directory, and `package_dir` is the directory with all the code you want to document.
 
-This will create `.rst` files for each python module. 
+This will create `.rst` files for each Python module. 
 
 ## 4. Conf.py changes
 The `conf.py` file is in `docs` folder.
 You can see all the details you specified in the `quickstart` here.
 
-## 4.1 OS Syspath Change
+## 4.1 OS Syspath Changes
 Add the following to the beginning of `conf.py`.
 
 ```
@@ -82,7 +106,19 @@ To finally generate the docs run the following command from the `docs` directory
 make html
 ```
 
-This will create a `build` directory, where you can find the html files. Opening the `index.html` shows you the homepage of your docs.  
+This will create a `build` directory, where you can find the html files. Opening the `index.html` shows you the homepage of your docs. 
+
+## 6.1 Adding other pages (Optional)
+To add other pages to your sphinx website, you just have to create `.rst` reStructuredText files in the appropriate location and add them to your `index.rst` and the `toctree` in it. 
+
+## 6.2 Adding examples (Optional)
+TODO
+- [https://sphinx-gallery.github.io/stable/index.html]()
+
+### References
+ - [https://www.sphinx-doc.org/en/master/usage/quickstart.html]()
+ - [https://samnicholls.net/2016/06/15/how-to-sphinx-readthedocs/]()
+
 
 
  
