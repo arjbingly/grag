@@ -25,6 +25,7 @@ pipeline {
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
+                sh 'exit 1'
             }
         }
 
@@ -72,6 +73,7 @@ pipeline {
                     sh 'pip install mypy'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
                         sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
+
                     }
                 }
             }
