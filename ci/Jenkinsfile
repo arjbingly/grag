@@ -18,8 +18,7 @@ pipeline {
         stage('Checkout') {
             steps {
                     cleanWs()
-//                     checkout scm
-                    git branch: 'main', credentialsId: 'GithubKey', url: 'git@github.com:arjbingly/Capstone_5.git'
+                    checkout scm
             }
         }
 
@@ -118,7 +117,6 @@ pipeline {
     }
     post {
         failure{
-
             sh 'python3 ci/modify_test_status.py --fail'
             sh 'git add README.md'
             sh 'git commit -m "test status updated"'
