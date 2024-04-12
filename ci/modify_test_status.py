@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     for i, line in enumerate(lines):
         if 'img.shields.io' in line and ('passing' in line or 'failing' in line):
-            if args.f:
+            if args.fail:
                 lines[i] = line.replace('passing', 'failing').replace('darggreen', 'red')
             else:
                 lines[i] = line.replace('failing', 'passing').replace('red', 'darggreen')
