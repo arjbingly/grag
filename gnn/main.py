@@ -5,21 +5,23 @@ import json
 import pandas as pd
 import torch
 import torch_geometric.transforms as T
+from tqdm import tqdm
 
 from gnn.data import gen_data
 from gnn.sageconv_model import Model
 from gnn.utils import test, train
 
 # Args
-data_filepath = 'data.json'
-num_epochs = 50
+data_filepath = 'Data/cranfield.json'
+num_epochs = 100
 hidden_channels = 32
 lr = 1e-3
 num_val = 0.1
 num_test = 0.1
 random_seed = 1505
 
-if __name__ == '__main__':
+
+def main():
     if random_seed is not None:
         torch.manual_seed(random_seed)
 
@@ -28,8 +30,7 @@ if __name__ == '__main__':
 
     data = gen_data(data_dict)
 
-    # how to make random split reproducible
-
+    # split the data
     train_data, val_data, test_data = T.RandomLinkSplit(
         num_val=num_val,
         num_test=num_test,
@@ -52,12 +53,15 @@ if __name__ == '__main__':
     test_data = test_data.to(device)
 
     # Training
-    for epoch in range(num_epochs):
+    for epoch in tqdm(range(num_epochs), desc='Training', unit="Epoch"):
         loss = train(model, train_data, optimizer)
         train_rmse = test(model, train_data)
         val_rmse = test(model, val_data)
-        print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Train: {train_rmse:.4f}, '
-              f'Val: {val_rmse:.4f}')
+        tqdm.set_postfix(ordered_dict={"Loss": f"{loss: .4f}",
+                                       "Train": f"{train_rmse: .4f}",
+                                       "Val": f"{val_rmse:.4f}"})
+        # print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Train: {train_rmse:.4f}, '
+        #       f'Val: {val_rmse:.4f}')
 
     # Eval
     test_rmse, pred = test(model, test_data, return_pred=True)
@@ -85,3 +89,6 @@ if __name__ == '__main__':
     pd.set_option('display.max_colwidth', None)
     df = pd.DataFrame({'doc_0': doc_0, 'doc_1': doc_1, 'pred': pred, 'target': target})
     print(df)
+
+
+if __name__ == '__main__':

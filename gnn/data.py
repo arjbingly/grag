@@ -6,11 +6,12 @@ import numpy as np
 import torch
 import torch_geometric.transforms as T
 from torch_geometric.data import Data
+from tqdm import tqdm
 
 from gnn.utils import cosine_similarity
 
 
-def gen_egdes(embeddings):
+def gen_egdes(embeddings, verbose=True):
     """Generates edges and edge features for a graph based on pairwise cosine similarity of embeddings.
 
     Args:
@@ -27,7 +28,11 @@ def gen_egdes(embeddings):
     """
     edges = []
     edge_features = []
-    for doc1, doc2 in combinations(enumerate(embeddings), 2):
+    if verbose:
+        pbar = tqdm(combinations(enumerate(embeddings), 2))
+    else:
+        pbar = combinations(enumerate(embeddings), 2)
+    for doc1, doc2 in pbar:
         similarity = cosine_similarity(doc1[1], doc2[1])
 
         edges.append((doc1[0], doc2[0]))

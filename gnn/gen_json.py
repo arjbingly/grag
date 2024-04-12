@@ -7,23 +7,10 @@ A JSON file with both the text and embeddings are created.
 import json
 
 from grag.components.embedding import Embedding
-
-data = [
-    'Paris is the capital of France.',
-    # 'France is a country in Europe.', 
-    'The Eiffel Tower is a wrought-iron lattice tower in Paris.',
-    'The Eiffel Tower is one of the most recognisable structures in the world.',
-    'The Eiffel Tower has 6 million visitors a year.',
-    # 'France is a member of the European Union.',
-    'Washington, D.C. is the capital of the United States of America.',
-    'The Washington Monument is an obelisk in Washington, D.C.',
-    'More than 800,000 people visit the Washington Monument each year.',
-    ' The Washington Monument was built to commemorate George Washington.',
-    'Both France and the United States of America are members of the NATO.'
-]
+from tqdm import tqdm
 
 
-def gen_embeddings(data):
+def gen_embeddings(data, verbose=True):
     """Generates embeddings for a list of sentences using a specified embedding model.
 
     Args:
@@ -41,16 +28,20 @@ def gen_embeddings(data):
     embedding.embedding_function.query_instruction = embedding_instruction
     embedding_func = embedding.embedding_function.embed_query
 
-    embeddings = [embedding_func(string) for string in data]
+    if verbose:
+        embeddings = []
+        for string in tqdm(data, desc="Generating embeddings"):
+            embeddings.append(embedding_func(string))
+    else:
+        embeddings = [embedding_func(string) for string in data]
     return embeddings
 
 
-def gen_json(data, embeddings, save_path):
+def gen_json(data, save_path, verbose=True):
     """Generates a JSON file containing text data and corresponding embeddings.
 
     Args:
         data (list): A list of strings containing text data.
-        embeddings (list): A list of embeddings corresponding to the text data.
         save_path (str): The path to save the generated JSON file.
 
     Returns:
@@ -58,12 +49,16 @@ def gen_json(data, embeddings, save_path):
 
     Example:
         >>> texts = ["This is the first text.", "This is the second text."]
-        >>> embeddings = [array([0.1, 0.2, 0.3]), array([0.4, 0.5, 0.6])]
-        >>> gen_json(texts, embeddings, 'output.json')
+        >>> gen_json(texts, 'output.json')
     """
+    embeddings = gen_embeddings(data, verbose=verbose)
     dict_ = {}
+    if verbose:
+        pbar = tqdm(enumerate(zip(data, embeddings)), desc="Generating json")
+    else:
+        pbar = enumerate(zip(data, embeddings))
 
-    for index, (text, embedding) in enumerate(zip(data, embeddings)):
+    for index, (text, embedding) in pbar:
         dict_[index] = {
             "text": text,
             "embedding": embedding
@@ -74,4 +69,18 @@ def gen_json(data, embeddings, save_path):
 
 
 if __name__ == '__main__':
-    gen_json(data, gen_embeddings(data), save_path='data.json')
+    data = [
+        'Paris is the capital of France.',
+        # 'France is a country in Europe.', 
+        'The Eiffel Tower is a wrought-iron lattice tower in Paris.',
+        'The Eiffel Tower is one of the most recognisable structures in the world.',
+        'The Eiffel Tower has 6 million visitors a year.',
+        # 'France is a member of the European Union.',
+        'Washington, D.C. is the capital of the United States of America.',
+        'The Washington Monument is an obelisk in Washington, D.C.',
+        'More than 800,000 people visit the Washington Monument each year.',
+        ' The Washington Monument was built to commemorate George Washington.',
+        'Both France and the United States of America are members of the NATO.'
+    ]
+
+    gen_json(data, save_path='Data/eg_data.json')
