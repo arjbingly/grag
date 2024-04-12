@@ -73,7 +73,6 @@ pipeline {
                     sh 'pip install mypy'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
                         sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
-
                     }
                 }
             }
@@ -82,7 +81,6 @@ pipeline {
                      withChecks('Static Type Checks'){
                          junit 'mypy-report.xml'
                      }
-
                 }
             }
         }
@@ -104,15 +102,6 @@ pipeline {
                      withChecks('Integration Tests'){
                         junit 'pytest-report.xml'
                      }
-
-                     cleanWs(
-                        cleanWhenNotBuilt: false,
-                        deleteDirs: true,
-                        disableDeferredWipeout: true,
-                        notFailBuild: true,
-                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                                   [pattern: '.propsfile', type: 'EXCLUDE']]
-                             )
                 }
             }
         }
@@ -129,6 +118,16 @@ pipeline {
             sh 'git add README.md'
             sh 'git commit -m "test status updated"'
             sh 'git push'
+        }
+        cleanup{
+            cleanWs(
+                cleanWhenNotBuilt: false,
+                deleteDirs: true,
+                disableDeferredWipeout: true,
+                notFailBuild: true,
+                patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                           [pattern: '.propsfile', type: 'EXCLUDE']]
+                    )
         }
     }
 }
