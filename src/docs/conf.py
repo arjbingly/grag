@@ -38,7 +38,7 @@ html_context = {
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "autoclasstoc",
+    # "autoclasstoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
     # "sphinx.ext.viewcode",

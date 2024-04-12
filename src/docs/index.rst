@@ -1,16 +1,20 @@
-.. GRAG documentation master file, created by
-sphinx-quickstart on Wed Mar 27 13:21:21 2024.
-You can adapt this file completely to your liking, but it should at least
-contain the root `toctree` directive.
-
 Welcome to GRAG's documentation!
 ================================
+
+GRAG is a simple python package that provides an easy end-to-end solution
+for implementing Retrieval Augmented Generation (RAG).
+
+The package offers an easy way for running various LLMs locally, *Thanks to LlamaCpp*
+and also supports vector stores like Chroma and DeepLake. It also makes it easy to
+integrage support to any vector stores easy.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   get_started
    grag
+
 
 Indices and tables
 ==================

@@ -4,10 +4,9 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>grag.components package &mdash; GRAG 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+  <title>Components &mdash; GRAG 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/autoclasstoc.css?v=08871587" />
 
   
   <!--[if lt IE 9]>
@@ -23,7 +22,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="grag.components.vectordb package" href="grag.components.vectordb.html" />
-    <link rel="prev" title="grag package" href="grag.html" /> 
+    <link rel="prev" title="GRAG" href="grag.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,29 +46,57 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="grag.html">grag package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="grag.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">grag.components package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.embedding">grag.components.embedding module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.llm">grag.components.llm module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.multivec_retriever">grag.components.multivec_retriever module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.parse_pdf">grag.components.parse_pdf module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.prompt">grag.components.prompt module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.text_splitter">grag.components.text_splitter module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components.utils">grag.components.utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-grag.components">Module contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="grag.html">GRAG</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html">grag.components.vectordb package</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.prompts.html">grag.prompts package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grag.quantize.html">grag.quantize package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grag.rag.html">grag.rag package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.embedding">grag.components.embedding module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.embedding.Embedding"><code class="docutils literal notranslate"><span class="pre">Embedding</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.llm">grag.components.llm module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.LLM"><code class="docutils literal notranslate"><span class="pre">LLM</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.multivec_retriever">grag.components.multivec_retriever module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.Retriever"><code class="docutils literal notranslate"><span class="pre">Retriever</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.parse_pdf">grag.components.parse_pdf module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.ParsePDF"><code class="docutils literal notranslate"><span class="pre">ParsePDF</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.prompt">grag.components.prompt module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.prompt.FewShotPrompt"><code class="docutils literal notranslate"><span class="pre">FewShotPrompt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.prompt.Prompt"><code class="docutils literal notranslate"><span class="pre">Prompt</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.text_splitter">grag.components.text_splitter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.text_splitter.TextSplitter"><code class="docutils literal notranslate"><span class="pre">TextSplitter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.utils">grag.components.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.display_llm_output_and_sources"><code class="docutils literal notranslate"><span class="pre">display_llm_output_and_sources()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.find_config_path"><code class="docutils literal notranslate"><span class="pre">find_config_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.load_prompt"><code class="docutils literal notranslate"><span class="pre">load_prompt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.reformat_text_with_line_breaks"><code class="docutils literal notranslate"><span class="pre">reformat_text_with_line_breaks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.stuff_docs"><code class="docutils literal notranslate"><span class="pre">stuff_docs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.prompts.html">grag.prompts package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.quantize.html">grag.quantize package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.rag.html">grag.rag package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="grag.html#module-grag">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
 
         </div>
@@ -86,8 +113,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="grag.html">grag package</a></li>
-      <li class="breadcrumb-item active">grag.components package</li>
+          <li class="breadcrumb-item"><a href="grag.html">GRAG</a></li>
+      <li class="breadcrumb-item active">Components</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/arjbingly/Capstone_5/blob/main/src/grag.components.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -97,8 +124,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="grag-components-package">
-<h1>grag.components package<a class="headerlink" href="#grag-components-package" title="Link to this heading"></a></h1>
+  <section id="components">
+<h1>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h1>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
@@ -983,6 +1010,12 @@ Also adds the unique parent document id into metadata</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_config" title="Link to this definition"></a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
@@ -1159,6 +1192,12 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</
 <dt class="sig sig-object py" id="grag.components.prompt.Prompt.load">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.load" title="Link to this definition"></a></dt>
 <dd><p>Loads a json file and returns a Prompt class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1364,7 +1403,7 @@ str: The reformatted text with preserved line breaks and adjusted line width.</p
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="grag.html" class="btn btn-neutral float-left" title="grag package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="grag.html" class="btn btn-neutral float-left" title="GRAG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="grag.components.vectordb.html" class="btn btn-neutral float-right" title="grag.components.vectordb package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

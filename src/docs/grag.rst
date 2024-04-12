@@ -1,8 +1,5 @@
-grag package
+GRAG
 ============
-
-Subpackages
------------
 
 .. toctree::
    :maxdepth: 4

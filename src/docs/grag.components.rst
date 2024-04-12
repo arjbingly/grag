@@ -1,4 +1,4 @@
-grag.components package
+Components
 =======================
 
 Subpackages
