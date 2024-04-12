@@ -111,13 +111,13 @@ pipeline {
             sh 'python3 ci/modify_test_status.py --fail'
             sh 'git add README.md'
             sh 'git commit -m "test status updated"'
-            sh 'git push'
+            sh 'git push origin main'
         }
         success{
             sh 'python3 ci/modify_test_status.py'
             sh 'git add README.md'
             sh 'git commit -m "test status updated"'
-            sh 'git push'
+            sh 'git push origin main'
         }
         cleanup{
             cleanWs(
