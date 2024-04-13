@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 from grag.quantize.utils import (
@@ -9,6 +10,8 @@ from grag.quantize.utils import (
 )
 
 root_path = Path(__file__).parent / "test_data"
+if os.path.exists(root_path):
+    shutil.rmtree(root_path)
 os.makedirs(root_path, exist_ok=True)
 
 

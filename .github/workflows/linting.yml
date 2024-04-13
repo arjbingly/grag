@@ -1,0 +1,32 @@
+name: linting
+on:
+  push:
+    branches:
+      - !main
+
+jobs:
+  lint:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff check and fix
+        run: ruff check src/ --fix
+
+      - name: Ruff format
+        run: ruff format src/
+
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'style fixes by ruff'

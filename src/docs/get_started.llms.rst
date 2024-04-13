@@ -21,7 +21,7 @@ Steps to start with llama.cpp:
 1. Clone the `llama.cpp <https://github.com/ggerganov/llama.cpp>`_ repository.
   ``git clone https://github.com/ggerganov/llama.cpp.git``
 2. Change directory to `llama.cpp` using `cd llama.cpp`
-3. To inference using GPU, which is necessary for mose models.
+3. To inference using GPU, which is necessary for most models.
   * Make sure you have CUDA installed (check using ``nvcc --version``)
   * Follow steps from the `llama.cpp documentation <https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#cublas>`_.
 

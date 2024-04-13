@@ -35,14 +35,20 @@ dependencies = [
     "sentence-transformers==2.2.2",
     "instructorembedding>=1.0.1",
     "streamlit>=1.31.1",
+<<<<<<< HEAD
     "unstructured[all]>=0.12.3",
+=======
+    "unstructured[pdf]>=0.12.3",
+>>>>>>> origin/update-docs
     "pdfplumber>=0.10.3",
     "llama-cpp-python>=0.2.43",
     "tqdm>=4.65.0",
     "huggingface_hub>=0.20.2",
     "pydantic>=2.5.0",
     "rouge-score>=0.1.2",
-    "deeplake>=3.8.27"
+    "deeplake>=3.8.27",
+    "bitsandbytes>=0.43.0",
+    "accelerate>=0.28.0"
 ]
 
 [project.optional-dependencies]
@@ -112,7 +118,11 @@ exclude_lines = [
 [tool.ruff]
 line-length = 88
 indent-width = 4
+<<<<<<< HEAD
 extend-exclude = ["tests", "others", "docs"]
+=======
+extend-exclude = ["tests", "others", "docs", "ci"]
+>>>>>>> origin/update-docs
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "D"]
