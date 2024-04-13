@@ -14,6 +14,7 @@ integrage support to any vector stores easy.
 
    get_started
    grag
+   auto_examples/index
 
 
 Indices and tables

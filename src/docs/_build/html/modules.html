@@ -7,6 +7,10 @@
   <title>grag &mdash; GRAG 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
   <!--[if lt IE 9]>
@@ -46,6 +50,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="get_started.html">Get Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grag.html">GRAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Cookbooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html#basic-rag-cookbooks">Basic-RAG Cookbooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html#retriever-gui-cookbooks">Retriever-GUI Cookbooks</a></li>
 </ul>
 
         </div>
@@ -78,37 +85,36 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="grag.html">GRAG</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="grag.components.html">Components</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html">grag.components.vectordb package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#vectordb">VectorDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html">VectorDB</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.embedding">grag.components.embedding module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.embedding">Embedding</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.embedding.Embedding"><code class="docutils literal notranslate"><span class="pre">Embedding</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.llm">grag.components.llm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.llm">LLM</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.llm.LLM"><code class="docutils literal notranslate"><span class="pre">LLM</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.multivec_retriever">grag.components.multivec_retriever module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.multivec_retriever">Retriever</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.multivec_retriever.Retriever"><code class="docutils literal notranslate"><span class="pre">Retriever</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.parse_pdf">grag.components.parse_pdf module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.parse_pdf">Parse PDF</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.parse_pdf.ParsePDF"><code class="docutils literal notranslate"><span class="pre">ParsePDF</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.prompt">grag.components.prompt module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.prompt">Prompt</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.prompt.FewShotPrompt"><code class="docutils literal notranslate"><span class="pre">FewShotPrompt</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.prompt.Prompt"><code class="docutils literal notranslate"><span class="pre">Prompt</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.text_splitter">grag.components.text_splitter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.text_splitter">Text Splitter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.text_splitter.TextSplitter"><code class="docutils literal notranslate"><span class="pre">TextSplitter</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.utils">grag.components.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components.utils">Utils</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.utils.find_config_path"><code class="docutils literal notranslate"><span class="pre">find_config_path()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.utils.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="grag.components.html#grag.components.utils.stuff_docs"><code class="docutils literal notranslate"><span class="pre">stuff_docs()</span></code></a></li>
@@ -117,14 +123,14 @@
 <li class="toctree-l3"><a class="reference internal" href="grag.components.html#module-grag.components">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="grag.prompts.html">grag.prompts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grag.prompts.html">Prompts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="grag.prompts.html#module-grag.prompts">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="grag.quantize.html">grag.quantize package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grag.quantize.html">Quantize</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="grag.quantize.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grag.quantize.html#module-grag.quantize.quantize">grag.quantize.quantize module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grag.quantize.html#module-grag.quantize.utils">grag.quantize.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.quantize.html#id1">Quantize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.quantize.html#module-grag.quantize.utils">Utils</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.quantize.html#grag.quantize.utils.building_llamacpp"><code class="docutils literal notranslate"><span class="pre">building_llamacpp()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="grag.quantize.html#grag.quantize.utils.fetch_model_repo"><code class="docutils literal notranslate"><span class="pre">fetch_model_repo()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="grag.quantize.html#grag.quantize.utils.get_llamacpp_repo"><code class="docutils literal notranslate"><span class="pre">get_llamacpp_repo()</span></code></a></li>
@@ -134,9 +140,9 @@
 <li class="toctree-l3"><a class="reference internal" href="grag.quantize.html#module-grag.quantize">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="grag.rag.html">grag.rag package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grag.rag.html">RAG</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="grag.rag.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grag.rag.html#module-grag.rag.basic_rag">grag.rag.basic_rag module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.rag.html#module-grag.rag.basic_rag">Basic RAG</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="grag.rag.html#grag.rag.basic_rag.BasicRAG"><code class="docutils literal notranslate"><span class="pre">BasicRAG</span></code></a></li>
 </ul>
 </li>

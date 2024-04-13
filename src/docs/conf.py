@@ -45,7 +45,16 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.linkcode",
     # "sphinx_github_style"
+    "sphinx_gallery.gen_gallery"
 ]
+
+sphinx_gallery_conf = {
+    # 'examples_dirs': ['../../cookbook/Basic-RAG', '../../cookbook/Retriver-GUI'],  # path to your example scripts
+    'examples_dirs': '../../cookbook',
+    'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+    'filename_pattern': '',
+    'plot_gallery': 'False',
+}
 
 
 # Linkcode settings
