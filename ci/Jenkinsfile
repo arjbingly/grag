@@ -118,7 +118,7 @@ pipeline {
         success{
             sshagent(credentials: ['GithubKey']){
                 sh 'git checkout main'
-                sh 'python3 ci/modify_test_status.py --fail'
+                sh 'python3 ci/modify_test_status.py'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
                 sh 'git push'
