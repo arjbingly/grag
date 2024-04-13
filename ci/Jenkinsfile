@@ -10,27 +10,21 @@ pipeline {
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         PATH="/usr/local/cuda-12.3/bin:$PATH"
         LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
+        GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new"
         }
 
 
     stages {
-
         stage('Checkout') {
             steps {
                     cleanWs()
                     checkout scm
-                    // checkout scmGit(
-                    //     branches: [[name: 'main']],
-                    //     userRemoteConfigs: [[credentialsId: 'GithubKey',
-                    //          url: 'ssh://git@github.com:arjbingly/Capstone_5.git']]
-                        // )
             }
         }
 
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
-                sh 'exit 1'
             }
         }
 
@@ -108,42 +102,27 @@ pipeline {
                         junit 'pytest-report.xml'
                      }
                 }
-                // cleanup{
-                //     cleanWs(
-                //     cleanWhenNotBuilt: false,
-                //     deleteDirs: true,
-                //     disableDeferredWipeout: true,
-                //     notFailBuild: true,
-                //     patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                //                [pattern: '.propsfile', type: 'EXCLUDE']]
-                //         )
-                }
             }
         }
     }
     post {
         failure{
-            // sshagent(credentials: ['GithubKey']){
-            // git url: "ssh://git@github.com:arjbingly/Capstone_5.git",
-            //     credentialsId: 'GithubKey',
-            //     branch: main
-                // sh 'git clone git@github.com:arjbingly/Capstone_5.git'
-                // sh 'cd Capstone_5'
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
                 sh 'python3 ci/modify_test_status.py --fail'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
                 sh 'git push'
-            // }
+            }
         }
         success{
-            // sshagent(credentials: ['GithubKey']){
-            //     sh 'git@github.com:arjbingly/Capstone_5.git'
-            //     sh 'cd Capstone_5'
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
                 sh 'python3 ci/modify_test_status.py --fail'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
                 sh 'git push'
-            // }
+            }
         }
         cleanup{
             cleanWs(
