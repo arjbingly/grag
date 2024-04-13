@@ -103,13 +103,24 @@ pipeline {
                         junit 'pytest-report.xml'
                      }
                 }
+                cleanup{
+                    cleanWs(
+                    cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']]
+                        )
+                }
             }
         }
     }
     post {
         failure{
             sshagent(credentials: ['GithubKey']){
-                sh 'git checkout main'
+                sh 'git clone git@github.com:arjbingly/Capstone_5.git'
+                sh 'cd Capstone_5'
                 sh 'python3 ci/modify_test_status.py --fail'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
@@ -118,7 +129,8 @@ pipeline {
         }
         success{
             sshagent(credentials: ['GithubKey']){
-                sh 'git checkout main'
+                sh 'git@github.com:arjbingly/Capstone_5.git'
+                sh 'cd Capstone_5'
                 sh 'python3 ci/modify_test_status.py --fail'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
