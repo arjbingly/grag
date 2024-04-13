@@ -51,7 +51,7 @@ Further customization can be made on the config file, `src/config.ini`.
 
 ### Requirements
 
-Required packages includes (_refer to [pyproject.toml](pyproject.toml)_):
+Required packages to install includes (_refer to [pyproject.toml](pyproject.toml)_):
 
 Required packages to install includes (_refer to [pyproject.toml](pyproject.toml)_):
 
