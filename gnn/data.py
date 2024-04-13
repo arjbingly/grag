@@ -11,10 +11,11 @@ from tqdm import tqdm
 from gnn.utils import cosine_similarity
 
 
-def gen_egdes(embeddings, verbose=True):
+def gen_edges(embeddings, verbose=True):
     """Generates edges and edge features for a graph based on pairwise cosine similarity of embeddings.
 
     Args:
+        verbose: 
         embeddings (list): A list of embeddings for each document.
 
     Returns:
@@ -65,7 +66,7 @@ def gen_data(data_dict, verbose=True):
     for data in data_dict.values():
         embeddings.append(data['embedding'])
 
-    edges, edge_features = gen_egdes(embeddings)
+    edges, edge_features = gen_edges(embeddings)
 
     x = torch.tensor(embeddings, dtype=torch.float)
     edge_index = torch.tensor(edges, dtype=torch.long)
