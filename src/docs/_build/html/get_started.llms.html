@@ -102,29 +102,32 @@ provide an auth token</em></p>
 </section>
 <section id="to-run-llms-using-llamacpp">
 <h2>To run LLMs using LlamaCPP<a class="headerlink" href="#to-run-llms-using-llamacpp" title="Link to this heading"></a></h2>
-<p>To run models using LlamaCPP, make sure to have a <cite>.gguf</cite> model file.
-Smaller models offer this, but the recommended method is to quantize
-larger models or just download the quantized models.</p>
-<section id="how-to-quantize-models">
-<h3>How to quantize models.<a class="headerlink" href="#how-to-quantize-models" title="Link to this heading"></a></h3>
+<p>Steps to start with llama.cpp:</p>
 <ol class="arabic simple">
-<li><p>Steps to start with llama.cpp:</p></li>
+<li><p>Clone the <a class="reference external" href="https://github.com/ggerganov/llama.cpp">llama.cpp</a> repository.</p></li>
 </ol>
-<ul class="simple">
-<li><p>Clone the <a class="reference external" href="https://github.com/ggerganov/llama.cpp">llama.cpp</a> repository.
-<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/ggerganov/llama.cpp.git</span></code></p></li>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/ggerganov/llama.cpp.git</span></code></p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
 <li><p>Change directory to <cite>llama.cpp</cite> using <cite>cd llama.cpp</cite></p></li>
-<li><p>To inference using GPU, which is necessary for mose models.
-* Make sure you have CUDA installed (check using <code class="docutils literal notranslate"><span class="pre">nvcc</span> <span class="pre">--version</span></code>)
-* Follow steps from the <a class="reference external" href="https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#cublas">llama.cpp documentation</a>.</p></li>
+<li><p>To inference using GPU, which is necessary for most models.</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>Make sure you have CUDA installed (check using <code class="docutils literal notranslate"><span class="pre">nvcc</span> <span class="pre">--version</span></code>)</p></li>
+<li><p>Follow steps from the <a class="reference external" href="https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#cublas">llama.cpp documentation</a>.</p></li>
 </ul>
+</div></blockquote>
 <p><em>Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the outputs and</em>
 <em>if it is not then try reinstalling using</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DLLAMA_CUBLAS=on&quot;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">llama</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">python</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">reinstall</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="nb">dir</span>
 </pre></div>
 </div>
 <p><em>or follow the solution provided by</em>
-<em>`this Stack Overflow post &lt;https://stackoverflow.com/questions/76963311/llama-cpp-python-not-using-nvidia-gpu-cuda&gt;`_</em></p>
+<a class="reference external" href="https://stackoverflow.com/questions/76963311/llama-cpp-python-not-using-nvidia-gpu-cuda">this Stack Overflow post</a></p>
+<section id="how-to-quantize-models">
+<h3>How to quantize models.<a class="headerlink" href="#how-to-quantize-models" title="Link to this heading"></a></h3>
 </section>
 </section>
 </section>

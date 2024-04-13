@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to GRAG’s documentation! &mdash; GRAG 0.0.1 documentation</title>
+  <title>Installation &mdash; GRAG 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -20,8 +20,7 @@
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Get Started" href="get_started.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,7 +31,7 @@
 
           
           
-          <a href="#" class="icon icon-home">
+          <a href="index.html" class="icon icon-home">
             GRAG
           </a>
 <div role="search">
@@ -55,17 +54,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">GRAG</a>
+          <a href="index.html">GRAG</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to GRAG’s documentation!</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/arjbingly/Capstone_5/blob/main/src/index.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/arjbingly/Capstone_5/blob/main/src/get_started.installation.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -73,48 +72,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-grag-s-documentation">
-<h1>Welcome to GRAG’s documentation!<a class="headerlink" href="#welcome-to-grag-s-documentation" title="Link to this heading"></a></h1>
-<p>GRAG is a simple python package that provides an easy end-to-end solution
-for implementing Retrieval Augmented Generation (RAG).</p>
-<p>The package offers an easy way for running various LLMs locally, <em>Thanks to LlamaCpp</em>
-and also supports vector stores like Chroma and DeepLake. It also makes it easy to
-integrage support to any vector stores easy.</p>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Get Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="get_started.installation.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_started.llms.html">LLMs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_started.vectordb.html">Vector Stores</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="grag.html">GRAG</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="grag.components.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="grag.prompts.html">Prompts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="grag.quantize.html">Quantize</a></li>
-<li class="toctree-l2"><a class="reference internal" href="grag.rag.html">RAG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="grag.html#module-grag">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p><em>Since we are just in the development phase we have not published to pypi yet.</em></p>
 <ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> the repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code> from the repository</p></li>
+<li><p><em>For Developers</em>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p></li>
 </ul>
+<p>Moreover, further customization can be made on the config file, <cite>src/config.ini</cite>.</p>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="get_started.html" class="btn btn-neutral float-right" title="Get Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

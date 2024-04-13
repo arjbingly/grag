@@ -1,4 +1,4 @@
-grag.prompts package
+Prompts
 ====================
 
 Module contents

@@ -1,18 +1,16 @@
 Components
 =======================
 
-Subpackages
------------
+VectorDB
+--------------------------------
 
 .. toctree::
    :maxdepth: 4
 
    grag.components.vectordb
 
-Submodules
-----------
 
-grag.components.embedding module
+Embedding
 --------------------------------
 
 .. automodule:: grag.components.embedding
@@ -20,7 +18,7 @@ grag.components.embedding module
    :undoc-members:
    :show-inheritance:
 
-grag.components.llm module
+LLM
 --------------------------
 
 .. automodule:: grag.components.llm
@@ -28,7 +26,7 @@ grag.components.llm module
    :undoc-members:
    :show-inheritance:
 
-grag.components.multivec\_retriever module
+Retriever
 ------------------------------------------
 
 .. automodule:: grag.components.multivec_retriever
@@ -36,7 +34,7 @@ grag.components.multivec\_retriever module
    :undoc-members:
    :show-inheritance:
 
-grag.components.parse\_pdf module
+Parse PDF
 ---------------------------------
 
 .. automodule:: grag.components.parse_pdf
@@ -44,7 +42,7 @@ grag.components.parse\_pdf module
    :undoc-members:
    :show-inheritance:
 
-grag.components.prompt module
+Prompt
 -----------------------------
 
 .. automodule:: grag.components.prompt
@@ -52,7 +50,7 @@ grag.components.prompt module
    :undoc-members:
    :show-inheritance:
 
-grag.components.text\_splitter module
+Text Splitter
 -------------------------------------
 
 .. automodule:: grag.components.text_splitter
@@ -60,7 +58,7 @@ grag.components.text\_splitter module
    :undoc-members:
    :show-inheritance:
 
-grag.components.utils module
+Utils
 ----------------------------
 
 .. automodule:: grag.components.utils

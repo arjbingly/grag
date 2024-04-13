@@ -1,10 +1,10 @@
-grag.components.vectordb package
+VectorDB
 ================================
 
 Submodules
 ----------
 
-grag.components.vectordb.base module
+Base
 ------------------------------------
 
 .. automodule:: grag.components.vectordb.base
@@ -12,7 +12,7 @@ grag.components.vectordb.base module
    :undoc-members:
    :show-inheritance:
 
-grag.components.vectordb.chroma\_client module
+Chroma Client
 ----------------------------------------------
 
 .. automodule:: grag.components.vectordb.chroma_client
@@ -20,7 +20,7 @@ grag.components.vectordb.chroma\_client module
    :undoc-members:
    :show-inheritance:
 
-grag.components.vectordb.deeplake\_client module
+Deeplake Client
 ------------------------------------------------
 
 .. automodule:: grag.components.vectordb.deeplake_client
