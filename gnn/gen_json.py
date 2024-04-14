@@ -14,6 +14,7 @@ def gen_embeddings(data, verbose=True):
     """Generates embeddings for a list of sentences using a specified embedding model.
 
     Args:
+        verbose: 
         data (list): A list of strings containing sentences to generate embeddings for.
 
     Returns:
@@ -41,6 +42,7 @@ def gen_json(data, save_path, verbose=True):
     """Generates a JSON file containing text data and corresponding embeddings.
 
     Args:
+        verbose: 
         data (list): A list of strings containing text data.
         save_path (str): The path to save the generated JSON file.
 

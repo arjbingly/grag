@@ -15,6 +15,7 @@ def gen_egdes(embeddings, verbose=True, threshold=0.5):
     """Generates edges and edge features for a graph based on pairwise cosine similarity of embeddings.
 
     Args:
+        verbose: 
         embeddings (list): A list of embeddings for each document.
         verbose (bool, optional): If True, prints out the edges and edge features for each document. Defaults to True.
         threshold (float, optional): Threshold for cosine similarity. Defaults to 0.5.
@@ -68,7 +69,7 @@ def gen_data(data_dict, verbose=True):
     for data in data_dict.values():
         embeddings.append(data['embedding'])
 
-    edges, edge_features = gen_egdes(embeddings)
+    edges, edge_features = gen_edges(embeddings)
 
     x = torch.tensor(embeddings, dtype=torch.float)
     edge_index = torch.tensor(edges, dtype=torch.long)
