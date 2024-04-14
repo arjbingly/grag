@@ -5,6 +5,34 @@ import torch
 import torch.nn.functional as F
 
 
+def gen_embeddings(data, verbose=True):
+    """Generates embeddings for a list of sentences using a specified embedding model.
+
+    Args:
+        verbose: 
+        data (list): A list of strings containing sentences to generate embeddings for.
+
+    Returns:
+        list: A list of embeddings corresponding to the input sentences.
+
+    Example:
+        >>> sentences = ["This is the first sentence.", "This is the second sentence."]
+        >>> embeddings = gen_embeddings(sentences)
+    """
+    embedding = Embedding("instructor-embedding", "hkunlp/instructor-xl")
+    embedding_instruction = "Represent the sentence for retrieval"
+    embedding.embedding_function.query_instruction = embedding_instruction
+    embedding_func = embedding.embedding_function.embed_query
+
+    if verbose:
+        embeddings = []
+        for string in tqdm(data, desc="Generating embeddings"):
+            embeddings.append(embedding_func(string))
+    else:
+        embeddings = [embedding_func(string) for string in data]
+    return embeddings
+
+
 def cosine_similarity(a, b):
     """Computes the cosine similarity between two vectors.
 
