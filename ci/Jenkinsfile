@@ -10,11 +10,11 @@ pipeline {
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         PATH="/usr/local/cuda-12.3/bin:$PATH"
         LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
+        GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new"
         }
 
 
     stages {
-
         stage('Checkout') {
             steps {
                     cleanWs()
@@ -25,7 +25,6 @@ pipeline {
         stage('Create venv'){
             steps {
                 sh 'python3 -m venv .venv'
-                sh 'exit 1'
             }
         }
 
@@ -107,17 +106,25 @@ pipeline {
         }
     }
     post {
-        failure{
-            sh 'python3 ci/modify_test_status.py --fail'
-            sh 'git add README.md'
-            sh 'git commit -m "test status updated"'
-            sh 'git push origin main'
+        fixed{
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
+                sh 'python3 ci/modify_test_status.py'
+                sh 'git add README.md'
+                sh 'git commit -m "test status updated"'
+                sh 'git push'
+            }       
+            
         }
-        success{
-            sh 'python3 ci/modify_test_status.py'
-            sh 'git add README.md'
-            sh 'git commit -m "test status updated"'
-            sh 'git push origin main'
+        regression{
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
+                sh 'python3 ci/modify_test_status.py --fail'
+                sh 'git add README.md'
+                sh 'git commit -m "test status updated"'
+                sh 'git push'
+            }
+            
         }
         cleanup{
             cleanWs(
