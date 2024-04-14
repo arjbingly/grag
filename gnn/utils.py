@@ -3,6 +3,8 @@
 import numpy as np
 import torch
 import torch.nn.functional as F
+from grag.components.embedding import Embedding
+from tqdm import tqdm
 
 
 def gen_embeddings(data, verbose=True):

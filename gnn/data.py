@@ -11,7 +11,7 @@ from tqdm import tqdm
 from gnn.utils import cosine_similarity
 
 
-def gen_egdes(embeddings, verbose=True, threshold=0.5):
+def gen_edges(embeddings, verbose=True, threshold=0.5):
     """Generates edges and edge features for a graph based on pairwise cosine similarity of embeddings.
 
     Args:
