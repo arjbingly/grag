@@ -106,20 +106,25 @@ pipeline {
         }
     }
     post {
-        changed{
+        fixed{
             sshagent(credentials: ['GithubKey']){
                 sh 'git checkout main'
-                script{
-                    if (currentBuild.currentResult == 'SUCCESS'){
-                        sh 'python3 ci/modify_test_status.py' }
-                    else {
-                        sh 'python3 ci/modify_test_status.py --fail'
-                    }
-                }
+                sh 'python3 ci/modify_test_status.py'
+                sh 'git add README.md'
+                sh 'git commit -m "test status updated"'
+                sh 'git push'
+            }       
+            
+        }
+        regression{
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
+                sh 'python3 ci/modify_test_status.py --fail'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
                 sh 'git push'
             }
+            
         }
         cleanup{
             cleanWs(
