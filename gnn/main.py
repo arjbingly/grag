@@ -26,7 +26,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model_save_dir = Path(f'{__file__}').parent / Path('models')
 os.makedirs(model_save_dir, exist_ok=True)
-model_name = Path(f'SageConv_eg_{datetime.now().strftime("%Y_%m_%d_%H%M")}')
+model_name = Path(f'SageConv_eg_{datetime.now().strftime("%Y_%m_%d_%H%M")}.pt')
 model_save_path = model_save_dir / model_name
 
 

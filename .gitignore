@@ -166,3 +166,4 @@ cython_debug/
 .idea/
 **/others
 data/
+**/models

@@ -1,5 +1,6 @@
 """This module contains functions to create torch_geometric Data objects from a JSON file."""
 
+import json
 from itertools import combinations
 
 import numpy as np
@@ -28,7 +29,7 @@ def gen_edges(embeddings, verbose=True, threshold=0.5):
 
     Example:
         >>> embeddings = [np.array([0.1, 0.2, 0.3]), np.array([0.4, 0.5, 0.6]), np.array([0.7, 0.8, 0.9])]
-        >>> edges, edge_features = gen_egdes(embeddings)
+        >>> edges, edge_features = gen_edges(embeddings)
     """
     edges = []
     edge_features = []
@@ -92,4 +93,6 @@ def gen_data(data_dict, verbose=True):
 
 
 if __name__ == '__main__':
-    data = gen_data('data.json')
+    with open('Data/eg_data.json', 'r') as f:
+        data_dict = json.load(f)
+    data = gen_data(data_dict)
