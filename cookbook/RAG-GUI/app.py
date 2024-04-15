@@ -1,15 +1,12 @@
 import os
 import sys
-import time
 from pathlib import Path
 
 import streamlit as st
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
-import shutil
 
 st.set_page_config(page_title="RAG")
-from pathlib import Path
 
 from grag.components.utils import get_config
 from grag.rag.basic_rag import BasicRAG
@@ -28,52 +25,52 @@ class RAGApp:
         self.app = app
         self.conf = conf
         self.selected_model = None
-        self.temperature = None
         self.exit_app = False
-        if 'temperature' in st.session_state:
-            self.temperature = st.session_state['temperature']
-        else:
-            self.temperature = 0.1
 
-        if 'top_k' in st.session_state:
-            self.top_k = st.session_state['top_k']
-        else:
-            self.top_k = 1.0
         self.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
     def render_sidebar(self):
         with st.sidebar:
             st.title('RAG')
             st.subheader('Models and parameters')
-            self.selected_model = st.sidebar.selectbox('Choose a model', ['Llama-2-13b-chat', 'Llama-2-7b-chat',
-                                                                          'Mixtral-8x7B-Instruct-v0.1', 'Gemma 7B'],
-                                                       key='selected_model')
-            self.temperature = st.sidebar.slider('Temperature', min_value=0.01, max_value=5.0, value=self.temperature,
-                                                 step=0.01)
-            self.top_k = st.sidebar.slider('Top-k', min_value=1.0, max_value=5.0, value=self.top_k, step=1.0)
-            st.session_state['temperature'] = self.temperature
-            st.session_state['top_k'] = self.top_k
+            st.sidebar.selectbox('Choose a model',
+                                 ['Llama-2-13b-chat', 'Llama-2-7b-chat',
+                                  'Mixtral-8x7B-Instruct-v0.1', 'Gemma 7B'],
+                                 key='selected_model')
+            st.sidebar.slider('Temperature',
+                              min_value=0.01,
+                              max_value=5.0,
+                              value=0.1,
+                              step=0.01,
+                              key='temperature')
+            st.sidebar.slider('Top-k',
+                              min_value=1,
+                              max_value=5,
+                              value=3,
+                              step=1,
+                              key='top_k')
 
     def initialize_rag(self):
-        llm_kwargs = {"temperature": self.temperature}
+        llm_kwargs = {"temperature": st.session_state['temperature']}
         retriever_kwargs = {
-            "client_kwargs": {"read_only": True,
-                              "top_k": self.top_k}
+            "client_kwargs": {"read_only": True, },
+            "top_k": st.session_state['top_k']
         }
-        rag = BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs, retriever_kwargs=retriever_kwargs)
+        rag = BasicRAG(model_name=st.session_state['selected_model'],
+                       llm_kwargs=llm_kwargs,
+                       retriever_kwargs=retriever_kwargs)
         return rag
 
     def clear_cache(self):
         st.cache_data.clear()
 
     # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
-    @st.cache(ignore_hash=True)
     def render_main(self):
         st.title("Welcome to the RAG App")
 
-        st.write(f"You have selected the {self.selected_model} model with the following parameters:")
-        st.write(f"Temperature: {self.temperature}")
-        st.write(f"Top-k: {self.top_k}")
+        st.write(f"You have selected the {st.session_state['selected_model']} model with the following parameters:")
+        st.write(f"Temperature: {st.session_state['temperature']}")
+        st.write(f"Top-k: {st.session_state['top_k']}")
 
         if 'rag' not in st.session_state:
             st.session_state['rag'] = self.initialize_rag()
@@ -124,19 +121,5 @@ class RAGApp:
 
 
 if __name__ == "__main__":
-    lock_path = Path(conf['root']['root_path']) / '/data/vectordb/test/dataset_lock.lock'
-
-    if os.path.exists(lock_path):
-        shutil.rmtree(lock_path)
-        print('Deleting lock file: {}'.format(lock_path))
-    latest_iteration = st.empty()
-    bar = st.progress(0)
-
-    for i in range(100):
-        # Update the progress bar with each iteration.
-        latest_iteration.text(f'Iteration {i + 1}')
-        bar.progress(i + 1)
-        time.sleep(0.1)
-
     app = RAGApp(st, conf)
     app.render()
