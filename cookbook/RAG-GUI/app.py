@@ -59,8 +59,8 @@ class RAGApp:
             "client_kwargs" : {"read_only": True,
                                "top_k": self.top_k}
         }
-        return BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs,retriever_kwargs=retriever_kwargs)
-
+        rag = BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs,retriever_kwargs=retriever_kwargs)
+        return rag
 
     def clear_cache(self):
         st.cache_data.clear()
@@ -68,7 +68,6 @@ class RAGApp:
     # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
     @st.cache(ignore_hash=True)
     def render_main(self):
-
         st.title("Welcome to the RAG App")
 
         st.write(f"You have selected the {self.selected_model} model with the following parameters:")
@@ -80,28 +79,33 @@ class RAGApp:
 
         for message in self.messages:
             with st.chat_message(message["role"]):
-                st.write(message["content"])
+                st.markdown(message["content"])
 
         user_input = st.text_area("Enter your query:", height=20)
         submit_button = st.button("Submit")
         if submit_button and user_input:
-            self.messages.append({"role": "user", "content": user_input})
-            response, sources = st.session_state['rag'](user_input)
 
-            # response, sources = st.session_state['rag'](user_input)
+                self.messages.append({"role": "user", "content": user_input})
+                response, sources = st.session_state['rag'](user_input)
+                st.write("LLM Output:")
+                st.text_area(value=response)
+                st.write("RAG Output:")
+                # for index, resp in enumerate(rag_output):
+                #     with st.expander(f"Response {index + 1}"):
+                #         st.markdown(resp)
+                #         st.write("Retrieved Chunks:")
+                #         if isinstance(sources[index],(list,tuple)):
+                #             for src_index, source in enumerate(sources[index]):
+                #                 if hasattr(source, 'page_content'):
+                #                     st.markdown(f"**Chunk {src_index + 1}:**\n{source.page_content}")
+                #                 else:
+                #                     st.markdown(f"**Chunk {src_index + 1}:**\n{source}")
+                st.write("Response:")
+                st.markdown(response)
 
-            for index, resp in enumerate(response):
-                with st.chat_message("assistant"):
-                    st.write(f"Response {index + 1}: {resp}")
-                    st.write("Retrieved Chunks:")
-                    for src_index, source in enumerate(sources[index]):
-                        # st.write(f"\t{src_index + 1}: {source.page_content}")
-                        if hasattr(source, 'page_content'):
-                            st.write(f"\t{src_index + 1}: {source.page_content}")
-                        else:
-                            st.write(f"\t{src_index + 1}: {source}")
-
-
+                st.write("Sources:")
+                # for index, source in enumerate(sources):
+                #     st.write(f"{index + 1}. {source}")
     def render(self):
 
 
