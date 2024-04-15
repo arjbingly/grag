@@ -1,29 +1,30 @@
 import os
 import sys
-from pathlib import Path
 import time
+from pathlib import Path
+
 import streamlit as st
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 import shutil
 
 st.set_page_config(page_title="RAG")
-from grag.rag.basic_rag import BasicRAG
-from grag.components.utils import get_config
 from pathlib import Path
-from grag.components.llm import LLM
-from grag.components.multivec_retriever import Retriever
-from grag.components.vectordb.deeplake_client import DeepLakeClient
+
+from grag.components.utils import get_config
+from grag.rag.basic_rag import BasicRAG
 
 
 @st.cache_resource
 def load_config():
     return get_config()
 
+
 conf = load_config()
 
+
 class RAGApp:
-    def __init__(self,app,conf):
+    def __init__(self, app, conf):
         self.app = app
         self.conf = conf
         self.selected_model = None
@@ -56,10 +57,10 @@ class RAGApp:
     def initialize_rag(self):
         llm_kwargs = {"temperature": self.temperature}
         retriever_kwargs = {
-            "client_kwargs" : {"read_only": True,
-                               "top_k": self.top_k}
+            "client_kwargs": {"read_only": True,
+                              "top_k": self.top_k}
         }
-        rag = BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs,retriever_kwargs=retriever_kwargs)
+        rag = BasicRAG(model_name=self.selected_model, llm_kwargs=llm_kwargs, retriever_kwargs=retriever_kwargs)
         return rag
 
     def clear_cache(self):
@@ -85,33 +86,36 @@ class RAGApp:
         submit_button = st.button("Submit")
         if submit_button and user_input:
 
-                self.messages.append({"role": "user", "content": user_input})
-                response, sources = st.session_state['rag'](user_input)
-                st.write("LLM Output:")
-                st.text_area(value=response)
-                st.write("RAG Output:")
-                # for index, resp in enumerate(rag_output):
-                #     with st.expander(f"Response {index + 1}"):
-                #         st.markdown(resp)
-                #         st.write("Retrieved Chunks:")
-                #         if isinstance(sources[index],(list,tuple)):
-                #             for src_index, source in enumerate(sources[index]):
-                #                 if hasattr(source, 'page_content'):
-                #                     st.markdown(f"**Chunk {src_index + 1}:**\n{source.page_content}")
-                #                 else:
-                #                     st.markdown(f"**Chunk {src_index + 1}:**\n{source}")
-                st.write("Response:")
-                st.markdown(response)
+            self.messages.append({"role": "user", "content": user_input})
+            response, sources = st.session_state['rag'](user_input)
+            st.write("LLM Output:")
+            st.text_area(value=response)
+            st.write("RAG Output:")
 
-                st.write("Sources:")
-                # for index, source in enumerate(sources):
-                #     st.write(f"{index + 1}. {source}")
+            with st.expander("Sources"):
+                for index, source in enumerate(sources):
+                    st.write(f"{index} -> {source}")
+            # for index, resp in enumerate(rag_output):
+            #     with st.expander(f"Response {index + 1}"):
+            #         st.markdown(resp)
+            #         st.write("Retrieved Chunks:")
+            #         if isinstance(sources[index],(list,tuple)):
+            #             for src_index, source in enumerate(sources[index]):
+            #                 if hasattr(source, 'page_content'):
+            #                     st.markdown(f"**Chunk {src_index + 1}:**\n{source.page_content}")
+            #                 else:
+            #                     st.markdown(f"**Chunk {src_index + 1}:**\n{source}")
+            st.write("Response:")
+            st.markdown(response)
+
+            st.write("Sources:")
+            # for index, source in enumerate(sources):
+            #     st.write(f"{index + 1}. {source}")
+
     def render(self):
-
 
         self.clear_cache()
         self.render_sidebar()
-
 
         self.render_main()
         st.cache_data.clear()
@@ -119,11 +123,8 @@ class RAGApp:
         self.exit_app = st.sidebar.button("Shut Down")
 
 
-
-
 if __name__ == "__main__":
     lock_path = Path(conf['root']['root_path']) / '/data/vectordb/test/dataset_lock.lock'
-
 
     if os.path.exists(lock_path):
         shutil.rmtree(lock_path)
@@ -137,10 +138,5 @@ if __name__ == "__main__":
         bar.progress(i + 1)
         time.sleep(0.1)
 
-
-    app = RAGApp(st,conf)
+    app = RAGApp(st, conf)
     app.render()
-
-
-
-
