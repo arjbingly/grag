@@ -36,7 +36,7 @@ class RAGApp:
                                   'Mixtral-8x7B-Instruct-v0.1', 'gemma-7b-it'],
                                  key='selected_model')
             st.sidebar.slider('Temperature',
-                              min_value=0.01,
+                              min_value=0.1,
                               max_value=1.0,
                               value=0.1,
                               step=0.01,
@@ -96,7 +96,7 @@ class RAGApp:
                     for index, doc in enumerate(retrieved_docs):
                         st.markdown(f"**{index}. {doc.metadata['source']}**")
                         if st.session_state['show_content']:
-                            st.text(f"{doc.page_content}")
+                            st.markdown(f"**{doc.page_content}**")
 
     def render(self):
         self.render_sidebar()
