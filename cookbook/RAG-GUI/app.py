@@ -39,7 +39,7 @@ class RAGApp:
                               min_value=0.1,
                               max_value=1.0,
                               value=0.1,
-                              step=0.01,
+                              step=0.1,
                               key='temperature')
             st.sidebar.slider('Top-k',
                               min_value=1,
