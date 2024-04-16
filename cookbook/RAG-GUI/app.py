@@ -37,7 +37,7 @@ class RAGApp:
                                  key='selected_model')
             st.sidebar.slider('Temperature',
                               min_value=0.01,
-                              max_value=5.0,
+                              max_value=1.0,
                               value=0.1,
                               step=0.01,
                               key='temperature')
