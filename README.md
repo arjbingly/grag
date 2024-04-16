@@ -1,6 +1,14 @@
 # GRAG (note: specify the abbreviation)
 
-(note: insert the interactive tags here, ask Amir about copyright and add the tags)
+![GitHub License](https://img.shields.io/github/license/arjbingly/Capstone_5)
+![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/linting.yml?label=Docs&labelColor=yellow)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/build_linting.yml?label=Linting)
+![Static Badge](https://img.shields.io/badge/Tests-passing-darggreen)
+![Static Badge](https://img.shields.io/badge/docstring%20style-google-yellow)
+![Static Badge](https://img.shields.io/badge/linter%20-ruff-yellow)
+![Static Badge](https://img.shields.io/badge/buildstyle-hatchling-purple?labelColor=white)
+![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
 
 (note: add overview on what the purpose of this project is here. Talk briefly about RAG. Maybe copy from the proposal)
 

@@ -10,11 +10,11 @@ pipeline {
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
         PATH="/usr/local/cuda-12.3/bin:$PATH"
         LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
+        GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new"
         }
 
 
     stages {
-
         stage('Checkout') {
             steps {
                     cleanWs()
@@ -80,7 +80,6 @@ pipeline {
                      withChecks('Static Type Checks'){
                          junit 'mypy-report.xml'
                      }
-
                 }
             }
         }
@@ -102,18 +101,40 @@ pipeline {
                      withChecks('Integration Tests'){
                         junit 'pytest-report.xml'
                      }
-
-                     cleanWs(
-                        cleanWhenNotBuilt: false,
-                        deleteDirs: true,
-                        disableDeferredWipeout: true,
-                        notFailBuild: true,
-                        patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                                   [pattern: '.propsfile', type: 'EXCLUDE']]
-                             )
                 }
             }
         }
-
+    }
+    post {
+        fixed{
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
+                sh 'python3 ci/modify_test_status.py'
+                sh 'git add README.md'
+                sh 'git commit -m "test status updated"'
+                sh 'git push'
+            }       
+            
+        }
+        regression{
+            sshagent(credentials: ['GithubKey']){
+                sh 'git checkout main'
+                sh 'python3 ci/modify_test_status.py --fail'
+                sh 'git add README.md'
+                sh 'git commit -m "test status updated"'
+                sh 'git push'
+            }
+            
+        }
+        cleanup{
+            cleanWs(
+                cleanWhenNotBuilt: false,
+                deleteDirs: true,
+                disableDeferredWipeout: true,
+                notFailBuild: true,
+                patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                           [pattern: '.propsfile', type: 'EXCLUDE']]
+                    )
+        }
     }
 }
