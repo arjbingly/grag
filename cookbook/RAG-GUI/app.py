@@ -3,13 +3,13 @@ import sys
 from pathlib import Path
 
 import streamlit as st
+from grag.components.utils import get_config
+from grag.rag.basic_rag import BasicRAG
+from langchain.callbacks.base import BaseCallbackHandler
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 
 st.set_page_config(page_title="RAG")
-
-from grag.components.utils import get_config
-from grag.rag.basic_rag import BasicRAG
 
 
 @st.cache_data
@@ -18,6 +18,22 @@ def load_config():
 
 
 conf = load_config()
+
+
+class StreamHandler(BaseCallbackHandler):
+    def __init__(self, container, initial_text="", display_method='markdown'):
+        self.container = container
+        self.text = initial_text
+        # self.display_method = display_method
+
+    def on_llm_new_token(self, token: str, **kwargs) -> None:
+        self.text += token  # + "/"
+        self.container.markdown(self.text)
+        # display_function = getattr(self.container, self.display_method)
+        # if display_function is not None:
+        #     display_function(self.text)
+        # else:
+        #     raise ValueError(f"Invalid display_method: {self.display_method}")
 
 
 class RAGApp:
@@ -54,7 +70,9 @@ class RAGApp:
         if 'rag' in st.session_state:
             del st.session_state['rag']
 
-        llm_kwargs = {"temperature": st.session_state['temperature']}
+        llm_kwargs = {"temperature": st.session_state['temperature'], }
+        # "callbacks": CallbackManager([self.stream_handler]),
+        # "std_out": False}
         if st.session_state['selected_model'] == "Mixtral-8x7B-Instruct-v0.1":
             llm_kwargs['n_gpu_layers'] = 16
             llm_kwargs['quantization'] = 'Q4_K_M'
@@ -66,6 +84,7 @@ class RAGApp:
             "client_kwargs": {"read_only": True, },
             "top_k": st.session_state['top_k']
         }
+
         st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'],
                                            llm_kwargs=llm_kwargs,
                                            retriever_kwargs=retriever_kwargs)
@@ -90,8 +109,13 @@ class RAGApp:
             submit_button = st.button("Submit")
 
             if submit_button and user_input:
-                response, retrieved_docs = st.session_state['rag'](user_input)
-                st.text_area(value=response, label='Response')
+                # response, retrieved_docs = st.session_state['rag'](user_input)
+                # st.markdown(value=response, label='Response')
+                # stream_handler = StreamHandler(chat_box, display_method='write')
+                response, retrieved_docs = st.write_stream(
+                    # st.session_state['rag'](user_input, CallbackManager([stream_handler]))
+                    st.session_state['rag'](user_input)
+                )
                 with st.expander("Sources"):
                     for index, doc in enumerate(retrieved_docs):
                         st.markdown(f"**{index}. {doc.metadata['source']}**")
