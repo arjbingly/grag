@@ -24,7 +24,7 @@ class StreamHandler(BaseCallbackHandler):
     def __init__(self, container, initial_text="", display_method='markdown'):
         self.container = container
         self.text = initial_text
-        # self.display_method = display_method
+        self.display_method = display_method
 
     def on_llm_new_token(self, token: str, **kwargs) -> None:
         self.text += token  # + "/"
@@ -34,6 +34,14 @@ class StreamHandler(BaseCallbackHandler):
         #     display_function(self.text)
         # else:
         #     raise ValueError(f"Invalid display_method: {self.display_method}")
+
+    def on_llm_new_token(self, token: str, **kwargs) -> None:
+        self.text += token  # + "/"
+        display_function = getattr(self.container, self.display_method)
+        if display_function is not None:
+            display_function(self.text)
+        else:
+            raise ValueError(f"Invalid display_method: {self.display_method}")
 
 
 class RAGApp:
@@ -71,8 +79,6 @@ class RAGApp:
             del st.session_state['rag']
 
         llm_kwargs = {"temperature": st.session_state['temperature'], }
-        # "callbacks": CallbackManager([self.stream_handler]),
-        # "std_out": False}
         if st.session_state['selected_model'] == "Mixtral-8x7B-Instruct-v0.1":
             llm_kwargs['n_gpu_layers'] = 16
             llm_kwargs['quantization'] = 'Q4_K_M'
@@ -88,9 +94,20 @@ class RAGApp:
         st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'],
                                            llm_kwargs=llm_kwargs,
                                            retriever_kwargs=retriever_kwargs)
-        st.session_state['loaded_temp'] = st.session_state['temperature']
-        st.session_state['loaded_k'] = st.session_state['top_k']
-        st.session_state['loaded_model'] = st.session_state['selected_model']
+        # st.session_state['loaded_temp'] = st.session_state['temperature']
+        # st.session_state['loaded_k'] = st.session_state['top_k']
+        # st.session_state['loaded_model'] = st.session_state['selected_model']
+        # st.write(f"Model: {st.session_state['loaded_model']}")
+        # st.write(f"Temperature: {st.session_state['loaded_temp']}")
+        # st.write(f"Top-k: {st.session_state['loaded_k']}")
+        st.success(
+            f"""Model Loaded !!!
+    
+    Model Name: {st.session_state['selected_model']}
+    Temerature: {st.session_state['temperature']}
+    Top-k     : {st.session_state['top_k']}"""
+            # f"""{st.session_state['selected_model']} is loaded temp:{st.session_state['temperature']} and top-k: {st.session_state['top_k']}"
+        )
 
     def clear_cache(self):
         st.cache_data.clear()
@@ -99,21 +116,14 @@ class RAGApp:
         st.title("Welcome to the RAG App")
 
         if 'rag' not in st.session_state:
-            st.write("You have not loaded the model")
+            st.warning("You have not loaded any model")
         else:
-            st.write(f"Model: {st.session_state['loaded_model']}")
-            st.write(f"Temperature: {st.session_state['loaded_temp']}")
-            st.write(f"Top-k: {st.session_state['loaded_k']}")
 
             user_input = st.text_area("Enter your query:", height=20)
             submit_button = st.button("Submit")
 
             if submit_button and user_input:
-                # response, retrieved_docs = st.session_state['rag'](user_input)
-                # st.markdown(value=response, label='Response')
-                # stream_handler = StreamHandler(chat_box, display_method='write')
                 response, retrieved_docs = st.write_stream(
-                    # st.session_state['rag'](user_input, CallbackManager([stream_handler]))
                     st.session_state['rag'](user_input)
                 )
                 with st.expander("Sources"):
