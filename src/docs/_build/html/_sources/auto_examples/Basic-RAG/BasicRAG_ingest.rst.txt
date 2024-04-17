@@ -21,10 +21,13 @@ Document Ingestion
 =======================
 This cookbook demonstrates how to ingest documents into a vector database.
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-19
+.. GENERATED FROM PYTHON SOURCE LINES 5-31
 
 .. code-block:: Python
 
+
+    import asyncio
+    from pathlib import Path
 
     from grag.components.multivec_retriever import Retriever
     from grag.components.vectordb.deeplake_client import DeepLakeClient
@@ -35,10 +38,19 @@ This cookbook demonstrates how to ingest documents into a vector database.
     # from grag.components.vectordb.chroma_client import ChromaClient
     # client = ChromaClient(collection_name="ci_test")
 
+    SYNC = True  # Run synchronously (slow)
+    ASYNC = True  # Run asynchronously 
+
+    client = DeepLakeClient(collection_name="ci_test")
+    # client = ChromaClient(collection_name="ci_test")
     retriever = Retriever(vectordb=client)
 
-    dir_path = "data/pdf"  # path to pdf files
-    retriever.ingest(dir_path)
+    dir_path = Path(__file__).parents[2] / "data/test/pdfs/new_papers"
+
+    if SYNC:
+        retriever.ingest(dir_path)
+    elif ASYNC:
+        asyncio.run(retriever.aingest(dir_path))
 
 
 .. _sphx_glr_download_auto_examples_Basic-RAG_BasicRAG_ingest.py:

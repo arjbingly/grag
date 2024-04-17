@@ -94,14 +94,14 @@
              
   <section id="llms">
 <h1>LLMs<a class="headerlink" href="#llms" title="Link to this heading"></a></h1>
-<p>GRAG offers two ways to run LLMs locally,</p>
+<p>GRAG offers two ways to run LLMs locally:</p>
 <ol class="arabic simple">
 <li><p>LlamaCPP</p></li>
 <li><p>HuggingFace</p></li>
 </ol>
 <section id="to-run-llms-using-huggingface">
 <h2>To run LLMs using HuggingFace<a class="headerlink" href="#to-run-llms-using-huggingface" title="Link to this heading"></a></h2>
-<p>This is the easiest way to get started but does not offer as much
+<p>This is the easiest way to get started, but does not offer as much
 flexibility.
 If using a config file (<em>config.ini</em>), just change the <cite>model_name</cite> to
 to the HuggingFace repo id. <em>Note that if the models are gated, make sure to
@@ -109,32 +109,24 @@ provide an auth token</em></p>
 </section>
 <section id="to-run-llms-using-llamacpp">
 <h2>To run LLMs using LlamaCPP<a class="headerlink" href="#to-run-llms-using-llamacpp" title="Link to this heading"></a></h2>
-<p>Steps to start with llama.cpp:</p>
-<ol class="arabic simple">
-<li><p>Clone the <a class="reference external" href="https://github.com/ggerganov/llama.cpp">llama.cpp</a> repository.</p></li>
-</ol>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/ggerganov/llama.cpp.git</span></code></p>
-</div></blockquote>
-<ol class="arabic simple" start="2">
-<li><p>Change directory to <cite>llama.cpp</cite> using <cite>cd llama.cpp</cite></p></li>
-<li><p>To inference using GPU, which is necessary for most models.</p></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
-<li><p>Make sure you have CUDA installed (check using <code class="docutils literal notranslate"><span class="pre">nvcc</span> <span class="pre">--version</span></code>)</p></li>
-<li><p>Follow steps from the <a class="reference external" href="https://github.com/ggerganov/llama.cpp?tab=readme-ov-file#cublas">llama.cpp documentation</a>.</p></li>
-</ul>
-</div></blockquote>
-<p><em>Note: While inferencing if model is not utilizing GPU check the `BLAS=1` in the outputs and</em>
-<em>if it is not then try reinstalling using</em>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DLLAMA_CUBLAS=on&quot;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">llama</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">python</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">reinstall</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="nb">dir</span>
-</pre></div>
-</div>
-<p><em>or follow the solution provided by</em>
-<a class="reference external" href="https://stackoverflow.com/questions/76963311/llama-cpp-python-not-using-nvidia-gpu-cuda">this Stack Overflow post</a></p>
+<p>LlamaCPP requires models in the form of <cite>.gguf</cite> file. You can either download these model files online,
+or</p>
 <section id="how-to-quantize-models">
 <h3>How to quantize models.<a class="headerlink" href="#how-to-quantize-models" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>To quantize the model, run:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">grag.quantize.quantize</span></code></p>
+</dd>
+</dl>
+<p>After running the above command, user will be prompted with the following:</p>
+<ol class="arabic simple">
+<li><p><strong>Path</strong> where the user wants to clone the <cite>llama.cpp</cite> repo. You can find the repository, <a class="reference external" href="https://github.com/ggerganov/llama.cpp">llama.cpp</a>.</p></li>
+<li><p>Input the <strong>model path</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>If user wants to download a model from <a class="reference external" href="https://huggingface.co/models">HuggingFace</a>, the user should provide the repository path from HuggingFace.</p></li>
+<li><p>If the user has the model downloaded locally, then user will be instructed to copy the model and input the name of the model directory.</p></li>
+</ul>
+<p>3.Finally, the user will be prompted to enter <strong>quantization</strong> settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check <a class="reference external" href="https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19">llama.cpp/examples/quantize/quantize.cpp</a>.</p>
 </section>
 </section>
 </section>
@@ -150,7 +142,7 @@ provide an auth token</em></p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar.</p>
+    <p>&#169; Copyright 2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
