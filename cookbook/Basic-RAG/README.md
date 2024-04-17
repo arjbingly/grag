@@ -3,7 +3,7 @@
 Welcome to the Basic RAG Cookbook! This repository is dedicated to showcasing how to utilize the Retrieval-Augmented
 Generation (RAG) model for various applications using custom and few-shot prompts. For in depth understanding of RAG
 pipelines, chains, and prompts
-check [RAG-Piplines.md](https://github.com/arjbingly/Capstone_5/blob/main/projects/Basic-RAG/RAG-Piplines.md)
+check [RAG-Pipelines.md](https://github.com/arjbingly/Capstone_5/blob/main/cookbook/Basic-RAG/RAG-PIPELINES.md)
 
 ### Contents:
 
