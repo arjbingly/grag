@@ -3,7 +3,9 @@ import sys
 from pathlib import Path
 
 import streamlit as st
+from grag.components.multivec_retriever import Retriever
 from grag.components.utils import get_config
+from grag.components.vectordb.deeplake_client import DeepLakeClient
 from grag.rag.basic_rag import BasicRAG
 from langchain.callbacks.base import BaseCallbackHandler
 
@@ -104,15 +106,17 @@ class RAGApp:
             "client_kwargs": {"read_only": True, },
             "top_k": st.session_state['top_k']
         }
+        client = DeepLakeClient(collection_name="usc", read_only=True)
+        retriever = Retriever(vectordb=client)
 
         st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'],
-                                           llm_kwargs=llm_kwargs,
+                                           llm_kwargs=llm_kwargs, retriever=retriever,
                                            retriever_kwargs=retriever_kwargs)
         st.success(
             f"""Model Loaded !!!
     
     Model Name: {st.session_state['selected_model']}
-    Temerature: {st.session_state['temperature']}
+    Temperature: {st.session_state['temperature']}
     Top-k     : {st.session_state['top_k']}"""
         )
 
