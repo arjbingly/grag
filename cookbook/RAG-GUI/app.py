@@ -12,6 +12,17 @@ sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 st.set_page_config(page_title="RAG")
 
 
+def spinner(text):
+    def _spinner(func):
+        def wrapper_func(*args, **kwargs):
+            with st.spinner(text=text):
+                func(*args, **kwargs)
+
+        return wrapper_func
+
+    return _spinner
+
+
 @st.cache_data
 def load_config():
     return get_config()
@@ -74,6 +85,7 @@ class RAGApp:
             st.button('Load Model', on_click=self.load_rag)
             st.checkbox('Show retrieved content', key='show_content')
 
+    @spinner(text='Loading model...')
     def load_rag(self):
         if 'rag' in st.session_state:
             del st.session_state['rag']
@@ -94,12 +106,6 @@ class RAGApp:
         st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'],
                                            llm_kwargs=llm_kwargs,
                                            retriever_kwargs=retriever_kwargs)
-        # st.session_state['loaded_temp'] = st.session_state['temperature']
-        # st.session_state['loaded_k'] = st.session_state['top_k']
-        # st.session_state['loaded_model'] = st.session_state['selected_model']
-        # st.write(f"Model: {st.session_state['loaded_model']}")
-        # st.write(f"Temperature: {st.session_state['loaded_temp']}")
-        # st.write(f"Top-k: {st.session_state['loaded_k']}")
         st.success(
             f"""Model Loaded !!!
     
