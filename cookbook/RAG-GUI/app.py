@@ -9,7 +9,11 @@ from langchain.callbacks.base import BaseCallbackHandler
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 
-st.set_page_config(page_title="RAG")
+st.set_page_config(page_title="GRAG",
+                   menu_items={
+                       "Get Help": "https://github.com/arjbingly/Capstone_5",
+                       "About": "This is a simple GUI for GRAG"
+                   })
 
 
 def spinner(text):
@@ -62,7 +66,7 @@ class RAGApp:
 
     def render_sidebar(self):
         with st.sidebar:
-            st.title('RAG')
+            st.title('GRAG')
             st.subheader('Models and parameters')
             st.sidebar.selectbox('Choose a model',
                                  ['Llama-2-13b-chat', 'Llama-2-7b-chat',
@@ -116,13 +120,13 @@ class RAGApp:
         st.cache_data.clear()
 
     def render_main(self):
-        st.title("Welcome to the RAG App")
+        st.title(":us: US Constitution Expert! :mortar_board:")
         if 'rag' not in st.session_state:
             st.warning("You have not loaded any model")
         else:
             # user_input = st.text_area("Enter your query:", height=20)
             # submit_button = st.button("Submit")
-            user_input = st.chat_input("Enter your query")
+            user_input = st.chat_input("Ask me anything about the US Constitution.")
 
             if user_input:
                 with st.chat_message("user"):
