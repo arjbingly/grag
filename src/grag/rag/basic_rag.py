@@ -177,6 +177,7 @@ class BasicRAG:
         return output_parser_wrapper
 
     def stuff_chain(self, query: str):
+        """Call function for stuff chain."""
         retrieved_docs = self.retriever.get_chunk(query)
         context = self.stuff_docs(retrieved_docs)
         prompt = self.main_prompt.format(context=context, question=query)
@@ -184,7 +185,7 @@ class BasicRAG:
 
     @output_parser
     def stuff_call(self, query: str):
-        """Call function for stuff chain."""
+        """Call function for output of stuff chain."""
         prompt, retrieved_docs = self.stuff_chain(query)
         if self.stream:
             response = self.llm.stream(prompt)
@@ -220,7 +221,7 @@ class BasicRAG:
 
     @output_parser
     def refine_call(self, query: str):
-        """Call function for refine chain."""
+        """Call function for output of refine chain."""
         prompt, retrieved_docs, responses = self.refine_chain(query)
         if self.stream:
             response = self.llm.stream(prompt)

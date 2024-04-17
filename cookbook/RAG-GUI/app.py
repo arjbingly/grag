@@ -1,3 +1,5 @@
+"""A cookbook demonstrating how to run RAG app on streamlit."""
+
 import os
 import sys
 from pathlib import Path
@@ -7,7 +9,6 @@ from grag.components.multivec_retriever import Retriever
 from grag.components.utils import get_config
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from grag.rag.basic_rag import BasicRAG
-from langchain.callbacks.base import BaseCallbackHandler
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 
@@ -19,8 +20,35 @@ st.set_page_config(page_title="GRAG",
 
 
 def spinner(text):
+    """Decorator that displays a loading spinner with a custom text message during the execution of a function.
+
+    This decorator wraps any function to show a spinner using Streamlit's st.spinner during the function call,
+    indicating that an operation is in progress. The spinner is displayed with a user-defined text message.
+
+    Args:
+        text (str): The message to display next to the spinner.
+
+    Returns:
+        function: A decorator that takes a function and wraps it in a spinner context.
+    """
+
     def _spinner(func):
+        """A decorator function that takes another function and wraps it to show a spinner during its execution.
+
+        Args:
+            func (function): The function to wrap.
+
+        Returns:
+            function: The wrapped function with a spinner displayed during its execution.
+        """
+
         def wrapper_func(*args, **kwargs):
+            """The wrapper function that actually executes the wrapped function within the spinner context.
+
+            Args:
+                *args: Positional arguments passed to the wrapped function.
+                **kwargs: Keyword arguments passed to the wrapped function.
+            """
             with st.spinner(text=text):
                 func(*args, **kwargs)
 
@@ -31,42 +59,33 @@ def spinner(text):
 
 @st.cache_data
 def load_config():
+    """Loads config."""
     return get_config()
 
 
 conf = load_config()
 
 
-class StreamHandler(BaseCallbackHandler):
-    def __init__(self, container, initial_text="", display_method='markdown'):
-        self.container = container
-        self.text = initial_text
-        self.display_method = display_method
-
-    def on_llm_new_token(self, token: str, **kwargs) -> None:
-        self.text += token  # + "/"
-        self.container.markdown(self.text)
-        # display_function = getattr(self.container, self.display_method)
-        # if display_function is not None:
-        #     display_function(self.text)
-        # else:
-        #     raise ValueError(f"Invalid display_method: {self.display_method}")
-
-    def on_llm_new_token(self, token: str, **kwargs) -> None:
-        self.text += token  # + "/"
-        display_function = getattr(self.container, self.display_method)
-        if display_function is not None:
-            display_function(self.text)
-        else:
-            raise ValueError(f"Invalid display_method: {self.display_method}")
-
-
 class RAGApp:
+    """Application class to manage a Retrieval-Augmented Generation (RAG) model interface.
+
+    Attributes:
+        app: The main application or server instance hosting the RAG model.
+        conf: Configuration settings or parameters for the application.
+    """
+
     def __init__(self, app, conf):
+        """Initializes the RAGApp with a given application and configuration.
+
+        Args:
+            app: The main application or framework instance that this class will interact with.
+            conf: A configuration object or dictionary containing settings for the application.
+        """
         self.app = app
         self.conf = conf
 
     def render_sidebar(self):
+        """Renders the sidebar in the application interface with model selection and parameters."""
         with st.sidebar:
             st.title('GRAG')
             st.subheader('Models and parameters')
@@ -91,6 +110,7 @@ class RAGApp:
 
     @spinner(text='Loading model...')
     def load_rag(self):
+        """Loads the specified RAG model based on the user's selection and settings in the sidebar."""
         if 'rag' in st.session_state:
             del st.session_state['rag']
 
@@ -121,9 +141,11 @@ class RAGApp:
         )
 
     def clear_cache(self):
+        """Clears the cached data within the application."""
         st.cache_data.clear()
 
     def render_main(self):
+        """Renders the main chat interface for user interaction with the loaded RAG model."""
         st.title(":us: US Constitution Expert! :mortar_board:")
         if 'rag' not in st.session_state:
             st.warning("You have not loaded any model")
@@ -134,7 +156,7 @@ class RAGApp:
                 with st.chat_message("user"):
                     st.write(user_input)
                 with st.chat_message("assistant"):
-                    response = st.write_stream(
+                    _ = st.write_stream(
                         st.session_state['rag'](user_input)[0]
                     )
                     if st.session_state['show_sources']:
@@ -146,6 +168,7 @@ class RAGApp:
                                 st.text(f"**{doc.page_content}**")
 
     def render(self):
+        """Orchestrates the rendering of both main and sidebar components of the application."""
         self.render_main()
         self.render_sidebar()
 
