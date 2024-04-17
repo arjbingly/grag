@@ -59,8 +59,6 @@ class RAGApp:
     def __init__(self, app, conf):
         self.app = app
         self.conf = conf
-        self.selected_model = None
-        self.exit_app = False
 
     def render_sidebar(self):
         with st.sidebar:
@@ -112,7 +110,6 @@ class RAGApp:
     Model Name: {st.session_state['selected_model']}
     Temerature: {st.session_state['temperature']}
     Top-k     : {st.session_state['top_k']}"""
-            # f"""{st.session_state['selected_model']} is loaded temp:{st.session_state['temperature']} and top-k: {st.session_state['top_k']}"
         )
 
     def clear_cache(self):
@@ -120,27 +117,30 @@ class RAGApp:
 
     def render_main(self):
         st.title("Welcome to the RAG App")
-
         if 'rag' not in st.session_state:
             st.warning("You have not loaded any model")
         else:
+            # user_input = st.text_area("Enter your query:", height=20)
+            # submit_button = st.button("Submit")
+            user_input = st.chat_input("Enter your query")
 
-            user_input = st.text_area("Enter your query:", height=20)
-            submit_button = st.button("Submit")
-
-            if submit_button and user_input:
-                response, retrieved_docs = st.write_stream(
-                    st.session_state['rag'](user_input)
-                )
-                with st.expander("Sources"):
+            if user_input:
+                with st.chat_message("user"):
+                    st.write(user_input)
+                with st.chat_message("assistant"):
+                    response = st.write_stream(
+                        st.session_state['rag'](user_input)[0]
+                    )
+                    retrieved_docs = st.session_state['rag'].retriever.get_chunk(user_input)
                     for index, doc in enumerate(retrieved_docs):
-                        st.markdown(f"**{index}. {doc.metadata['source']}**")
-                        if st.session_state['show_content']:
-                            st.markdown(f"**{doc.page_content}**")
+                        with st.expander(f"Source {index + 1}"):
+                            st.markdown(f"**{index + 1}. {doc.metadata['source']}**")
+                            if st.session_state['show_content']:
+                                st.text(f"**{doc.page_content}**")
 
     def render(self):
-        self.render_sidebar()
         self.render_main()
+        self.render_sidebar()
 
 
 if __name__ == "__main__":
