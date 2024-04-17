@@ -87,7 +87,7 @@ class RAGApp:
                               step=1,
                               key='top_k')
             st.button('Load Model', on_click=self.load_rag)
-            st.checkbox('Show retrieved content', key='show_content')
+            st.checkbox('Show sources', key='show_sources')
 
     @spinner(text='Loading model...')
     def load_rag(self):
@@ -128,8 +128,6 @@ class RAGApp:
         if 'rag' not in st.session_state:
             st.warning("You have not loaded any model")
         else:
-            # user_input = st.text_area("Enter your query:", height=20)
-            # submit_button = st.button("Submit")
             user_input = st.chat_input("Ask me anything about the US Constitution.")
 
             if user_input:
@@ -139,11 +137,12 @@ class RAGApp:
                     response = st.write_stream(
                         st.session_state['rag'](user_input)[0]
                     )
-                    retrieved_docs = st.session_state['rag'].retriever.get_chunk(user_input)
-                    for index, doc in enumerate(retrieved_docs):
-                        with st.expander(f"Source {index + 1}"):
-                            st.markdown(f"**{index + 1}. {doc.metadata['source']}**")
-                            if st.session_state['show_content']:
+                    if st.session_state['show_sources']:
+                        retrieved_docs = st.session_state['rag'].retriever.get_chunk(user_input)
+                        for index, doc in enumerate(retrieved_docs):
+                            with st.expander(f"Source {index + 1}"):
+                                st.markdown(f"**{index + 1}. {doc.metadata['source']}**")
+                                # if st.session_state['show_content']:
                                 st.text(f"**{doc.page_content}**")
 
     def render(self):
