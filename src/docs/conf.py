@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('../grag'))
 # -- Project information -----------------------------------------------------
 
 project = 'GRAG'
-copyright = '2024, Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar'
-author = 'Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar'
+copyright = '2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
+author = 'Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'

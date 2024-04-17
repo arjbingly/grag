@@ -1,8 +1,7 @@
 Vector Stores
 ===============
 
-Vector store or vector database is a type of database that stores data in high-dimensional vectors. 
-This is a crucial component of RAG, storing embeddings for both retrieval and generation processes.
+# Explain what a vector store is...
 
 Supported Vector Stores
 ########################
@@ -10,33 +9,28 @@ Supported Vector Stores
 Currently supported vectorstores are:
 
 1. Chroma
-2. DeepLake
+2. Deeplake
 
 Chroma
 *******
 Since Chroma is a server-client based vector database, make sure to run the server.
 
-* To run Chroma locally, either:
-  1. Move to `src/scripts` then run ``source run_chroma.sh`` OR
-  2. Refer to `Running Chroma in ClientServer <https://docs.trychroma.com/usage-guide#running-chroma-in-clientserver-mode>`_.
+* To run Chroma locally, either use move to `src/scripts` then run `source run_chroma.sh` or refer to
+  `Running Chroma in ClientServer <https://docs.trychroma.com/usage-guide#running-chroma-in-clientserver-mode>`_.
   This by default runs on port 8000.
-* If Chroma is not run locally, change ``host`` and ``port`` under ``chroma`` in `src/config.ini`, or provide the arguments
+* If Chroma is not run locally, change `host` and `port` under `chroma` in `src/config.ini`, or provide the arguments
   explicitly.
 
-For non-supported vectorstores, (...)
 
 Embeddings
 ###########
 
-* By default, the embedding model is `instructor-xl`. Can be changed by changing ``embedding_type`` and ``embedding_model``
+* By default, the embedding model is `instructor-xl`. Can be changed by changing `embedding_type` and `embedding_model`
   in `src/config.ini` or providing the arguments explicitly.
 * Any huggingface embeddings can be used.
 
 Data Ingestion
 ###############
-
-For more details on data ingestion, refer to our `cookbook<https://github.com/arjbingly/Capstone_5/blob/main/cookbook/Basic-RAG/README.md>`_.
-
 ::
 
     client = DeepLakeClient() # Any vectordb client
@@ -47,4 +41,3 @@ For more details on data ingestion, refer to our `cookbook<https://github.com/ar
 
 
     retriever.ingest(dir_path)
-
