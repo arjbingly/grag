@@ -28,7 +28,7 @@ Deeplake Client
    :undoc-members:
    :show-inheritance:
 
-Module contents
+Module Contents
 ---------------
 
 .. automodule:: grag.components.vectordb
