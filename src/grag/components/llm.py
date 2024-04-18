@@ -2,7 +2,8 @@
 
 import os
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
+
 
 import torch
 from langchain.callbacks.manager import CallbackManager
@@ -87,7 +88,7 @@ class LLM:
             self.base_dir / self.model_name / f"ggml-model-{self.quantization}.gguf"
         )
 
-    def hf_pipeline(self, is_local=False):
+    def hf_pipeline(self, is_local: Optional[bool] = False):
         """Loads the model using Hugging Face transformers.
 
         Args:
@@ -163,7 +164,8 @@ class LLM:
         return llm
 
     def load_model(
-        self, model_name=None, pipeline=None, quantization=None, is_local=None
+        self, model_name: Optional[str] = None, pipeline: Optional[str] = None, quantization: Optional[str] = None,
+        is_local: Optional[bool] = None
     ):
         """Loads the model based on the specified pipeline and model name.
 

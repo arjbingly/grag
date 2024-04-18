@@ -1,9 +1,11 @@
 <h1 align="center">GRAG</h1>
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![GitHub License](https://img.shields.io/github/license/arjbingly/Capstone_5)
+![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/linting.yml?label=Docs&labelColor=yellow)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/build_linting.yml?label=Linting)
+![Static Badge](https://img.shields.io/badge/Tests-passing-darggreen)
 ![Static Badge](https://img.shields.io/badge/docstring%20style-google-yellow)
 ![Static Badge](https://img.shields.io/badge/linter%20-ruff-yellow)
-![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/ruff_linting.yml?label=Docs&labelColor=yellow)
 ![Static Badge](https://img.shields.io/badge/buildstyle-hatchling-purple?labelColor=white)
 ![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
