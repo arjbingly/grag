@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from typing import Union
 
 import torch
 from langchain.callbacks.manager import CallbackManager
@@ -38,18 +39,18 @@ class LLM:
 
     def __init__(
         self,
-        model_name=llm_conf["model_name"],
-        device_map=llm_conf["device_map"],
-        task=llm_conf["task"],
-        max_new_tokens=llm_conf["max_new_tokens"],
-        temperature=llm_conf["temperature"],
-        n_batch=llm_conf["n_batch_gpu_cpp"],
-        n_ctx=llm_conf["n_ctx_cpp"],
-        n_gpu_layers=llm_conf["n_gpu_layers_cpp"],
-        std_out=llm_conf["std_out"],
-        base_dir=llm_conf["base_dir"],
-        quantization=llm_conf["quantization"],
-        pipeline=llm_conf["pipeline"],
+        model_name: str = llm_conf["model_name"],
+        device_map: str = llm_conf["device_map"],
+        task: str = llm_conf["task"],
+        max_new_tokens: str = llm_conf["max_new_tokens"],
+        temperature: str = llm_conf["temperature"],
+        n_batch: str = llm_conf["n_batch_gpu_cpp"],
+        n_ctx: str = llm_conf["n_ctx_cpp"],
+        n_gpu_layers: str = llm_conf["n_gpu_layers_cpp"],
+        std_out: Union[bool, str] = llm_conf["std_out"],
+        base_dir: str = llm_conf["base_dir"],
+        quantization: str = llm_conf["quantization"],
+        pipeline: str = llm_conf["pipeline"],
         callbacks=None,
     ):
         """Initialize the LLM class using the given parameters."""
@@ -67,7 +68,7 @@ class LLM:
         if std_out:
             self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         else:
-            self.callback_manager = callbacks
+            self.callback_manager = callbacks  # type: ignore
 
     @property
     def model_name(self):
