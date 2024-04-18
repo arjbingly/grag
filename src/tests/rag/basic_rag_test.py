@@ -4,7 +4,7 @@ from grag.components.multivec_retriever import Retriever
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from grag.rag.basic_rag import BasicRAG
 
-client = DeepLakeClient(collection_name="usc2", read_only=True)
+client = DeepLakeClient(collection_name="ci_test", read_only=True)
 retriever = Retriever(vectordb=client)
 
 
