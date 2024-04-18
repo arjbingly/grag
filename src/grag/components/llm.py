@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-
 import torch
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
