@@ -129,7 +129,7 @@ class RAGApp:
         client = DeepLakeClient(collection_name="usc", read_only=True)
         retriever = Retriever(vectordb=client)
 
-        st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'],
+        st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'], stream=True,
                                            llm_kwargs=llm_kwargs, retriever=retriever,
                                            retriever_kwargs=retriever_kwargs)
         st.success(

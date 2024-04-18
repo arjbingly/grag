@@ -13,8 +13,6 @@ def test_rag_stuff():
                    llm_kwargs={"model_name": "Llama-2-7b-chat", "n_gpu_layers": "-1"})
     response, retrieved_docs = rag("What is Flash Attention?")
     sources = [doc.metadata["source"] for doc in retrieved_docs]
-    print(response)
-    print(sources)
     assert isinstance(response, Text)
     assert isinstance(sources, List)
     assert all(isinstance(s, str) for s in sources)

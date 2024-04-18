@@ -38,7 +38,7 @@ class BasicRAG:
         task="QA",
         llm_kwargs=None,
         retriever_kwargs=None,
-        stream: bool = True,
+        stream: bool = False,
         custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
         """Initialize BasicRAG."""
