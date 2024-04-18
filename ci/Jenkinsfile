@@ -52,7 +52,7 @@ pipeline {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install ruff'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                        sh 'ruff check . --exclude .pyenv-var-lib-jenkins-workspace-capstone_5-.venv-bin --output-format junit -o ruff-report.xml'
+                        sh 'ruff check . --exclude *venv* --output-format junit -o ruff-report.xml'
                         sh 'ruff format .'
                     }
                 }
