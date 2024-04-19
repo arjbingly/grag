@@ -28,10 +28,10 @@ class LinearEdgeDecoder(torch.nn.Module):
             hidden_channels (Union[List[int], int]): Number of hidden channels for each convolutional layer.
         """
         super().__init__()
+        self.lin_layers = torch.nn.ModuleList()
         if isinstance(hidden_channels, int):
-            self.lin_layers = [torch.nn.Linear(hidden_channels, 1)]
+            self.lin_layers.append(torch.nn.Linear(hidden_channels, 1))
         elif isinstance(hidden_channels, list):
-            self.lin_layers = torch.nn.ModuleList()
             for hidden_channel, out_channel in zip(hidden_channels[:-1], hidden_channels[1:]):
                 self.lin_layers.append(torch.nn.Linear(hidden_channel, out_channel))
         self.lin_layers.append(torch.nn.Linear(hidden_channels[-1], 1))
@@ -49,7 +49,7 @@ class LinearEdgeDecoder(torch.nn.Module):
         row, col = edge_label_index
         x = torch.cat([x[row], x[col]], dim=-1)
         for layer in self.lin_layers[:-1]:
-            x = self.layer(x)
+            x = layer(x)
             x = x.relu()
         x = self.lin_layers[-1](x)
         return x.view(-1)

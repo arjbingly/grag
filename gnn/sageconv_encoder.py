@@ -35,10 +35,10 @@ class SageConvEncoder(torch.nn.Module):
 
         """
         super().__init__()
+        self.conv_layers = torch.nn.ModuleList()
         if isinstance(hidden_channels, int):
-            self.conv_layers = [SAGEConv(in_channels=(-1, -1), out_channels=hidden_channels)]
+            self.conv_layers.append(SAGEConv(in_channels=(-1, -1), out_channels=hidden_channels))
         elif isinstance(hidden_channels, list):
-            self.conv_layers = torch.nn.ModuleList()
             for hidden_channel in hidden_channels:
                 self.conv_layers.append(SAGEConv(in_channels=(-1, 1), out_channels=hidden_channel))
         self.conv_layers.append(SAGEConv(in_channels=(-1, -1), out_channels=out_channels))
