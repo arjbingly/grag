@@ -17,8 +17,11 @@ from gnn.utils import test, train
 
 # Args
 data_filepath = 'Data/eg_data.json'
-num_epochs = 100
+num_epochs = 2000
 encoder_hidden_channels = 64
+encoder_dropout_prob = 0.2
+encoder_hidden_channels = [128, 64]
+encoder_dropout_prob = [0.5, 0.2]
 encoder_out_channels = 32
 decoder_hidden_channels = [encoder_out_channels * 2, 32]
 # encoder_hidden_channels = [64, 32]
@@ -60,7 +63,9 @@ def main():
     val_data = val_data.to(device)
     test_data = test_data.to(device)
 
-    encoder = SageConvEncoder(hidden_channels=encoder_hidden_channels, out_channels=encoder_out_channels)
+    encoder = SageConvEncoder(hidden_channels=encoder_hidden_channels,
+                              out_channels=encoder_out_channels,
+                              dropout_probs=encoder_dropout_prob)
     decoder = LinearEdgeDecoder(hidden_channels=decoder_hidden_channels)
     encoder = encoder.to(device)
     decoder = decoder.to(device)
