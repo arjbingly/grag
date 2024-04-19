@@ -39,7 +39,7 @@ def gen_json(data, save_path, verbose=True):
             "embedding": embedding
         }
 
-    with open(save_path, 'w') as f:
+    with open(save_path, 'w+') as f:
         json.dump(dict_, f, indent=4)
 
 

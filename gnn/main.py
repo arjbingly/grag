@@ -10,13 +10,16 @@ import torch_geometric.transforms as T
 from tqdm import tqdm
 
 from gnn.data import gen_data
-from gnn.sageconv_model import Model
+from gnn.GAE import GAEModel
+from gnn.linear_decoder import LinearEdgeDecoder
+from gnn.sageconv_encoder import SageConvEncoder
 from gnn.utils import test, train
 
 # Args
 data_filepath = 'Data/eg_data.json'
 num_epochs = 100
-hidden_channels = 32
+encoder_hidden_channels = [64, 32]
+decoder_hidden_channels = [64, 32]
 lr = 1e-3
 num_val = 0.1
 num_test = 0.1
@@ -50,15 +53,21 @@ def main():
     print(f'{train_data=}')
     print(f'{val_data=}')
     print(f'{test_data=}')
-
-    model = Model(hidden_channels=hidden_channels).to(device)
-    print(model)
-
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-
     train_data = train_data.to(device)
     val_data = val_data.to(device)
     test_data = test_data.to(device)
+
+    encoder = SageConvEncoder(hidden_channels=encoder_hidden_channels, out_channels=encoder_hidden_channels[-1])
+    decoder = LinearEdgeDecoder(hidden_channels=decoder_hidden_channels)
+    encoder = encoder.to(device)
+    decoder = decoder.to(device)
+    model = GAEModel(
+        encoder=encoder,
+        decoder=decoder
+    )
+    model = model.to(device)
+    print(model)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     # Training
     pbar = tqdm(range(num_epochs), desc='Training', unit="Epoch")
