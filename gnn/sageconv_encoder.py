@@ -51,6 +51,8 @@ class SageConvEncoder(torch.nn.Module):
             for i in range(len(self.conv_layers) - 1):
                 self.dropout_layers.append(torch.nn.Dropout(p=dropout_probs))
         elif isinstance(dropout_probs, list):
+            assert len(dropout_probs) <= len(self.conv_layers) - 1, ValueError(
+                f"Number of dropout layers exceed the number of hidden layers, {len(dropout_probs)=} > {len(self.conv_layers) - 1=}.")
             for dropout_prob in dropout_probs:
                 self.dropout_layers.append(torch.nn.Dropout(p=dropout_prob))
 
