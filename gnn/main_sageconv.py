@@ -17,6 +17,7 @@ from gnn.utils import test, train
 
 # Args
 data_filepath = 'Data/eg_data.json'
+with_labels = True
 num_epochs = 2000
 encoder_hidden_channels = 64
 encoder_dropout_prob = 0.2
@@ -46,7 +47,7 @@ def main():
     with open(data_filepath, 'r') as f:
         data_dict = json.load(f)
 
-    data = gen_data(data_dict)
+    data = gen_data(data_dict, with_label)
 
     # split the data
     train_data, val_data, test_data = T.RandomLinkSplit(
@@ -80,9 +81,9 @@ def main():
     # Training
     pbar = tqdm(range(num_epochs), desc='Training', unit="Epoch")
     for epoch in pbar:
-        loss = train(model, train_data, optimizer)
-        train_rmse = test(model, train_data)
-        val_rmse = test(model, val_data)
+        loss = train(model, train_data, optimizer, with_labels=with_labels)
+        train_rmse = test(model, train_data, with_labels=with_labels)
+        val_rmse = test(model, val_data, with_labels=with_labels)
         pbar.set_postfix(ordered_dict={"Loss": f"{loss: .4f}",
                                        "Train": f"{train_rmse: .4f}",
                                        "Val": f"{val_rmse:.4f}"})
@@ -96,27 +97,6 @@ def main():
 
     # Save model
     torch.save(model.state_dict(), model_save_path)
-    # texts = []
-    # for data in data_dict.values():
-    #     texts.append(data['text'])
-    # 
-    # doc_index_0 = test_data.edge_label_index[0].cpu().numpy()
-    # doc_index_1 = test_data.edge_label_index[1].cpu().numpy()
-    # 
-    # df = pd.DataFrame({'doc_index_0': doc_index_0, 'doc_index_1': doc_index_1, 'pred': pred, 'target': target})
-    # print(df)
-    # 
-    # doc_0 = []
-    # for doc_index in df.doc_index_0:
-    #     doc_0.append(texts[doc_index])
-    # doc_1 = []
-    # for doc_index in df.doc_index_1:
-    #     doc_1.append(texts[doc_index])
-    # 
-    # pd.set_option('display.max_columns', None)
-    # pd.set_option('display.max_colwidth', None)
-    # df = pd.DataFrame({'doc_0': doc_0, 'doc_1': doc_1, 'pred': pred, 'target': target})
-    # print(df)
 
 
 if __name__ == '__main__':

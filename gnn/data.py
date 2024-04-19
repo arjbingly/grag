@@ -47,7 +47,7 @@ def gen_edges(embeddings, verbose=True, threshold=0.5):
     return edges, edge_features
 
 
-def gen_data(data_dict, verbose=True):
+def gen_data(data_dict, with_labels=True, verbose=True):
     """Generates an undirected graph data object from a dictionary of embeddings.
     
     The nodes are text embeddings, and edges are cosine similarities.
@@ -81,7 +81,10 @@ def gen_data(data_dict, verbose=True):
         print(f'{edge_index.shape=}')
         print(f'{edge_label.shape=}')
 
-    data = Data(x=x, edge_index=edge_index, edge_label=edge_label)
+    if with_labels:
+        data = Data(x=x, edge_index=edge_index, edge_label=edge_label)
+    else:
+        data = Data(x=x, edge_index=edge_index)
     data.validate(raise_on_error=True)
     data = T.ToUndirected()(data)
     # ToUndirected adds reverse edges with the same features -?

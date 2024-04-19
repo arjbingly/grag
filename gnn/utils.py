@@ -56,7 +56,7 @@ def cosine_similarity(a, b):
     return dot_product / (magnitude_a * magnitude_b)
 
 
-def train(model, data, optimizer):
+def train(model, data, optimizer, with_labels=True):
     """Trains the given model on the provided data.
 
     Args:
@@ -77,14 +77,17 @@ def train(model, data, optimizer):
     optimizer.zero_grad()
     pred = model(data.x, data.edge_index, data.edge_label_index)
     target = data.edge_label.squeeze(-1)
-    loss = F.mse_loss(pred, target)
+    if with_labels:
+        loss = F.mse_loss(pred, target)
+    else:
+        loss = F.binary_cross_entropy_with_logits(pred, target)
     loss.backward()
     optimizer.step()
     return loss
 
 
 @torch.no_grad()
-def test(model, data, return_pred=False):
+def test(model, data, return_pred=False, with_labels=True):
     """Evaluates the given model on the provided data.
 
     Args:
@@ -103,12 +106,15 @@ def test(model, data, return_pred=False):
         >>> rmse, predictions = test(model, data, return_pred=True)
     """
     model.eval()
-    pred = model(data.x, data.edge_index, data.edge_label_index)
-    pred = pred.clamp(min=-1, max=1)
     target = data.edge_label.squeeze(-1)
-    rmse = F.mse_loss(pred, target).sqrt()
+    pred = model(data.x, data.edge_index, data.edge_label_index)
+    if with_labels:
+        pred = pred.clamp(min=-1, max=1)
+        loss = F.mse_loss(pred, target).sqrt()
+    else:
+        loss = F.binary_cross_entropy_with_logits(pred, target)
     pred = pred.cpu()
     if return_pred:
-        return rmse, pred
+        return loss, pred
     else:
-        return rmse
+        return loss
