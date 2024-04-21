@@ -26,8 +26,6 @@ num_val = 0.1
 num_test = 0.1
 neg_sampling_ratio = 0.3
 # Model conf
-encoder_hidden_channels = 64
-encoder_dropout_prob = 0.2
 encoder_hidden_channels = [128, 64]
 encoder_dropout_prob = [0.5, 0.2]
 encoder_out_channels = 32
@@ -35,7 +33,7 @@ decoder_hidden_channels = [encoder_out_channels * 2, 32]
 # Training conf
 lr = 1e-3
 num_epochs = 3000
-early_stop_n_epochs = 50
+early_stop_n_epochs = 10
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -100,7 +98,7 @@ if __name__ == '__main__':
             prev_val_rmse = val_rmse.detach().cpu().numpy()
             early_stop_epochs = 0
         else:
-            if prev_val_rmse >= val_rmse.detach().cpu().numpy():
+            if prev_val_rmse <= val_rmse.detach().cpu().numpy():
                 early_stop_epochs += 1
                 if early_stop_epochs >= early_stop_n_epochs:
                     print(f'Early stopping at epoch {epoch}')
@@ -119,28 +117,28 @@ if __name__ == '__main__':
 
     model_conf = {
         'reproducibility_conf': {
-            'random_seed': 1505,
+            'random_seed': random_seed,
         },
         'data_conf': {
-            'data_filepath': 'Data/eg_data.json',
-            'with_labels': True,
+            'data_filepath': data_filepath,
+            'with_labels': with_labels,
         },
         'data_split_conf': {
-            'num_val': 0.1,
-            'num_test': 0.1,
-            'neg_sampling_ratio': 0.3,
+            'num_val': num_val,
+            'num_test': num_test,
+            'neg_sampling_ratio': neg_sampling_ratio,
         },
         'model_conf': {
             'model': f'{model}',
-            'encoder_hidden_channels': [128, 64],
-            'encoder_dropout_prob': [0.5, 0.2],
-            'encoder_out_channels': 32,
-            'decoder_hidden_channels': [encoder_out_channels * 2, 32],
+            'encoder_hidden_channels': encoder_hidden_channels,
+            'encoder_dropout_prob': encoder_dropout_prob,
+            'encoder_out_channels': encoder_out_channels,
+            'decoder_hidden_channels': decoder_hidden_channels,
         },
         'train_conf': {
-            'num_epochs': 2000,
-            'lr': 1e-3,
-            'early_stop_n_epochs': 10,
+            'num_epochs': num_epochs,
+            'lr': lr,
+            'early_stop_n_epochs': early_stop_n_epochs,
         },
         'train_log': {
             'start_time': f'{train_start_time}',
