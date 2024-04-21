@@ -47,7 +47,7 @@ def gen_edges(embeddings, verbose=True, threshold=0.5):
     return edges, edge_features
 
 
-def gen_data(data_dict, with_labels=True, verbose=True):
+def gen_data(data_dict, with_labels=True, verbose=True, threshold=0.5):
     """Generates an undirected graph data object from a dictionary of embeddings.
     
     The nodes are text embeddings, and edges are cosine similarities.
@@ -70,7 +70,7 @@ def gen_data(data_dict, with_labels=True, verbose=True):
     for data in data_dict.values():
         embeddings.append(data['embedding'])
 
-    edges, edge_features = gen_edges(embeddings)
+    edges, edge_features = gen_edges(embeddings, threshold=threshold)
 
     x = torch.tensor(embeddings, dtype=torch.float)
     edge_index = torch.tensor(edges, dtype=torch.long)
