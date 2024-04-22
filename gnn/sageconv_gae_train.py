@@ -13,14 +13,15 @@ from gnn.data import gen_data
 from gnn.GAE import GAEModel
 from gnn.linear_decoder import LinearEdgeDecoder
 from gnn.sageconv_encoder import SageConvEncoder
-from gnn.utils import test, train
+from gnn.utils import EarlyStopping, SaveBestModel, test, train
 
 # Args
 # Reproducibility conf
 random_seed = 1505
+model_name = Path('SageConv_cranfield_data')
 # Data conf
 data_filepath = 'Data/cranfield.json'
-with_labels = False
+with_labels = True
 # Random Link Split conf
 num_val = 0.1
 num_test = 0.1
@@ -33,16 +34,13 @@ decoder_hidden_channels = [encoder_out_channels * 2, 32]
 # Training conf
 lr = 1e-3
 num_epochs = 3000
-early_stop_n_epochs = 10
-
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+early_stop_patience = 15
+early_stop_delta = 0.0001
 
 model_save_dir = Path(f'{__file__}').parent / Path('models')
 os.makedirs(model_save_dir, exist_ok=True)
-model_name = Path(f'SageConv_cranfield_{datetime.now().strftime("%Y_%m_%d_%H%M")}')
-model_save_path = model_save_dir / f'{model_name}.pt'
-config_save_path = model_save_dir / f'{model_name}.json'
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 if __name__ == '__main__':
     if random_seed is not None:
         torch.manual_seed(random_seed)
@@ -80,40 +78,16 @@ if __name__ == '__main__':
     model = model.to(device)
     print(model)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    # Training
-    pbar = tqdm(range(num_epochs), desc='Training', unit="Epoch")
 
-    train_start_time = datetime.now()
-    for epoch in pbar:
-        loss = train(model, train_data, optimizer, with_labels=with_labels)
-        train_rmse = test(model, train_data, with_labels=with_labels)
-        val_rmse = test(model, val_data, with_labels=with_labels)
-        pbar.set_postfix(ordered_dict={"Loss": f"{loss: .4f}",
-                                       "Train": f"{train_rmse: .4f}",
-                                       "Val": f"{val_rmse:.4f}"})
-        # print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Train: {train_rmse:.4f}, '
-        #       f'Val: {val_rmse:.4f}')
-        # Early Stopping
-        if epoch == 0:
-            prev_val_rmse = val_rmse.detach().cpu().numpy()
-            early_stop_epochs = 0
-        else:
-            if prev_val_rmse <= val_rmse.detach().cpu().numpy():
-                early_stop_epochs += 1
-                if early_stop_epochs >= early_stop_n_epochs:
-                    print(f'Early stopping at epoch {epoch}')
-                    break
-            else:
-                early_stop_epochs = 0
-                prev_val_rmse = val_rmse.detach().cpu().numpy()
-    train_end_time = datetime.now()
-    # Eval
-    test_rmse, pred = test(model, test_data, return_pred=True)
-    pred = pred.numpy()
-    target = test_data.cpu().edge_label.squeeze(-1).numpy()
+    if with_labels:
+        criterion = torch.nn.MSELoss()
 
-    # Save model and config
-    torch.save(model.state_dict(), model_save_path)
+
+        def pre_process(x):
+            return torch.clamp(x, -1, 1)
+    else:
+        criterion = torch.nn.BCEWithLogitsLoss()
+        pre_process = None
 
     model_conf = {
         'reproducibility_conf': {
@@ -138,14 +112,44 @@ if __name__ == '__main__':
         'train_conf': {
             'num_epochs': num_epochs,
             'lr': lr,
-            'early_stop_n_epochs': early_stop_n_epochs,
+            'early_stop_patience': early_stop_patience,
+            'early_stop_delta': early_stop_delta,
         },
-        'train_log': {
+    }
+
+    saver = SaveBestModel(save_dir=model_save_dir, model_name=model_name)
+    early_stopper = EarlyStopping(patience=early_stop_patience, delta=early_stop_delta)
+
+    # Training
+    pbar = tqdm(range(num_epochs), desc='Training', unit="Epoch")
+    train_start_time = datetime.now()
+    for epoch in pbar:
+        if early_stopper.stop:
+            break
+        loss = train(model, train_data, optimizer, criterion)
+        train_loss = test(model, train_data, criterion, pre_process_func=pre_process)
+        val_loss = test(model, val_data, criterion, pre_process_func=pre_process)
+        pbar.set_postfix(ordered_dict={"Loss": f"{loss: .4f}",
+                                       "Train": f"{train_loss: .4f}",
+                                       "Val": f"{val_loss:.4f}"})
+        # Save Best Model and config
+        train_end_time = datetime.now()
+        model_conf['train_conf'] = {
             'start_time': f'{train_start_time}',
             'end_time': f'{train_end_time}',
             'time_taken': f'{train_end_time - train_start_time}',
             'epochs': epoch,
         }
-    }
-    with open(config_save_path, 'w+') as f:
-        json.dump(model_conf, f, indent=4)
+        saver(model, optimizer, criterion, val_loss, model_conf)
+        # Early Stopping
+        early_stopper(val_loss)
+
+    # Eval
+    model.load_state_dict(torch.load(saver.best_model_path)['model_state_dict'])
+    train_loss = test(model, train_data, criterion, pre_process_func=pre_process)
+    val_loss = test(model, val_data, criterion, pre_process_func=pre_process)
+    test_loss = test(model, test_data, criterion, pre_process_func=pre_process)
+    print('*** Best Model ***')
+    print(f' Train loss: {train_loss:.4f}')
+    print(f' Val   loss: {val_loss:.4f}')
+    print(f' Test  loss: {test_loss:.4f}')

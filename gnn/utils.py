@@ -1,8 +1,11 @@
 """This module contains utility functions."""
 
+import json
+from datetime import datetime
+from pathlib import Path
+
 import numpy as np
 import torch
-import torch.nn.functional as F
 from grag.components.embedding import Embedding
 from tqdm import tqdm
 
@@ -56,7 +59,7 @@ def cosine_similarity(a, b):
     return dot_product / (magnitude_a * magnitude_b)
 
 
-def train(model, data, optimizer, with_labels=True):
+def train(model, data, optimizer, criterion):
     """Trains the given model on the provided data.
 
     Args:
@@ -77,17 +80,14 @@ def train(model, data, optimizer, with_labels=True):
     optimizer.zero_grad()
     pred = model(data.x, data.edge_index, data.edge_label_index)
     target = data.edge_label.squeeze(-1)
-    if with_labels:
-        loss = F.mse_loss(pred, target)
-    else:
-        loss = F.binary_cross_entropy_with_logits(pred, target)
+    loss = criterion(pred, target)
     loss.backward()
     optimizer.step()
     return loss
 
 
 @torch.no_grad()
-def test(model, data, return_pred=False, with_labels=True):
+def test(model, data, metric, pre_process_func=None, return_pred=False):
     """Evaluates the given model on the provided data.
 
     Args:
@@ -108,13 +108,85 @@ def test(model, data, return_pred=False, with_labels=True):
     model.eval()
     target = data.edge_label.squeeze(-1)
     pred = model(data.x, data.edge_index, data.edge_label_index)
-    if with_labels:
-        pred = pred.clamp(min=-1, max=1)
-        loss = F.mse_loss(pred, target).sqrt()
-    else:
-        loss = F.binary_cross_entropy_with_logits(pred, target)
+    if pre_process_func:
+        pred = pre_process_func(pred.detach())
+    score = metric(pred, target)
     pred = pred.cpu()
     if return_pred:
-        return loss, pred
+        return score, pred
     else:
-        return loss
+        return score
+
+
+class EarlyStopping:
+    def __init__(self, patience=5, delta=0.0001, is_loss=True, verbose=True):
+        self.patience = patience
+        self.delta = delta
+        self.counter = 0
+        self.best_score = None
+        self.is_loss = is_loss
+        self.stop = False
+        self.verbose = verbose
+
+    def step(self, score):
+        score = score.detach().cpu().item()
+        if self.best_score is None:
+            self.best_score = score
+            self.counter += 1
+        if self.is_loss:
+            if score > self.best_score + self.delta:
+                self.counter += 1
+            else:
+                self.best_score = score
+                self.counter = 0
+        else:
+            if score < self.best_score - self.delta:
+                self.counter += 1
+            else:
+                self.best_score = score
+                self.counter = 0
+
+    def __call__(self, score):
+        self.step(score)
+        if self.counter >= self.patience:
+            self.stop = True
+            if self.verbose:
+                print('Early stopping...')
+
+
+class SaveBestModel:
+    def __init__(self, save_dir='models', is_loss=True, model_name=None, score_name='valid_loss'):
+        self.is_loss = is_loss
+        self.save_dir = Path(save_dir)
+        self.model_name = model_name
+        self.best_score = None
+        self.score_name = score_name
+        self.best_model_path = None
+        self.id = datetime.now().strftime("%Y_%m_%d_%H%M")
+
+    def save(self, model, optimizer, criterion, conf_json=None):
+        save_path = self.save_dir / f'{self.model_name}_{self.id}'
+        torch.save({
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': criterion,
+        }, f'{save_path}.pt')
+        if conf_json is not None:
+            with open(f'{save_path}.json', 'w+') as f:
+                json.dump(conf_json, f, indent=4)
+        self.best_model_path = f'{save_path}.pt'
+
+    def __call__(self, model, optimizer, criterion, score, conf_json=None):
+        score = score.detach().cpu().item()
+        if self.best_score is None:
+            self.best_score = score
+        if self.is_loss:
+            if score < self.best_score:
+                print(f'New best {self.score_name}:{score}. Saving model...')
+                self.best_score = score
+                self.save(model, optimizer, criterion, conf_json)
+        else:
+            if score > self.best_score:
+                print(f'New best {self.score_name}:{score}. Saving model...')
+                self.best_score = score
+                self.save(model, optimizer, criterion, conf_json)
