@@ -119,7 +119,7 @@ def test(model, data, metric, pre_process_func=None, return_pred=False):
 
 
 class EarlyStopping:
-    def __init__(self, patience=5, delta=0.0001, is_loss=True, verbose=True):
+    def __init__(self, patience=5, delta=0.0001, is_loss=True, verbose=True, ask_user=True):
         self.patience = patience
         self.delta = delta
         self.counter = 0
@@ -127,6 +127,22 @@ class EarlyStopping:
         self.is_loss = is_loss
         self.stop = False
         self.verbose = verbose
+        self.ask_user = ask_user
+
+    def reset(self):
+        self.counter = 0
+        self.best_score = None
+        self.stop = False
+
+    def prompt_user(self):
+        invalid_input = True
+        while invalid_input:
+            user_input = input("Do you still want to continue training? [Yes(Y)/No(N)]")
+            if user_input.lower().strip()[0] == 'y':
+                self.reset()
+                invalid_input = False
+            elif user_input.lower().strip()[0] == 'n':
+                invalid_input = False
 
     def step(self, score):
         score = score.detach().cpu().item()
@@ -152,6 +168,8 @@ class EarlyStopping:
             self.stop = True
             if self.verbose:
                 print('Early stopping...')
+            if self.ask_user:
+                self.prompt_user()
 
 
 class SaveBestModel:
