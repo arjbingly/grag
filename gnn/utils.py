@@ -119,7 +119,7 @@ def test(model, data, metric, pre_process_func=None, return_pred=False):
 
 
 class EarlyStopping:
-    def __init__(self, patience=5, delta=0.0001, is_loss=True, verbose=True, ask_user=True):
+    def __init__(self, patience=5, delta=0.0001, is_loss=True, verbose=True, ask_user=True, pbar=None):
         self.patience = patience
         self.delta = delta
         self.counter = 0
@@ -128,6 +128,7 @@ class EarlyStopping:
         self.stop = False
         self.verbose = verbose
         self.ask_user = ask_user
+        self.pbar = pbar
 
     def reset(self):
         self.counter = 0
@@ -167,13 +168,16 @@ class EarlyStopping:
         if self.counter >= self.patience:
             self.stop = True
             if self.verbose:
-                print('Early stopping...')
+                if self.pbar:
+                    self.pbar.write(f"Epoch {self.pbar.n}:Early stopping.")
+                else:
+                    print('Early stopping...')
             if self.ask_user:
                 self.prompt_user()
 
 
 class SaveBestModel:
-    def __init__(self, save_dir='models', is_loss=True, model_name=None, score_name='valid_loss'):
+    def __init__(self, save_dir='models', is_loss=True, model_name=None, score_name='valid_loss', pbar=None):
         self.is_loss = is_loss
         self.save_dir = Path(save_dir)
         self.model_name = model_name
@@ -181,6 +185,7 @@ class SaveBestModel:
         self.score_name = score_name
         self.best_model_path = None
         self.id = datetime.now().strftime("%Y_%m_%d_%H%M")
+        self.pbar = pbar
 
     def save(self, model, optimizer, criterion, conf_json=None):
         save_path = self.save_dir / f'{self.model_name}_{self.id}'
@@ -200,11 +205,17 @@ class SaveBestModel:
             self.best_score = score
         if self.is_loss:
             if score < self.best_score:
-                print(f'New best {self.score_name}:{score}. Saving model...')
+                if self.pbar:
+                    self.pbar.write(f'Epoch-{self.pbar.n}: New best {self.score_name}:{score}, saving model.')
+                else:
+                    print(f'New best {self.score_name}:{score}, saving model.')
                 self.best_score = score
                 self.save(model, optimizer, criterion, conf_json)
         else:
             if score > self.best_score:
-                print(f'New best {self.score_name}:{score}. Saving model...')
+                if self.pbar:
+                    self.pbar.write(f'Epoch-{self.pbar.n}: New best {self.score_name}:{score}, saving model.')
+                else:
+                    print(f'New best {self.score_name}:{score}, saving model.')
                 self.best_score = score
                 self.save(model, optimizer, criterion, conf_json)

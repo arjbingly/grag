@@ -18,10 +18,10 @@ from gnn.utils import EarlyStopping, SaveBestModel, test, train
 # Args
 # Reproducibility conf
 random_seed = 1505
-model_name = Path('SageConv_cranfield_data')
+model_name = Path('SageConv_test_data')
 # Data conf
 data_filepath = 'Data/cranfield.json'
-with_labels = True
+with_labels = False
 # Random Link Split conf
 num_val = 0.1
 num_test = 0.1
@@ -116,12 +116,10 @@ if __name__ == '__main__':
             'early_stop_delta': early_stop_delta,
         },
     }
-
-    saver = SaveBestModel(save_dir=model_save_dir, model_name=model_name)
-    early_stopper = EarlyStopping(patience=early_stop_patience, delta=early_stop_delta)
-
     # Training
     pbar = tqdm(range(num_epochs), desc='Training', unit="Epoch")
+    saver = SaveBestModel(save_dir=model_save_dir, model_name=model_name, pbar=pbar)
+    early_stopper = EarlyStopping(patience=early_stop_patience, delta=early_stop_delta, pbar=pbar)
     train_start_time = datetime.now()
     for epoch in pbar:
         if early_stopper.stop:
