@@ -1,6 +1,7 @@
 """This module contains functions to create torch_geometric Data objects from a JSON file."""
 
 import json
+import os
 from itertools import combinations
 
 import numpy as np
@@ -47,7 +48,7 @@ def gen_edges(embeddings, verbose=True, threshold=0.5):
     return edges, edge_features
 
 
-def gen_data(data_dict, with_labels=True, verbose=True, threshold=0.5):
+def gen_data(data_dict, with_labels=True, verbose=True, threshold=0.8):
     """Generates an undirected graph data object from a dictionary of embeddings.
     
     The nodes are text embeddings, and edges are cosine similarities.
@@ -93,6 +94,20 @@ def gen_data(data_dict, with_labels=True, verbose=True, threshold=0.5):
         print(f'{data=}')
 
     return data
+
+
+def get_data(data_name, with_labels, threshold, data_dir):
+    data_json_path = data_dir / f'{data_name}.json'
+    data_path = data_dir / f'{data_name}_{threshold}{"_labeled" if with_labels else ""}.pt'
+    if os.path.exists(data_path):
+        print(f'Loading data from {data_path}.')
+        return torch.load(data_path)
+    else:
+        with open(data_json_path, 'r') as f:
+            data_dict = json.load(f)
+        data = gen_data(data_dict, with_labels=with_labels, threshold=threshold)
+        torch.save(data, data_path)
+        return data
 
 
 if __name__ == '__main__':
