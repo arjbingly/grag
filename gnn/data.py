@@ -39,7 +39,7 @@ def gen_edges(embeddings, verbose=True, threshold=0.5):
         pbar = combinations(enumerate(embeddings), 2)
     for doc1, doc2 in pbar:
         similarity = cosine_similarity(doc1[1], doc2[1])
-        if similarity > threshold:
+        if abs(similarity) > threshold:
             edges.append((doc1[0], doc2[0]))
             edge_features.append([similarity])
     edges = np.array(edges).T
