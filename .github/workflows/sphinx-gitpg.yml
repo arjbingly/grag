@@ -21,19 +21,30 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Deps
+        run: |
+          pip install sphinx
+          pip install -r src/docs/requirements.txt
+
       - name: Sphinx Build
-        uses: ammaraskar/sphinx-action@master
-        with:
-          docs-folder: "src/docs/"
+        run: |
+          cd 'src/docs/'
+          make html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages Artifact
+        #        uses: actions/deploy-pages@v4
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "src/docs/_build/html"
+
+      - name: Deplot GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
