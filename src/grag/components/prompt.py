@@ -174,7 +174,3 @@ class FewShotPrompt(Prompt):
             if not all(key in eg for key in cls.output_keys):
                 raise ValueError(f"output key(s) not in example {eg}")
         return v
-
-
-if __name__ == "__main__":
-    p = Prompt.load("../prompts/Llama-2_QA_1.json")
