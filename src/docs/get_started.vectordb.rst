@@ -1,5 +1,3 @@
-.. _Vector Stores:
-
 Vector Stores
 ===============
 

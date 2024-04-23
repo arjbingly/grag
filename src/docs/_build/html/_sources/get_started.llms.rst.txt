@@ -1,4 +1,4 @@
-        `LLMs
+LLMs
 =====
 
 GRAG offers two ways to run LLMs locally:
@@ -17,10 +17,10 @@ provide an auth token*
 To run LLMs using LlamaCPP
 #############################
 LlamaCPP requires models in the form of `.gguf` file. You can either download these model files online,
-or
+or **quantize** the model yourself following the instructions below.
 
-How to quantize models.
-************************
+How to quantize models
+***********************
 To quantize the model, run:
   ``python -m grag.quantize.quantize``
 
@@ -34,4 +34,4 @@ After running the above command, user will be prompted with the following:
 
 * If the user has the model downloaded locally, then user will be instructed to copy the model and input the name of the model directory.
 
-3.Finally, the user will be prompted to enter **quantization** settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check `llama.cpp/examples/quantize/quantize.cpp <https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19>`_.
+3. Finally, the user will be prompted to enter **quantization** settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check `llama.cpp/examples/quantize/quantize.cpp <https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19>`_.

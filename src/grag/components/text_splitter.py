@@ -1,6 +1,7 @@
 """Class for splitting/chunking text.
 
 This module provides:
+
 - TextSplitter
 """
 
