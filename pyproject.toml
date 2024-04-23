@@ -121,6 +121,8 @@ select = ["E4", "E7", "E9", "F", "I", "D"]
 ignore = ["D104"]
 exclude = ["__about__.py"]
 
+[tool.ruff.lint.per-file-ignores]
+"**/cookbook/*" = ["D205", "D415"]
 
 [tool.ruff.format]
 quote-style = "double"
