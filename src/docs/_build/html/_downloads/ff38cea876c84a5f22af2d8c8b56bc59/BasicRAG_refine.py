@@ -1,6 +1,9 @@
 """Refine Chain
 =======================
 This cookbook demonstrates how to use the refine chain for BasicRAG.
+.. image:: src/docs/_static/refine_chain_langchain_illustration.jpg
+  :width: 400
+  :alt: Refine Documents Chain Process
 """
 
 from grag.components.multivec_retriever import Retriever

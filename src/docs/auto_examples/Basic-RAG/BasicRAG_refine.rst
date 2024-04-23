@@ -20,8 +20,11 @@
 Refine Chain
 =======================
 This cookbook demonstrates how to use the refine chain for BasicRAG.
+.. image:: src/docs/_static/refine_chain_langchain_illustration.jpg
+  :width: 400
+  :alt: Refine Documents Chain Process
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-18
+.. GENERATED FROM PYTHON SOURCE LINES 8-21
 
 .. code-block:: Python
 

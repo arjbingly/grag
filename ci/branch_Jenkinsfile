@@ -1,0 +1,120 @@
+pipeline {
+    agent any
+
+    options{
+        skipDefaultCheckout(true)
+    }
+    environment {
+        PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
+        CUDACXX = '/usr/local/cuda-12/bin/nvcc'
+        CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
+        PATH="/usr/local/cuda-12.3/bin:$PATH"
+        LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
+        GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new"
+        }
+
+
+    stages {
+        stage('Checkout') {
+            steps {
+                    cleanWs()
+                    checkout scm
+            }
+        }
+
+        stage('Create venv'){
+            steps {
+                sh 'python3 -m venv .venv'
+            }
+        }
+
+        stage('Install dependencies'){
+            steps {
+                withPythonEnv(PYTHONPATH){
+                    sh 'pip install -e .'
+                }
+            }
+
+        }
+
+        stage('Config'){
+            steps{
+                withPythonEnv(PYTHONPATH){
+                    sh 'python3 ci/modify_config.py'
+                    sh 'rm -rf $JENKINS_HOME/ci_test_data/data/vectordb/ci_test'
+                    sh 'cp -r $JENKINS_HOME/ci_test_data/data/backup_vectordb/ci_test $JENKINS_HOME/ci_test_data/data/vectordb'
+                }
+            }
+        }
+
+        stage('Linting'){
+            steps {
+                withPythonEnv(PYTHONPATH){
+                    sh 'pip install ruff'
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                        sh 'ruff check . --exclude *venv* --output-format junit -o ruff-report.xml'
+                        sh 'ruff format .'
+                    }
+                }
+            }
+            post {
+                always{
+                    withChecks('Lint Checks'){
+                         junit 'ruff-report.xml'
+                     }
+                }
+            }
+        }
+
+        stage('Static type check'){
+            steps {
+                withPythonEnv(PYTHONPATH){
+                    sh 'pip install mypy'
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                        sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
+                    }
+                }
+            }
+            post {
+                always{
+                     withChecks('Static Type Checks'){
+                         junit 'mypy-report.xml'
+                     }
+                }
+            }
+        }
+
+        stage('Tests'){
+            steps{
+                sh 'docker pull chromadb/chroma'
+                sh 'docker run -d --name jenkins-chroma -p 8000:8000 chromadb/chroma'
+                withPythonEnv(PYTHONPATH){
+                    sh 'pip install pytest'
+                    sh 'python3 ci/unlock_deeplake.py'
+                    sh 'pytest src -vvv --junitxml=pytest-report.xml'
+                }
+            }
+            post {
+                always{
+                    sh 'docker stop jenkins-chroma'
+                    sh 'docker rm jenkins-chroma'
+                     withChecks('Integration Tests'){
+                        junit 'pytest-report.xml'
+                     }
+                }
+            }
+        }
+    }
+    post {
+        cleanup{
+            cleanWs(
+                cleanWhenNotBuilt: false,
+                deleteDirs: true,
+                disableDeferredWipeout: true,
+                notFailBuild: true,
+                patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                           [pattern: '.propsfile', type: 'EXCLUDE']]
+                    )
+        }
+    }
+}

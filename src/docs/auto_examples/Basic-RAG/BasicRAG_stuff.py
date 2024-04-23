@@ -1,6 +1,9 @@
 """Stuff Chain
 =======================
 This cookbook demonstrates how to use the stuff chain for BasicRAG.
+.. image:: src/docs/_static/stuff_chain_langchain_illustration.jpg
+  :width: 400
+  :alt: Stuff Documents Chain Process
 """
 
 from grag.components.multivec_retriever import Retriever

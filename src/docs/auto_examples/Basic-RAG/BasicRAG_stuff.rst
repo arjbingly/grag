@@ -20,8 +20,11 @@
 Stuff Chain
 =======================
 This cookbook demonstrates how to use the stuff chain for BasicRAG.
+.. image:: src/docs/_static/stuff_chain_langchain_illustration.jpg
+  :width: 400
+  :alt: Stuff Documents Chain Process
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-19
+.. GENERATED FROM PYTHON SOURCE LINES 8-22
 
 .. code-block:: Python
 
