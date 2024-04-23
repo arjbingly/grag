@@ -28,7 +28,14 @@ Since Chroma is a server-client based vector database, make sure to run the serv
 * If Chroma is not run locally, change ``host`` and ``port`` under ``chroma`` in `src/config.ini`, or provide the arguments
   explicitly.
 
-For non-supported vectorstores, (...)
+Once you have chroma running, just use the Chroma Client class.
+
+DeepLake
+*********
+Since DeepLake is not a server based vector store, it is much easier to get started.
+
+Just make sure you have DeepLake installed and use the DeepLake Client class.
+
 
 Embeddings
 ###########
@@ -52,4 +59,3 @@ For more details on data ingestion, refer to our `cookbook <https://github.com/a
 
 
     retriever.ingest(dir_path)
-
