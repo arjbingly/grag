@@ -1,6 +1,7 @@
 """Abstract base class for vector database clients.
 
 This module provides:
+
 - VectorDB
 """
 

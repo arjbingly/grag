@@ -1,10 +1,10 @@
-grag.rag package
+RAG
 ================
 
 Submodules
 ----------
 
-grag.rag.basic\_rag module
+Basic RAG
 --------------------------
 
 .. automodule:: grag.rag.basic_rag

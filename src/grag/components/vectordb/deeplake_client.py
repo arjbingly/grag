@@ -1,6 +1,7 @@
 """Class for DeepLake vector database.
 
 This module provides:
+
 - DeepLakeClient
 """
 

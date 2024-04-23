@@ -1,0 +1,211 @@
+% THIS TEMPLATE IS A WORK IN PROGRESS
+% Adapted from an original template by faculty at Reykjavik University, Iceland
+
+\documentclass{scrartcl}
+\input{File_Setup.tex}
+\usepackage{graphicx,epsfig}
+\hypersetup{
+   colorlinks   = true,                               %Colours links instead of ugly boxes
+   urlcolor     = blue,                               %Colour for external hyper links
+   linkcolor    = blue,                               %Colour of internal links
+   citecolor    = red,                                %Colour of citations
+   setpagesize  = false,
+   linktocpage  = true,
+}
+\graphicspath{ {fig/} }
+
+
+
+\renewenvironment{abstract}{
+    \centering
+    \textbf{Abstract}
+    \vspace{0.5cm}
+    \par\itshape
+    \begin{minipage}{0.7\linewidth}}{\end{minipage}
+    \noindent\ignorespaces
+}
+% ------------------------------------------------------------------------------------------------------------------------
+
+\begin{document}
+%Title of the report, name of coworkers and dates (of experiment and of report).
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.6\textwidth]{GW_logo.eps}\par
+	\vspace{2cm}
+	%%%% COMMENT OUT irrelevant lines below: Data Science OR Computer Science OR none
+	{\scshape\LARGE Data Science Program \par}
+	\vspace{1cm}
+	{\scshape\Large Capstone Report - Spring 2024\par}
+	%{\large \today\par}
+	\vspace{1.5cm}
+	%%%% PROJECT TITLE
+	{\huge\bfseries Vector vs. Graph Database for Retrieval-Augmented Generation\par}
+	\vspace{2cm}
+	%%%% AUTHOR(S)
+	{\Large\itshape Arjun Bingly,\\ Sanchit Vijay,\\ Erika Pham,\\Kunal Inglunkar}\par
+	\vspace{1.5cm}
+	supervised by\par
+	%%%% SUPERVISOR(S)
+	Amir Jafari
+
+	\vfill
+	\begin{abstract}
+	    We introduce an implementation of Retrieval-Augmented Generation (RAG) that retrieves from graph databases as part of an end-to-end, self-hostable, semantic-based search engine for internal documents. RAG’s ability to understand context and producing relevant quality responses to prompts is crucial to producing a semantic-based search engine. Traditional RAG implementation uses a vector database; but we see the potential for graph databases, owing to its complex relational capabilities (revise this). We also present a performance comparison between vector and graph databases for a RAG pipeline. 
+	\end{abstract}
+	\vfill
+% Bottom of the page
+\end{titlepage}
+\tableofcontents
+\newpage
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Introduction}
+Retriever-Augmented Generation (RAG) is a method natural language processing (NLP) that combines the retrieval of informational documents from a large database (the "retriever" part) and the generation of coherent, contextual text based on the information retrieved (the "generation" part). 
+It was introduced as an enhancement to Large Language Models (LLMs), as RAG provides the LLM with real-time data access, preserves data privacy, and mitigate "hallucination" (cite paper). RAG is therefore ideal for semantic-based search engines; it improves their ability to understand and respond to queries with high relevance, accuracy, and personalization. 
+Traditionally, RAG implementations uses vector databases for its retrieval process. As RAG uses vector embeddings for its processes, vector database is the optimal choice for ease of retrieval and efficiency in similarity search. 
+However, since RAG simply outputs the closest vector in relation to the query vector, it leaves room for error if the database does not contain relevant information to the input prompt. This makes RAG overly reliant on the quality of the data and the embedding process. Additionally, while vector databases are scalable, the computational resources required for its maintenance can be expensive. 
+Graph database presents a very promising possibility due to its complex relational network - in theory, this could solve vector DB's limitation. 
+There is limited existing literature comparing the performance of vector versus graph database in a RAG implementation. This paper aims to experiment with graph database for RAG, and compare its performance to traditional implementation which uses vector databases.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Problem Statement}
+Our current main challenges include:
+1. Parsing tables in PDF documents accurately.
+2. Traditional performance evaluation metrics (list them) for RAG are not informative on our process (add why?). 
+3. Implementation of graph database for RAG is difficult, existing literature and experiments employ non-open sourced products such as OpenAI (cite) which we lack resources for.
+
+% ------------------------------------------------------------------------------------------------------------------------
+
+\section{Related Work}
+The original inspiration was to create an end-to-end, open-sourced, self-hostable search engine. Companies that need an internal search engine would benefit from this implementation, as it requires no access to online resources.
+https://github.com/michaelthwan/searchGPT and https://github.com/GerevAI/gerev#integrations are open-sourced packages for LLM-powered semantic search engines. However, they leverage APIs, which makes the process reliant on online resources. We aim to localize all processes to ensure self-hostability.
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Solution and Methodology}
+\subsection{RAG Pipeline}
+\subsubsection{Overview}
+Figure 1 shows a traditional RAG pipeline. As the name implies, the process is two-part: retrieval and generation. 
+The input query and documents are first preprocessed into vectors through the embedding process. 
+The pipeline then retrieves data relevant to the query, performing a similarity search in the vector database. Once the retrieval process is complete, RAG utilizes an LLM to understand and preserve context. Then, RAG system integrates the retrieved information with the original query to provide a richer context for the generation phase.
+In the generation step, the augmented query is processed by the LLM, which synthesizes the information into a coherent and contextually appropriate response. The final output is then post-processed, if necessary, to ensure it meets the required specifications, such as correctness, coherence, and relevance. 
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.7]{basic_RAG_pipeline.drawio.svg}
+	\end{center}
+	\caption{Figure 1: Basic Retrieval-Augmented Generation (RAG) Pipeline (better illustration coming)}
+	\label{fig:ascent}
+\end{figure}
+
+RAG provides several advantages and solutions to LLMs caveats:
+\begin{itemize}
+	\item 1. Empowering LLM solutions with real-time data access
+	LLMs are typically trained on vast datasets that may quickly become outdated as new information emerges. RAG technology addresses this limitation by allowing LLMs to access and incorporate real-time data into their responses. Through the retrieval component, RAG systems can query up-to-date databases or the internet to find the most current information, ensuring that the generated output reflects the latest developments. 
+	\item 2. Preserving data privacy
+	RAG can retrieve information from a controlled, secure dataset or environment rather than relying on direct access to private data. By designing the retrieval component to operate within privacy-preserving parameters, RAG can ensure that the LLM will not directly access or expose sensitive data. 
+	\item 3. Mitigating LLM hallucinations
+	"Hallucination" in the context of LLMs refers to the generation of plausible but inaccurate or entirely fabricated information. This is a known challenge with LLMs, where the model might confidently produce incorrect data or statements.(cite) RAG helps mitigate this issue by grounding the LLM's responses in retrieved documents that are verified or deemed reliable. By leveraging external sources of information, RAG reduces the model's reliance on potentially flawed internal representations and biases, leading to more accurate outputs.
+\end{itemize}
+
+\subsubsection{RAG Document Chains}
+
+Document chains are used in Retrieval-Augmented Generation (RAG) to effectively utilize retrieved documents. These chains serve various purposes, including efficient document processing, task decomposition, and improved accuracy.
+
+\textbf{Stuff Chain}
+
+This is the simplest form of document chain. It involves putting all relevant data into the prompt. Given \(n\) documents, it concatenates the documents with a separator, usually \verb|\n\n|.
+The advantage of this method is \textit{it only requires one call to the LLM}, and the model has access to all the information at once.
+However, one downside is \textit{most LLMs can only handle a certain amount of context}. For large or multiple documents, stuffing may result in a prompt that exceeds the context limit.
+Additionally, this method is \textit{only suitable for smaller amounts of data}. When working with larger data, alternative approaches should be used.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{path/to/stuff_chain_image.jpg}
+    \caption{Illustration of Stuff Chain}
+\end{figure}
+\href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
+
+\textbf{Refine Chain}
+
+The Refine Documents Chain uses an iterative process to generate a response by analyzing each input document and updating its answer accordingly.
+It passes all non-document inputs, the current document, and the latest intermediate answer to an LLM chain to obtain a new answer for each document.
+This chain is ideal for tasks that involve analyzing more documents than can fit in the model’s context, as it \textit{only passes a single document to the LLM at a time}.
+However, this also means it makes significantly more LLM calls than other chains, such as the Stuff Documents Chain. It may \textit{perform poorly for tasks that require cross-referencing between documents} or detailed information from multiple documents.
+Pros of this method include \textit{incorporating more relevant context and potentially less data loss} than the MapReduce Documents Chain. However, \textit{it requires many more LLM calls and the calls are not independent}, meaning they cannot be paralleled like the MapReduce Documents Chain.
+There may also be dependencies on the order in which the documents are analyzed, thus it might be ideal to provide documents in order of similarity.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{path/to/refine_chain_image.jpg}
+    \caption{Illustration of the Refine Chain method.}
+\end{figure}
+\href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
+
+\textbf{Map Reduce Chain}
+
+To process \textit{large amounts of data efficiently}, the MapReduceDocumentsChain method is used.
+This involves applying an LLM chain to each document individually (in the Map step), producing a new document. Then, all the new documents are passed to a separate combine documents chain to get a single output (in the Reduce step). If necessary, the mapped documents can be compressed before passing them to the combine documents chain.
+This compression step is performed recursively.
+This method requires an initial prompt on each chunk of data.
+For summarization tasks, this could be a summary of that chunk, while for question-answering tasks, it could be an answer based solely on that chunk. Then, a different prompt is run to combine all the initial outputs.
+The pros of this method are that \textit{it can scale to larger documents and handle more documents} than the StuffDocumentsChain. Additionally, \textit{the calls to the LLM on individual documents are independent and can be parallelized}.
+The cons are that it \textit{requires many more calls to the LLM} than the StuffDocumentsChain and \textit{loses some information during the final combining call}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{path/to/map_reduce_chain_image.jpg}
+    \caption{Illustration of the Map Reduce Chain method.}
+\end{figure}
+\href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
+
+\subsubsection{Propmting}
+Prompting strategies differ from model to model.For example, the Llama model takes system prompts.
+(add example here)
+\subsubsection{Other Hyperparameters}
+\begin{itemize}
+    \item \textbf{Chunk Sizes} --- generally, the smallest chunk size you can get away with.
+    \item \textbf{Similarity Score} --- e.g., cosine similarity, a measure used to determine how similar two documents or vectors are.
+    \item \textbf{Embedding} --- a representation of text in a high-dimensional vector space, which allows for capturing the semantic meaning of words or phrases.
+\end{itemize}
+
+\subsection {PDF Parser}
+Parsing PDF documents presents a significant challenge due to their complex structure. PDFs often contain unstructured data, which lacks a predefined organization, making accurate recognition and processing arduous. A notable difficulty arises when handling tables, as PDFs do not inherently understand table columns, complicating the task of recognizing table layouts. This complexity is particularly evident in documents like tax forms, which feature intricate nested table structures. Additionally, scanned PDFs require Optical Character Recognition (OCR) tools to convert images back into text, introducing another layer of complexity.
+Our approach involved experimenting with various packages and strategies to develop a program capable of parsing and processing PDF documents. Despite our efforts, we encountered limitations in parsing tables, where the results were inconsistent.
+
+\subsubsection{Unstructured IO} 
+This open-source library facilitates the processing of diverse document types. Utilizing its partition_pdf() function, we were able to segment a PDF document into distinct elements, enhancing the parsing process. Unstructured IO also supports "FigureCaptions" identification, potentially improving the contextual understanding of the model. We adopted their "hi-res" strategy, which converts PDF pages into images and then applying the OCR tool PyTesseract to extract text. 
+While the output for plain text was satisfactory, the library struggled with more complex documents, such as tax forms and bank statements, yielding inadequate results.
+(add example of output-original text versus output text)
+\subsubsection{PDFPlumber, Unstructured IO, and PyTesseract: (add more details on method here)}
+To address these challenges, we integrated PDFPlumber for parsing table elements, PyTesseract for image-based text extraction, and Unstructured IO for processing other text content. PDFPlumber demonstrated superior layout detection capabilities, offering higher accuracy in parsing tables from non-scanned documents compared to our previous method. However, it underperformed with scanned documents and exhibited inconsistent results across various PDF files.
+(add example of output - original text vs output text)
+
+\subesection{LLM implementation}
+(outline only, needs revision) Quantize model first; currently cannot run without quantization. 
+Use llama.cpp which provides quantization 
+Have text user interface (TUI) for users to easily download the model from HuggingFace and quantize
+Tested our implementation with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b
+Could use any other model
+
+\subsection{Graph DB implementation}
+(to be added)
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Results and Discussion}
+
+\subsection{Experimentation protocol}
+
+\subsection{Data tables}
+% ------------------------------------------------------------------------------------------------------------------------
+
+\section{Discussion}
+% ------------------------------------------------------------------------------------------------------------------------
+
+\section{Conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+(add graph papers and Lewis et al. here)
+%------ To create Appendix with additional stuff -------%
+%\newpage
+%\appendix
+%\section{Appendix}
+%Put data files, CAD drawings, additional sketches, etc.
+
+\end{document} 

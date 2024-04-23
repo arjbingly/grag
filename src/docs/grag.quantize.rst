@@ -1,10 +1,10 @@
-grag.quantize package
+Quantize
 =====================
 
 Submodules
 ----------
 
-grag.quantize.quantize module
+Quantize
 -----------------------------
 
 .. automodule:: grag.quantize.quantize
@@ -12,7 +12,7 @@ grag.quantize.quantize module
    :undoc-members:
    :show-inheritance:
 
-grag.quantize.utils module
+Utils
 --------------------------
 
 .. automodule:: grag.quantize.utils

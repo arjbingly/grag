@@ -1,15 +1,29 @@
 name: Docs build and upload
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   docs:
-    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Sphinx Build
@@ -17,8 +31,9 @@ jobs:
         with:
           docs-folder: "src/docs/"
 
-      - name: Github Pages upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: DocumentationHTML
-          path: "src/docs/_build/html/"
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

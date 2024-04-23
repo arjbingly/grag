@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('../grag'))
 # -- Project information -----------------------------------------------------
 
 project = 'GRAG'
-copyright = '2024, Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar'
-author = 'Arjun Bingly, Sanchit Vijay, Erica Pham, Kunal Inglunkar'
+copyright = '2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
+author = 'Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
@@ -38,14 +38,25 @@ html_context = {
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "autoclasstoc",
+    # "autoclasstoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
     # "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.linkcode",
     # "sphinx_github_style"
+    "sphinx_gallery.gen_gallery",
+    "sphinx.ext.autosectionlabel"
 ]
+
+sphinx_gallery_conf = {
+    'examples_dirs': ['../../cookbook/Basic-RAG', '../../cookbook/Retriver-GUI'],  # path to your example scripts
+    # 'examples_dirs': '../../cookbook',
+    'gallery_dirs': ['auto_examples/Basic-RAG', 'auto_examples/Retriver-GUI'],
+    # path to where to save gallery generated output
+    'filename_pattern': '.py',
+    'plot_gallery': 'False',
+}
 
 
 # Linkcode settings
@@ -61,6 +72,9 @@ def linkcode_resolve(domain, info):
 
 # Napoleon settings
 napoleon_google_docstring = True
+
+# Autosectionlabel settings
+autosectionlabel_prefix_document = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -81,3 +95,4 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+

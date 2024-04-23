@@ -1,6 +1,7 @@
 """Class for Chroma vector database.
 
 This module provides:
+
 - ChromaClient
 """
 
