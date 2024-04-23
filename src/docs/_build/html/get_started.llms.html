@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LLMs &mdash; GRAG 0.0.1 documentation</title>
+  <title>To run LLMs using HuggingFace &mdash; GRAG 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
@@ -51,13 +51,11 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="get_started.html">Get Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="get_started.introduction.html">GRAG Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="get_started.installation.html">Installation</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">LLMs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#to-run-llms-using-huggingface">To run LLMs using HuggingFace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#to-run-llms-using-llamacpp">To run LLMs using LlamaCPP</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-quantize-models">How to quantize models.</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">To run LLMs using HuggingFace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#to-run-llms-using-llamacpp">To run LLMs using LlamaCPP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-quantize-models">How to quantize models.</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="get_started.vectordb.html">Vector Stores</a></li>
@@ -82,7 +80,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="get_started.html">Get Started</a></li>
-      <li class="breadcrumb-item active">LLMs</li>
+      <li class="breadcrumb-item active">To run LLMs using HuggingFace</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/arjbingly/Capstone_5/blob/main/src/get_started.llms.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -92,15 +90,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="llms">
-<h1>LLMs<a class="headerlink" href="#llms" title="Link to this heading"></a></h1>
+  <blockquote>
+<div><p><a href="#id1"><span class="problematic" id="id2">`</span></a>LLMs</p>
+</div></blockquote>
+<hr class="docutils" />
 <p>GRAG offers two ways to run LLMs locally:</p>
 <ol class="arabic simple">
 <li><p>LlamaCPP</p></li>
 <li><p>HuggingFace</p></li>
 </ol>
 <section id="to-run-llms-using-huggingface">
-<h2>To run LLMs using HuggingFace<a class="headerlink" href="#to-run-llms-using-huggingface" title="Link to this heading"></a></h2>
+<h1>To run LLMs using HuggingFace<a class="headerlink" href="#to-run-llms-using-huggingface" title="Link to this heading"></a></h1>
 <p>This is the easiest way to get started, but does not offer as much
 flexibility.
 If using a config file (<em>config.ini</em>), just change the <cite>model_name</cite> to
@@ -108,11 +108,11 @@ to the HuggingFace repo id. <em>Note that if the models are gated, make sure to
 provide an auth token</em></p>
 </section>
 <section id="to-run-llms-using-llamacpp">
-<h2>To run LLMs using LlamaCPP<a class="headerlink" href="#to-run-llms-using-llamacpp" title="Link to this heading"></a></h2>
+<h1>To run LLMs using LlamaCPP<a class="headerlink" href="#to-run-llms-using-llamacpp" title="Link to this heading"></a></h1>
 <p>LlamaCPP requires models in the form of <cite>.gguf</cite> file. You can either download these model files online,
 or</p>
 <section id="how-to-quantize-models">
-<h3>How to quantize models.<a class="headerlink" href="#how-to-quantize-models" title="Link to this heading"></a></h3>
+<h2>How to quantize models.<a class="headerlink" href="#how-to-quantize-models" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>To quantize the model, run:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">grag.quantize.quantize</span></code></p>
 </dd>
@@ -127,7 +127,6 @@ or</p>
 <li><p>If the user has the model downloaded locally, then user will be instructed to copy the model and input the name of the model directory.</p></li>
 </ul>
 <p>3.Finally, the user will be prompted to enter <strong>quantization</strong> settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check <a class="reference external" href="https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19">llama.cpp/examples/quantize/quantize.cpp</a>.</p>
-</section>
 </section>
 </section>
 

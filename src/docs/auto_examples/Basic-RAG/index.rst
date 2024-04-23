@@ -33,7 +33,7 @@ Below is a gallery of examples, demonstrating the use of Basic-RAG.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Refine Chain">
+    <div class="sphx-glr-thumbcontainer" tooltip="  Illustration of refine chain (Source: LangChain)">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Below is a gallery of examples, demonstrating the use of Basic-RAG.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Stuff Chain">
+    <div class="sphx-glr-thumbcontainer" tooltip="  Illustration of stuff chain (Source: LangChain)">
 
 .. only:: html
 

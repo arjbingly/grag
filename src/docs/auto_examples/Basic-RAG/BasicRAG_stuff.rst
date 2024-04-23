@@ -20,11 +20,17 @@
 Stuff Chain
 =======================
 This cookbook demonstrates how to use the stuff chain for BasicRAG.
-.. image:: src/docs/_static/stuff_chain_langchain_illustration.jpg
-  :width: 400
-  :alt: Stuff Documents Chain Process
+For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Capstone_5/blob/main/cookbook/Basic-RAG/RAG-PIPELINES.md
+/>`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-22
+.. figure:: ../../_static/stuff_chain_langchain_illustration.jpg
+  :width: 800
+  :alt: Stuff Documents Chain Process
+  :align: center
+
+  Illustration of stuff chain (Source: LangChain)
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-29
 
 .. code-block:: Python
 

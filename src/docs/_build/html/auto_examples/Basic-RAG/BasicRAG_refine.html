@@ -100,17 +100,13 @@ to download the full example code</p>
 <section class="sphx-glr-example-title" id="refine-chain">
 <span id="sphx-glr-auto-examples-basic-rag-basicrag-refine-py"></span><h1>Refine Chain<a class="headerlink" href="#refine-chain" title="Link to this heading"></a></h1>
 <p>This cookbook demonstrates how to use the refine chain for BasicRAG.
-.. image:: src/docs/_static/refine_chain_langchain_illustration.jpg</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">width<span class="colon">:</span></dt>
-<dd class="field-odd"><p>400</p>
-</dd>
-<dt class="field-even">alt<span class="colon">:</span></dt>
-<dd class="field-even"><p>Refine Documents Chain Process</p>
-</dd>
-</dl>
-</div></blockquote>
+For more information, refer to <a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main/cookbook/Basic-RAG/RAG-PIPELINES.md/">RAG-PIPELINES</a>.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/refine_chain_langchain_illustration.jpg"><img alt="Refine Documents Chain Process" src="../../_images/refine_chain_langchain_illustration.jpg" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Illustration of refine chain (Source: LangChain)</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">grag.components.multivec_retriever</span> <span class="kn">import</span> <span class="n">Retriever</span>
 <span class="kn">from</span> <span class="nn">grag.components.vectordb.deeplake_client</span> <span class="kn">import</span> <span class="n">DeepLakeClient</span>
 <span class="kn">from</span> <span class="nn">grag.rag.basic_rag</span> <span class="kn">import</span> <span class="n">BasicRAG</span>

@@ -1,6 +1,6 @@
-# RAG Piplines
+# RAG Pipelines
 
-In very basic terms, a RAG pipeline is a system where relevant context is provided to the LLM along with the query. Typically a vector database is leveraged for this task.
+In very basic terms, a RAG pipeline is a system where relevant context is provided to the LLM along with the query. Typically, a vector database is leveraged for this task.
 
 ## Benefits of RAG
 
@@ -77,8 +77,8 @@ eg. The Llama model takes system prompts
 
 # Other Hyperparameters
 
-- **Chunk Sizes** - generally the smallest chunk size you can get away with.
-- **Similarity score** - eg cosine similarity
+- **Chunk Sizes** - generally, the smallest chunk size you can get away with.
+- **Similarity score** - e.g. cosine similarity
 - **Embedding**
 
 # Sources

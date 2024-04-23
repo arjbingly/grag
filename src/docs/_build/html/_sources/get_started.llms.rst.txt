@@ -1,4 +1,4 @@
-LLMs
+        `LLMs
 =====
 
 GRAG offers two ways to run LLMs locally:

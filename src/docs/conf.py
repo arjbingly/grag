@@ -45,7 +45,8 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.linkcode",
     # "sphinx_github_style"
-    "sphinx_gallery.gen_gallery"
+    "sphinx_gallery.gen_gallery",
+    "sphinx.ext.autosectionlabel"
 ]
 
 sphinx_gallery_conf = {
@@ -72,6 +73,9 @@ def linkcode_resolve(domain, info):
 # Napoleon settings
 napoleon_google_docstring = True
 
+# Autosectionlabel settings
+autosectionlabel_prefix_document = True
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -91,3 +95,4 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
