@@ -1,7 +1,7 @@
 <h1 align="center">GRAG</h1>
 
 ![GitHub License](https://img.shields.io/github/license/arjbingly/Capstone_5)
-![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/linting.yml?label=Docs&labelColor=yellow)
+![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/sphinx-gitpg.yml?label=Docs&labelColor=yellow)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/build_linting.yml?label=Linting)
 ![Static Badge](https://img.shields.io/badge/Tests-passing-darggreen)
 ![Static Badge](https://img.shields.io/badge/docstring%20style-google-yellow)
