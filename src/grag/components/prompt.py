@@ -1,7 +1,9 @@
 """Classes for prompts.
 
 This module provides:
+
 - Prompt - for generic prompts
+
 - FewShotPrompt - for few-shot prompts
 """
 

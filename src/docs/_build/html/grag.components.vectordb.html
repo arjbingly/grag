@@ -110,8 +110,10 @@
 <section id="module-grag.components.vectordb.base">
 <span id="base"></span><h2>Base<a class="headerlink" href="#module-grag.components.vectordb.base" title="Link to this heading"></a></h2>
 <p>Abstract base class for vector database clients.</p>
-<p>This module provides:
-- VectorDB</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>VectorDB</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="grag.components.vectordb.base.VectorDB">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.vectordb.base.</span></span><span class="sig-name descname"><span class="pre">VectorDB</span></span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/vectordb/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.vectordb.base.VectorDB" title="Link to this definition"></a></dt>
@@ -199,8 +201,10 @@
 <section id="module-grag.components.vectordb.chroma_client">
 <span id="chroma-client"></span><h2>Chroma Client<a class="headerlink" href="#module-grag.components.vectordb.chroma_client" title="Link to this heading"></a></h2>
 <p>Class for Chroma vector database.</p>
-<p>This module provides:
-- ChromaClient</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>ChromaClient</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="grag.components.vectordb.chroma_client.ChromaClient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.vectordb.chroma_client.</span></span><span class="sig-name descname"><span class="pre">ChromaClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'arxiv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'instructor-embedding'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hkunlp/instructor-xl'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/vectordb/chroma_client.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.vectordb.chroma_client.ChromaClient" title="Link to this definition"></a></dt>
@@ -363,8 +367,10 @@ LangChain wrapper for Chroma collection</p>
 <section id="module-grag.components.vectordb.deeplake_client">
 <span id="deeplake-client"></span><h2>Deeplake Client<a class="headerlink" href="#module-grag.components.vectordb.deeplake_client" title="Link to this heading"></a></h2>
 <p>Class for DeepLake vector database.</p>
-<p>This module provides:
-- DeepLakeClient</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>DeepLakeClient</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="grag.components.vectordb.deeplake_client.DeepLakeClient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.vectordb.deeplake_client.</span></span><span class="sig-name descname"><span class="pre">DeepLakeClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'arxiv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ubuntu/volume_2k/Capstone_5/data/vectordb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'instructor-embedding'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hkunlp/instructor-xl'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/Capstone_5/blob/main//src//grag/components/vectordb/deeplake_client.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.vectordb.deeplake_client.DeepLakeClient" title="Link to this definition"></a></dt>

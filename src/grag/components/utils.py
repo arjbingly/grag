@@ -1,9 +1,13 @@
 """Utils functions.
 
 This module provides:
+
 - stuff_docs: concats langchain documents into string
+
 - load_prompt: loads json prompt to langchain prompt
+
 - find_config_path: finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
+
 - get_config: retrieves and parses the configuration settings from the 'config.ini' file.
 """
 

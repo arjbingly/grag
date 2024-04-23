@@ -1,6 +1,7 @@
 """Class for Basic RAG.
 
 This module provides:
+
 - BasicRAG
 """
 

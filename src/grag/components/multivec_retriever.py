@@ -1,6 +1,7 @@
 """Class for retriever.
 
 This module provides:
+
 - Retriever
 """
 
