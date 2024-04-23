@@ -4,7 +4,7 @@ from typing import List, Union
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-from torch_geometric.nn import GATv2Conv
+from torch_geometric.nn import GATConv as GATv2Conv
 
 
 class GATEncoder(torch.nn.Module):

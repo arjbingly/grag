@@ -3,6 +3,7 @@
 import json
 import os
 from itertools import combinations
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -97,8 +98,8 @@ def gen_data(data_dict, with_labels=True, verbose=True, threshold=0.8):
 
 
 def get_data(data_name, with_labels, threshold, data_dir):
-    data_json_path = data_dir / f'{data_name}.json'
-    data_path = data_dir / f'{data_name}_{threshold}{"_labeled" if with_labels else ""}.pt'
+    data_json_path = Path(data_dir) / f'{data_name}.json'
+    data_path = Path(data_dir) / f'{data_name}_{threshold}{"_labeled" if with_labels else ""}.pt'
     if os.path.exists(data_path):
         print(f'Loading data from {data_path}.')
         return torch.load(data_path)

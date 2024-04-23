@@ -7,6 +7,7 @@ from pathlib import Path
 import torch
 import torch_geometric.transforms as T
 from torch_geometric.nn.models import InnerProductDecoder
+from torchmetrics.classification import BinaryAccuracy
 from tqdm import tqdm
 
 from gnn.data import get_data
@@ -37,7 +38,7 @@ decoder_hidden_channels = [encoder_out_channels * 2, 32]
 # Training conf
 lr = 1e-3
 num_epochs = 3000
-early_stop_patience = 150
+early_stop_patience = 1500
 early_stop_delta = 0.00001
 
 data_dir = Path(f'{__file__}').parent / 'Data'
@@ -64,6 +65,7 @@ if __name__ == '__main__':
     print(f'{train_data=}')
     print(f'{val_data=}')
     print(f'{test_data=}')
+
     train_data = train_data.to(device)
     val_data = val_data.to(device)
     test_data = test_data.to(device)
@@ -92,14 +94,17 @@ if __name__ == '__main__':
     else:
         criterion = torch.nn.BCEWithLogitsLoss()
         pre_process = None
+        metric = BinaryAccuracy().to(device)
 
     model_conf = {
         'reproducibility_conf': {
             'random_seed': random_seed,
         },
         'data_conf': {
-            'data_filepath': data_filepath,
+            'data_dir': data_dir,
+            'data_name': data_name,
             'with_labels': with_labels,
+            'threshold': threshold,
         },
         'data_split_conf': {
             'num_val': num_val,
@@ -123,15 +128,15 @@ if __name__ == '__main__':
     }
     # Training
     pbar = tqdm(range(num_epochs), desc='Training', unit="Epoch")
-    saver = SaveBestModel(save_dir=model_save_dir, model_name=model_name, pbar=pbar)
-    early_stopper = EarlyStopping(patience=early_stop_patience, delta=early_stop_delta, pbar=pbar)
+    saver = SaveBestModel(save_dir=model_save_dir, model_name=model_name, pbar=pbar, is_loss=False)
+    early_stopper = EarlyStopping(patience=early_stop_patience, delta=early_stop_delta, pbar=pbar, is_loss=False)
     train_start_time = datetime.now()
     for epoch in pbar:
         if early_stopper.stop:
             break
         loss = train(model, train_data, optimizer, criterion)
-        train_loss = test(model, train_data, criterion, pre_process_func=pre_process)
-        val_loss = test(model, val_data, criterion, pre_process_func=pre_process)
+        train_loss = test(model, train_data, metric, pre_process_func=pre_process)
+        val_loss = test(model, val_data, metric, pre_process_func=pre_process)
         pbar.set_postfix(ordered_dict={"Loss": f"{loss: .4f}",
                                        "Train": f"{train_loss: .4f}",
                                        "Val": f"{val_loss:.4f}"})
@@ -149,9 +154,9 @@ if __name__ == '__main__':
 
     # Eval
     model.load_state_dict(torch.load(saver.best_model_path)['model_state_dict'])
-    train_loss = test(model, train_data, criterion, pre_process_func=pre_process)
-    val_loss = test(model, val_data, criterion, pre_process_func=pre_process)
-    test_loss = test(model, test_data, criterion, pre_process_func=pre_process)
+    train_loss = test(model, train_data, metric, pre_process_func=pre_process)
+    val_loss = test(model, val_data, metric, pre_process_func=pre_process)
+    test_loss = test(model, test_data, metric, pre_process_func=pre_process)
     print('*** Best Model ***')
     print(f' Train loss: {train_loss:.4f}')
     print(f' Val   loss: {val_loss:.4f}')
