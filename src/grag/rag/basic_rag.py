@@ -39,12 +39,13 @@ class BasicRAG:
         task="QA",
         llm_kwargs=None,
         retriever_kwargs=None,
+        stream: bool = False,
         custom_prompt: Union[Prompt, FewShotPrompt, None] = None,
     ):
         """Initialize BasicRAG."""
         if retriever is None:
             if retriever_kwargs is None:
-                self.retriever = Retriever()
+                self.retriever = Retriever(client_kwargs={'read_only': True})
             else:
                 self.retriever = Retriever(**retriever_kwargs)
         else:
@@ -62,6 +63,7 @@ class BasicRAG:
         self.model_name = model_name
         self.doc_chain = doc_chain
         self.task = task
+        self.stream = stream
 
         if self.custom_prompt is None:
             self.main_prompt = Prompt.load(
@@ -164,34 +166,39 @@ class BasicRAG:
         """Decorator to format llm output."""
 
         def output_parser_wrapper(*args, **kwargs):
-            response, sources = call_func(*args, **kwargs)
+            response, retrieved_docs = call_func(*args, **kwargs)
             if conf["llm"]["std_out"] == "False":
                 # if self.llm_.callback_manager is None:
                 print(response)
             print("Sources: ")
-            for index, source in enumerate(sources):
-                print(f"\t{index}: {source}")
-            return response, sources
+            for index, doc in enumerate(retrieved_docs):
+                print(f"\t{index}: {doc.metadata['source']}")
+            return response, retrieved_docs
 
         return output_parser_wrapper
 
-    @output_parser
-    def stuff_call(self, query: str):
+    def stuff_chain(self, query: str):
         """Call function for stuff chain."""
         retrieved_docs = self.retriever.get_chunk(query)
         context = self.stuff_docs(retrieved_docs)
         prompt = self.main_prompt.format(context=context, question=query)
-        response = self.llm.invoke(prompt)
-        sources = [doc.metadata["source"] for doc in retrieved_docs]
-        return response, sources
+        return prompt, retrieved_docs
 
     @output_parser
-    def refine_call(self, query: str):
+    def stuff_call(self, query: str):
+        """Call function for output of stuff chain."""
+        prompt, retrieved_docs = self.stuff_chain(query)
+        if self.stream:
+            response = self.llm.stream(prompt)
+        else:
+            response = self.llm.invoke(prompt)
+        return response, retrieved_docs
+
+    def refine_chain(self, query: str):
         """Call function for refine chain."""
         retrieved_docs = self.retriever.get_chunk(query)
-        sources = [doc.metadata["source"] for doc in retrieved_docs]
         responses = []
-        for index, doc in enumerate(retrieved_docs):
+        for index, doc in enumerate(retrieved_docs[:-1]):
             if index == 0:
                 prompt = self.main_prompt.format(
                     context=doc.page_content, question=query
@@ -206,7 +213,23 @@ class BasicRAG:
                 )
                 response = self.llm.invoke(prompt)
                 responses.append(response)
-        return responses, sources
+        prompt = self.refine_prompt.format(
+            context=retrieved_docs[-1].page_content,
+            question=query,
+            existing_answer=responses[-1]
+        )
+        return prompt, retrieved_docs, responses
+
+    @output_parser
+    def refine_call(self, query: str):
+        """Call function for output of refine chain."""
+        prompt, retrieved_docs, responses = self.refine_chain(query)
+        if self.stream:
+            response = self.llm.stream(prompt)
+        else:
+            response = self.llm.invoke(prompt)
+        responses.append(response)
+        return responses, retrieved_docs
 
     def __call__(self, query: str):
         """Call function for the class."""

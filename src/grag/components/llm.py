@@ -51,6 +51,7 @@ class LLM:
         base_dir: str = llm_conf["base_dir"],
         quantization: str = llm_conf["quantization"],
         pipeline: str = llm_conf["pipeline"],
+        callbacks=None,
     ):
         """Initialize the LLM class using the given parameters."""
         self.base_dir = Path(base_dir)
@@ -67,7 +68,7 @@ class LLM:
         if std_out:
             self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         else:
-            self.callback_manager = None  # type: ignore
+            self.callback_manager = callbacks  # type: ignore
 
     @property
     def model_name(self):

@@ -5,7 +5,6 @@ This module provides:
 - Retriever
 """
 
-import asyncio
 import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
@@ -45,13 +44,13 @@ class Retriever:
     """
 
     def __init__(
-        self,
-        vectordb: Optional[VectorDB] = None,
-        store_path: str = multivec_retriever_conf["store_path"],
-        id_key: str = multivec_retriever_conf["id_key"],
-        namespace: str = multivec_retriever_conf["namespace"],
-        top_k=int(multivec_retriever_conf["top_k"]),
-        client_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            vectordb: Optional[VectorDB] = None,
+            store_path: str = multivec_retriever_conf["store_path"],
+            id_key: str = multivec_retriever_conf["id_key"],
+            namespace: str = multivec_retriever_conf["namespace"],
+            top_k=int(multivec_retriever_conf["top_k"]),
+            client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
@@ -158,7 +157,7 @@ class Retriever:
         """
         chunks = self.split_docs(docs)
         doc_ids = self.gen_doc_ids(docs)
-        await asyncio.run(self.vectordb.aadd_docs(chunks))
+        await self.vectordb.aadd_docs(chunks)
         self.retriever.docstore.mset(list(zip(doc_ids, docs)))
 
     def get_chunk(self, query: str, with_score=False, top_k=None):
@@ -238,12 +237,12 @@ class Retriever:
                 return [d for d in docs if d is not None]
 
     def ingest(
-        self,
-        dir_path: Union[str, Path],
-        glob_pattern: str = "**/*.pdf",
-        dry_run: bool = False,
-        verbose: bool = True,
-        parser_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            dir_path: Union[str, Path],
+            glob_pattern: str = "**/*.pdf",
+            dry_run: bool = False,
+            verbose: bool = True,
+            parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Ingests the files in directory.
 
@@ -280,12 +279,12 @@ class Retriever:
                     print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
     async def aingest(
-        self,
-        dir_path: Union[str, Path],
-        glob_pattern: str = "**/*.pdf",
-        dry_run: bool = False,
-        verbose: bool = True,
-        parser_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            dir_path: Union[str, Path],
+            glob_pattern: str = "**/*.pdf",
+            dry_run: bool = False,
+            verbose: bool = True,
+            parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Asynchronously ingests the files in directory.
 
