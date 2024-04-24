@@ -27,9 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Deps
-        run: |
-          pip install sphinx
-          pip install -r src/docs/requirements.txt
+        run: pip install .[dev]
 
       - name: Sphinx Build
         run: |
@@ -39,12 +37,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Deploy to GitHub Pages Artifact
-        #        uses: actions/deploy-pages@v4
+      - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "src/docs/_build/html"
 
-      - name: Deplot GitHub Pages
+      - name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
