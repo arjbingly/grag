@@ -3,7 +3,7 @@
 ![GitHub License](https://img.shields.io/github/license/arjbingly/Capstone_5)
 ![Linting](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/sphinx-gitpg.yml?label=Docs)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/arjbingly/Capstone_5/build_linting.yml?label=Linting)
-![Static Badge](https://img.shields.io/badge/Tests-failing-red)
+![Static Badge](https://img.shields.io/badge/Tests-passing-darggreen)
 ![Static Badge](https://img.shields.io/badge/docstring%20style-google-yellow)
 ![Static Badge](https://img.shields.io/badge/linter%20-ruff-yellow)
 ![Static Badge](https://img.shields.io/badge/buildstyle-hatchling-purple?labelColor=white)
