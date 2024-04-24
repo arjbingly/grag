@@ -56,7 +56,8 @@ dev = [
     "mypy",
     "ruff",
     "sphinx",
-    "sphinx-rtd-theme"
+    "sphinx-rtd-theme",
+    "sphinx-gallery"
 ]
 
 [project.urls]
