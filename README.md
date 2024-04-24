@@ -10,6 +10,8 @@
 ![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
 
+[![Static Badge][Documentation-badge]][Docuementation-url]
+[![Static Badge][Cookbooks-badge]][Cookbooks-url]
 
 [GRAG](https://arjbingly.github.io/Capstone_5/) is a simple python package that provides an easy end-to-end solution for implementing Retrieval Augmented Generation (RAG).
 
@@ -88,3 +90,9 @@ Since Chroma is a server-client based vector database, make sure to run the serv
 
 
 For more information refer to [Documentation](https://arjbingly.github.io/Capstone_5/).  
+
+
+[Documentation-badge]: https://img.shields.io/badge/Documentation-red.svg?style=for-the-badge
+[Docuementation-url]: https://arjbingly.github.io/Capstone_5/
+[Cookbooks-badge]: https://img.shields.io/badge/Cookbooks-blue?style=for-the-badge
+[Cookbooks-url]: https://arjbingly.github.io/Capstone_5/auto_examples_index.html
