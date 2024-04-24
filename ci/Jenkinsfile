@@ -8,8 +8,8 @@ pipeline {
         PYTHONPATH = "${env.WORKSPACE}/.venv/bin"
         CUDACXX = '/usr/local/cuda-12/bin/nvcc'
         CMAKE_ARGS = "-DLLAMA_CUBLAS=on"
-        PATH="/usr/local/cuda-12.3/bin:$PATH"
-        LD_LIBRARY_PATH="/usr/local/cuda-12.3/lib64:$LD_LIBRARY_PATH"
+        PATH="/usr/local/cuda-12/bin:$PATH"
+        LD_LIBRARY_PATH="/usr/local/cuda-12/lib64:$LD_LIBRARY_PATH"
         GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new"
         }
 
