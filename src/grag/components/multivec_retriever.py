@@ -43,13 +43,13 @@ class Retriever:
     """
 
     def __init__(
-            self,
-            vectordb: Optional[VectorDB] = None,
-            store_path: Optional[str] = None,
-            id_key: Optional[str] = None,
-            namespace: Optional[str] = None,
-            top_k: Optional[str] = None,
-            client_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        store_path: Union[str, Path],
+        top_k: str,
+        id_key: str,
+        vectordb: Optional[VectorDB] = None,
+        namespace: Optional[str] = None,
+        client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
@@ -240,12 +240,12 @@ class Retriever:
                 return [d for d in docs if d is not None]
 
     def ingest(
-            self,
-            dir_path: Union[str, Path],
-            glob_pattern: str = "**/*.pdf",
-            dry_run: bool = False,
-            verbose: bool = True,
-            parser_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Ingests the files in directory.
 
@@ -282,12 +282,12 @@ class Retriever:
                     print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
     async def aingest(
-            self,
-            dir_path: Union[str, Path],
-            glob_pattern: str = "**/*.pdf",
-            dry_run: bool = False,
-            verbose: bool = True,
-            parser_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Asynchronously ingests the files in directory.
 

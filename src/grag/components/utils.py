@@ -34,7 +34,7 @@ def stuff_docs(docs: List[Document]) -> str:
     return "\n\n".join([doc.page_content for doc in docs])
 
 
-def find_config_path(current_path: Path) -> Path:
+def find_config_path(current_path: Path):
     """Finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
 
     This function starts at the current path and moves up the directory tree until it finds a file named 'config.ini'.
@@ -44,10 +44,7 @@ def find_config_path(current_path: Path) -> Path:
         current_path (Path): The starting point for the search, typically the location of the script being executed.
 
     Returns:
-        Path: The path to the found 'config.ini' file.
-
-    Raises:
-        FileNotFoundError: If 'config.ini' cannot be found in any of the parent directories.
+        Path: None or the path to the found 'config.ini' file.
     """
     config_path = Path("config.ini")
     while not (current_path / config_path).exists():
@@ -58,14 +55,19 @@ def find_config_path(current_path: Path) -> Path:
     return current_path / config_path
 
 
-def get_config(load_env=False) -> ConfigParser:
+def get_config(load_env=False):
     """Retrieves and parses the configuration settings from the 'config.ini' file.
 
     This function locates the 'config.ini' file by calling `find_config_path` using the script's current location.
     It initializes a `ConfigParser` object to read the configuration settings from the located 'config.ini' file.
+    Optionally, it can also load environment variables from a `.env` file specified in the config.
+
+    Args:
+        load_env (bool): If True, load environment variables from the path specified in the 'config.ini'. Defaults to False.
 
     Returns:
-        ConfigParser: A parser object containing the configuration settings from 'config.ini'.
+        ConfigParser: A parser object containing the configuration settings from 'config.ini', or a defaultdict
+                      with None if the file is not found or an empty dict{dict{}}.
     """
     config_path_ = os.environ.get("CONFIG_PATH")
     if config_path_:
@@ -93,6 +95,20 @@ def get_config(load_env=False) -> ConfigParser:
 
 
 def configure_args(cls):
+    """Decorator to configure class instantiation arguments from a 'config.ini' file, based on the class's module name.
+
+    This function reads configuration specific to a class's module from 'config.ini', then uses it to override or
+    provide defaults for keyword arguments passed during class instantiation.
+
+    Args:
+        cls (class): The class whose instantiation is to be configured.
+
+    Returns:
+        function: A wrapped class constructor that uses modified arguments based on the configuration.
+
+    Raises:
+        TypeError: If there is a mismatch in provided arguments and class constructor requirements.
+    """
     module_namespace = cls.__module__.split('.')[-1]
 
     config = get_config()[module_namespace]
