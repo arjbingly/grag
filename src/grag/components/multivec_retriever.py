@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
-from grag.components.utils import get_config
+from grag.components.utils import configure_args
 from grag.components.vectordb.base import VectorDB
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
@@ -20,9 +20,8 @@ from langchain_core.documents import Document
 from tqdm import tqdm
 from tqdm.asyncio import tqdm as atqdm
 
-multivec_retriever_conf = get_config()["multivec_retriever"]
 
-
+@configure_args
 class Retriever:
     """A class for multi vector retriever.
 
@@ -46,10 +45,10 @@ class Retriever:
     def __init__(
             self,
             vectordb: Optional[VectorDB] = None,
-            store_path: str = multivec_retriever_conf["store_path"],
-            id_key: str = multivec_retriever_conf["id_key"],
-            namespace: str = multivec_retriever_conf["namespace"],
-            top_k=int(multivec_retriever_conf["top_k"]),
+            store_path: Optional[str] = None,
+            id_key: Optional[str] = None,
+            namespace: Optional[str] = None,
+            top_k: Optional[str] = None,
             client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
@@ -66,6 +65,10 @@ class Retriever:
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
         if vectordb is None:
+            if any([self.store_path is None,
+                    self.id_key is None,
+                    self.namespace is None]):
+                raise TypeError("Arguments [store_path, id_key, namespace] or vectordb must be provided.")
             if client_kwargs is not None:
                 self.vectordb = DeepLakeClient(**client_kwargs)
             else:
@@ -80,7 +83,7 @@ class Retriever:
         )
         self.docstore = self.retriever.docstore
         self.splitter = TextSplitter()
-        self.top_k: int = top_k
+        self.top_k: int = int(top_k)
         self.retriever.search_kwargs = {"k": self.top_k}
 
     def id_gen(self, doc: Document) -> str:

@@ -7,14 +7,11 @@ This module provides:
 
 from typing import Union
 
+from grag.components.utils import configure_args
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-from .utils import get_config
 
-text_splitter_conf = get_config()["text_splitter"]
-
-
-# %%
+@configure_args
 class TextSplitter:
     """Class for recursively chunking text, it prioritizes '/n/n then '/n' and so on.
 
@@ -24,9 +21,9 @@ class TextSplitter:
     """
 
     def __init__(
-        self,
-        chunk_size: Union[int, str] = text_splitter_conf["chunk_size"],
-        chunk_overlap: Union[int, str] = text_splitter_conf["chunk_overlap"],
+            self,
+            chunk_size: Union[int, str],
+            chunk_overlap: Union[int, str]
     ):
         """Initialize TextSplitter."""
         self.text_splitter = RecursiveCharacterTextSplitter(

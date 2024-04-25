@@ -12,7 +12,9 @@ This module provides:
 """
 
 import os
+from collections import defaultdict
 from configparser import ConfigParser, ExtendedInterpolation
+from functools import wraps
 from pathlib import Path
 from typing import List
 
@@ -51,7 +53,8 @@ def find_config_path(current_path: Path) -> Path:
     while not (current_path / config_path).exists():
         current_path = current_path.parent
         if current_path == current_path.parent:
-            raise FileNotFoundError(f"config.ini not found in {config_path}.")
+            # raise FileNotFoundError(f"config.ini not found in {config_path}.")
+            return None
     return current_path / config_path
 
 
@@ -64,23 +67,42 @@ def get_config(load_env=False) -> ConfigParser:
     Returns:
         ConfigParser: A parser object containing the configuration settings from 'config.ini'.
     """
-    # Assuming this script is somewhere inside your project directory
-    script_location = Path(__file__).resolve()
     config_path_ = os.environ.get("CONFIG_PATH")
     if config_path_:
         config_path = Path(config_path_)
     else:
+        script_location = Path('.').resolve()
         config_path = find_config_path(script_location)
-        os.environ["CONFIG_PATH"] = str(config_path)
+        if config_path is not None:
+            os.environ["CONFIG_PATH"] = str(config_path)
 
     # Initialize parser and read config
-    config = ConfigParser(interpolation=ExtendedInterpolation())
-    config.read(config_path)
-    print(f"Loaded config from {config_path}.")
-    # load_dotenv(config['env']['env_path'])
-    if load_env:
-        env_path = Path(config['env']['env_path'])
-        if env_path.exists():
-            load_dotenv(env_path)
-            print(f"Loaded environment variables from {env_path}")
-    return config
+    if config_path:
+        config = ConfigParser(interpolation=ExtendedInterpolation())
+        config.read(config_path)
+        print(f"Loaded config from {config_path}.")
+        # Load .env 
+        if load_env:
+            env_path = Path(config['env']['env_path'])
+            if env_path.exists():
+                load_dotenv(env_path)
+                print(f"Loaded environment variables from {env_path}")
+        return config
+    else:
+        return defaultdict(lambda: defaultdict(lambda: None))
+
+
+def configure_args(cls):
+    module_namespace = cls.__module__.split('.')[-1]
+
+    config = get_config()[module_namespace]
+
+    @wraps(cls)
+    def wrapper(*args, **kwargs):
+        new_kwargs = {**config, **kwargs}
+        try:
+            return cls(*args, **new_kwargs)
+        except TypeError as e:
+            raise TypeError(f"{e}, or create a config.ini file. ") from e
+
+    return wrapper
