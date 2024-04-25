@@ -29,10 +29,9 @@ Example Config File
     task : text-generation
     max_new_tokens : 1024
     temperature : 0.1
-    n_batch_gpu_cpp : 1024
-    n_ctx_cpp : 6000
-    n_gpu_layers_cpp : -1
-    # The number of layers to put on the GPU. Mixtral-18, gemma-20
+    n_batch : 1024
+    n_ctx : 6000
+    n_gpu_layers : -1
     std_out : True
     base_dir : ${root:root_path}/models
 
@@ -61,7 +60,7 @@ Example Config File
     id_key : doc_id
     top_k : 3
 
-    [parser]
+    [parse_pdf]
     single_text_out : True
     strategy : hi_res
     infer_table_structure : True
