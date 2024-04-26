@@ -22,14 +22,14 @@ copyright = '2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
 author = 'Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.0.1b0'
 
 # -- General configuration ---------------------------------------------------
 
 html_context = {
     "display_github": True,  # Integrate GitHub
     "github_user": "arjbingly",  # Username
-    "github_repo": "Capstone_5",  # Repo name
+    "github_repo": "grag",  # Repo name
     "github_version": "main",  # Version
     "conf_py_path": "/src/",  # Path in the checkout to the docs root
 }
@@ -95,4 +95,3 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-
