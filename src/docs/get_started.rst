@@ -8,4 +8,4 @@ Get Started
    get_started.parse_pdf
    get_started.llms
    get_started.vectordb
-
+   get_started.config

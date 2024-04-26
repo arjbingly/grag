@@ -9,16 +9,15 @@ from typing import List, Optional, Tuple, Union
 
 import chromadb
 from grag.components.embedding import Embedding
-from grag.components.utils import get_config
+from grag.components.utils import configure_args
 from grag.components.vectordb.base import VectorDB
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from tqdm import tqdm
 from tqdm.asyncio import tqdm as atqdm
 
-chroma_conf = get_config()["chroma"]
 
-
+@configure_args
 class ChromaClient(VectorDB):
     """A class for connecting to a hosted Chroma Vectorstore collection.
 
@@ -44,12 +43,12 @@ class ChromaClient(VectorDB):
     """
 
     def __init__(
-        self,
-        host: str = chroma_conf["host"],
-        port: str = chroma_conf["port"],
-        collection_name: str = chroma_conf["collection_name"],
-        embedding_type: str = chroma_conf["embedding_type"],
-        embedding_model: str = chroma_conf["embedding_model"],
+            self,
+            host: str,
+            port: str,
+            collection_name: str,
+            embedding_type: str,
+            embedding_model: str,
     ):
         """Initialize a ChromaClient object.
 
@@ -126,7 +125,7 @@ class ChromaClient(VectorDB):
         """
         docs = self._filter_metadata(docs)
         for doc in (
-            tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
+                tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
             _id = self.langchain_client.add_documents([doc])
 
@@ -143,9 +142,9 @@ class ChromaClient(VectorDB):
         docs = self._filter_metadata(docs)
         if verbose:
             for doc in atqdm(
-                docs,
-                desc=f"Adding documents to {self.collection_name}",
-                total=len(docs),
+                    docs,
+                    desc=f"Adding documents to {self.collection_name}",
+                    total=len(docs),
             ):
                 await self.langchain_client.aadd_documents([doc])
         else:
@@ -153,7 +152,7 @@ class ChromaClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-        self, query: str, with_score: bool = False, top_k: Optional[int] = None
+            self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the chroma database.
 
@@ -176,7 +175,7 @@ class ChromaClient(VectorDB):
             )
 
     async def aget_chunk(
-        self, query: str, with_score=False, top_k=None
+            self, query: str, with_score=False, top_k=None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most (cosine) similar chunks from the vector database, asynchronously.
 
