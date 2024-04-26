@@ -8,14 +8,14 @@ dynamic = ["version"]
 description = 'A simple package for implementing RAG'
 readme = "README.md"
 requires-python = ">=3.8"
-license = "MIT"
-keywords = ["RAG", "Retrieval Augmented Generation", "LLM", "Graph"]
+license = { file = 'LICENSE' }
+keywords = ["RAG", "Retrieval Augmented Generation", "LLM", "retrieval", "quantization"]
 authors = [
     { name = "Arjun Bingly", email = "arjunbin@gmail.com" },
     { name = "Sanchit Vijay", email = "sanchitvj1026@gmail.com" }
 ]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -61,9 +61,9 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/arjbingly/Capstone_5#readme"
-Issues = "https://github.com/arjbingly/Capstone_5/issues"
-Source = "https://github.com/arjbingly/Capstone_5/"
+Documentation = "https://g-rag.org/"
+Issues = "https://github.com/arjbingly/grag/issues"
+Repository = "https://github.com/arjbingly/grag.git"
 
 [tool.hatch.version]
 path = "src/grag/__about__.py"
