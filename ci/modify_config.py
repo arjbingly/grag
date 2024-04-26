@@ -14,5 +14,5 @@ config['data']['data_path'] = f'{jenkins_home}/ci_test_data/data'
 config['llm']['base_dir'] = f'{jenkins_home}/ci_test_models/models'
 config['env']['env_path'] = f'{jenkins_home}/env_file/.env'
 
-with open(f'{workspace}/src/config.ini', 'w') as configfile:
+with open(f'{workspace}/config.ini', 'w') as configfile:
     config.write(configfile)
