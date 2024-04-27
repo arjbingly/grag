@@ -1,10 +1,25 @@
 Installation
 ===============
 
-To install the package
+Virtual Environment
+^^^^^^^^^^^^^^^^^^^^
+
+We strongly recommend using a virtual environment for installing the package.
+
+Follow the instructions below to create a virtual environment and activate it.
+
+* ``python -m venv .gragvenv``
+* ``source .gragvenv/source/activate``
+
+Install from pip
+^^^^^^^^^^^^^^^^^^
+
+To install the package from pip
 
 * ``pip install grag``
 
+Install from git
+^^^^^^^^^^^^^^^^^
 
 Note that since this package is still under development, to check out the latest features.
 
@@ -14,7 +29,7 @@ Note that since this package is still under development, to check out the latest
 
 
 GPU and Hardware acceleration support
------------------------------------------
+--------------------------------------
 
 GRAG uses ``llama.cpp`` to inference LLMs locally. It supports a number of hardware acceleration backends to speed up
 inference as well as backend specific options. See the
@@ -126,7 +141,6 @@ Example usage for reinstalling with CUDA support:
 
     CMAKE_ARGS="-DLLAMA_CUDA=on"
     pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir
-
 
 
 `Note that one does not have to reinstall the grag package`
