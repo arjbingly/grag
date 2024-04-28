@@ -40,10 +40,10 @@ class DeepLakeClient(VectorDB):
 
     def __init__(
             self,
-            collection_name: str,
-            store_path: Union[str, Path],
-            embedding_type: str,
-            embedding_model: str,
+            collection_name: str = 'grag',
+            store_path: Union[str, Path] = Path('data/vectordb'),
+            embedding_type: str = 'instructor-embedding',
+            embedding_model: str = 'kunlp/instructor-xl',
             read_only: bool = False,
     ):
         """Initialize DeepLake client object."""

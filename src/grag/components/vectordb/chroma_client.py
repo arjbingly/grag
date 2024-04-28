@@ -44,11 +44,11 @@ class ChromaClient(VectorDB):
 
     def __init__(
             self,
-            host: str,
-            port: str,
-            collection_name: str,
-            embedding_type: str,
-            embedding_model: str,
+            host: str = 'localhost',
+            port: Union[str, int] = 8000,
+            collection_name: str = 'grag',
+            embedding_type: str = 'instructor-embedding',
+            embedding_model: str = 'hkunlp/instructor-xl',
     ):
         """Initialize a ChromaClient object.
 

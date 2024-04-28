@@ -5,6 +5,8 @@ This module provides:
 - ParsePDF
 """
 
+from typing import Optional
+
 from grag.components.utils import configure_args
 from langchain_core.documents import Document
 from unstructured.partition.pdf import partition_pdf
@@ -28,14 +30,14 @@ class ParsePDF:
 
     def __init__(
             self,
-            single_text_out,
-            strategy,
-            infer_table_structure,
-            extract_images,
-            image_output_dir,
-            add_captions_to_text,
-            add_captions_to_blocks,
-            table_as_html,
+            single_text_out: bool = True,
+            strategy: str = "hi_res",
+            infer_table_structure: bool = True,
+            extract_images: bool = True,
+            image_output_dir: Optional[str] = None,
+            add_captions_to_text: bool = True,
+            add_captions_to_blocks: bool = True,
+            table_as_html: bool = False,
     ):
         """Initialize instance variables with parameters."""
         self.strategy = strategy
