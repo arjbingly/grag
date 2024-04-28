@@ -2,7 +2,7 @@
 
 This module provides:
 
-- Retriever
+— Retriever
 """
 
 import uuid
@@ -30,9 +30,10 @@ class Retriever:
     linked document, chunk, etc.
 
     Attributes:
+        vectordb: ChromaClient class instance from components.client 
+                   (Optional, if the user provides it, store_path, id_key and namespace is not considered)
         store_path: Path to the local file store
         id_key: A key prefix for identifying documents
-        vectordb: ChromaClient class instance from components.client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
         retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
                     langchain's multi-vector retriever
@@ -55,11 +56,11 @@ class Retriever:
 
         Args:
         vectordb: Vector DB client instance
-        store_path: Path to the local file store, defaults to argument from config file
-        id_key: A key prefix for identifying documents, defaults to argument from config file
-        namespace: A namespace for producing unique id, defaults to argument from congig file
-        top_k: Number of top chunks to return from similarity search, defaults to 1
-        client_kwargs: kwargs to pass to the vectordb client
+        store_path: Path to the local file store, defaults to data/doc_store
+        id_key: A key prefix for identifying documents, defaults to 'doc_id'
+        namespace: A namespace for producing unique id
+        top_k: Number of top chunks to return from similarity search, defaults to 3
+        client_kwargs: kwargs to pass to the vectordb client constructor, optional, defaults to None
         """
         self.store_path = store_path
         self.id_key = id_key
@@ -89,7 +90,7 @@ class Retriever:
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.
 
-        This ensures that a  single document always gets the same unique id.
+        This ensures that a single document always gets the same unique id.
 
         Args:
             doc: langchain_core.documents.Document

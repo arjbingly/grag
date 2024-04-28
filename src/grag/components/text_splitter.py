@@ -2,7 +2,7 @@
 
 This module provides:
 
-- TextSplitter
+— TextSplitter
 """
 
 from typing import Union
@@ -25,11 +25,10 @@ class TextSplitter:
             chunk_size: Union[int, str] = 2000,
             chunk_overlap: Union[int, str] = 400
     ):
-        """Initialize TextSplitter."""
+        """Initialize TextSplitter using chunk_size and chunk_overlap."""
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=int(chunk_size),
             chunk_overlap=int(chunk_overlap),
             length_function=len,
             is_separator_regex=False,
         )
-        """Initialize TextSplitter using chunk_size and chunk_overlap"""
