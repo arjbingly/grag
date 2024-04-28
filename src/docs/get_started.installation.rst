@@ -29,7 +29,7 @@ Note that since this package is still under development, to check out the latest
 
 
 GPU and Hardware acceleration support
---------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GRAG uses ``llama.cpp`` to inference LLMs locally. It supports a number of hardware acceleration backends to speed up
 inference as well as backend specific options. See the
@@ -41,84 +41,85 @@ Below are some of the supported backends.
   defining environment variables.
 
 .. code-block:: console
+
     $env:CMAKE_ARGS = "-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
     pip install llama-cpp-python
 
-#. OpenBLAS (CPU)
+**1. OpenBLAS (CPU)**
 
-To install with OpenBLAS, set the `LLAMA_BLAS` and `LLAMA_BLAS_VENDOR` environment variables before installing:
+To install with OpenBLAS, set the ``LLAMA_BLAS`` and ``LLAMA_BLAS_VENDOR`` environment variables before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
     pip install llama-cpp-python
 
 
-#. CUDA (Nvidia-GPU)
+**2. CUDA (Nvidia-GPU)**
 
-To install with CUDA support, set the `LLAMA_CUDA=on` environment variable before installing:
+To install with CUDA support, set the ``LLAMA_CUDA=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_CUDA=on"
     pip install grag
 
 
-#. Metal (MacOS)
+**3. Metal (MacOS)**
 
-To install with Metal (MPS), set the `LLAMA_METAL=on` environment variable before installing:
+To install with Metal (MPS), set the ``LLAMA_METAL=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_METAL=on"
     pip install grag
 
 
-#. CLBlast (OpenCL)
+**4. CLBlast (OpenCL)**
 
-To install with CLBlast, set the `LLAMA_CLBLAST=on` environment variable before installing:
+To install with CLBlast, set the ``LLAMA_CLBLAST=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_CLBLAST=on"
     pip install grag
 
 
-#. hipBLAS (AMD ROCm)</summary>
+**5. hipBLAS (AMD ROCm)**
 
-To install with hipBLAS / ROCm support for AMD cards, set the `LLAMA_HIPBLAS=on` environment variable before installing:
+To install with hipBLAS / ROCm support for AMD cards, set the ``LLAMA_HIPBLAS=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_HIPBLAS=on"
     pip install grag
 
 
-#. Vulkan
+**6. Vulkan**
 
-To install with Vulkan support, set the `LLAMA_VULKAN=on` environment variable before installing:
+To install with Vulkan support, set the ``LLAMA_VULKAN=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_VULKAN=on"
     pip install grag
 
 
-#. Kompute
+**7. Kompute**
 
-To install with Kompute support, set the `LLAMA_KOMPUTE=on` environment variable before installing:
+To install with Kompute support, set the ``LLAMA_KOMPUTE=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_KOMPUTE=on"
     pip install grag
 
 
-#. SYCL
+**8. SYCL**
 
-To install with SYCL support, set the `LLAMA_SYCL=on` environment variable before installing:
+To install with SYCL support, set the ``LLAMA_SYCL=on`` environment variable before installing:
 
-.. code-block:: console
+.. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_SYCL=on -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx"
     pip install grag
