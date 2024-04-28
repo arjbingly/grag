@@ -167,3 +167,6 @@ cython_debug/
 **/others
 data/
 full_report/Latex_report/Capstone5_report_v2.tex
+
+# Docs
+src/docs/_*
