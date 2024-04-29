@@ -43,7 +43,7 @@ Below are some of the supported backends.
 .. code-block:: console
 
     $env:CMAKE_ARGS = "-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
-    pip install llama-cpp-python
+    pip install grag
 
 **1. OpenBLAS (CPU)**
 
@@ -52,7 +52,7 @@ To install with OpenBLAS, set the ``LLAMA_BLAS`` and ``LLAMA_BLAS_VENDOR`` envir
 .. code-block:: bash
 
     CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
-    pip install llama-cpp-python
+    pip install grag
 
 
 **2. CUDA (Nvidia-GPU)**
