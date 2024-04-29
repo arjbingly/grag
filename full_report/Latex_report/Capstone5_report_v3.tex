@@ -50,8 +50,10 @@
 
 	\vfill
 	\begin{abstract}
-	    We introduce an implementation of Retrieval-Augmented Generation (RAG) that retrieves from graph databases as part of an end-to-end, self-hostable, semantic-based search engine for internal documents. RAG’s ability to understand context and producing relevant quality responses to prompts is crucial to producing a semantic-based search engine. Traditional RAG implementation uses a vector database; but we see the potential for graph databases, owing to its complex relational capabilities (revise this). We also present a performance comparison between vector and graph databases for a RAG pipeline. 
-	\end{abstract}
+	    We introduce GRAG (Good RAG), an open-sourced Python package providing an end-to-end implementation of Retrieval-Augmented Generation (RAG).
+	    The package provides easy integration with various LLMs locally, and support for vector databases such as Chroma and DeepLake. It also provides a simple GUI implementation. This report details GRAG and its features.
+	    Future work includes enhancement of the PDF parsing features, possible integration for other document types, as well as testing GRAG performance on a graph data structure versus a traditional vector database and producing an evaluation suite for this test.
+
 	\vfill
 % Bottom of the page
 \end{titlepage}
@@ -60,11 +62,8 @@
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Introduction}
 Retriever-Augmented Generation (RAG) is a method natural language processing (NLP) that combines the retrieval of informational documents from a large database (the "retriever" part) and the generation of coherent, contextual text based on the information retrieved (the "generation" part). 
-It was introduced as an enhancement to Large Language Models (LLMs), as RAG provides the LLM with real-time data access, preserves data privacy, and mitigate "hallucination" (cite paper). RAG is therefore ideal for semantic-based search engines; it improves their ability to understand and respond to queries with high relevance, accuracy, and personalization. 
-Traditionally, RAG implementations uses vector databases for its retrieval process. As RAG uses vector embeddings for its processes, vector database is the optimal choice for ease of retrieval and efficiency in similarity search. 
-However, since RAG simply outputs the closest vector in relation to the query vector, it leaves room for error if the database does not contain relevant information to the input prompt. This makes RAG overly reliant on the quality of the data and the embedding process. Additionally, while vector databases are scalable, the computational resources required for its maintenance can be expensive. 
-Graph database presents a very promising possibility due to its complex relational network - in theory, this could solve vector DB's limitation. 
-There is limited existing literature comparing the performance of vector versus graph database in a RAG implementation. This paper aims to experiment with graph database for RAG, and compare its performance to traditional implementation which uses vector databases.
+It was introduced as an enhancement to Large Language Models (LLMs), as RAG provides the LLM with real-time data access, preserves data privacy, and mitigate "hallucination" (Lewis et al., 2020).
+RAG has become very popular since its introduction in 2020, with its most-known implementation, ChatGPT, creating a huge impact in all industries and
 
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Problem Statement}
@@ -80,6 +79,7 @@ The original inspiration was to create an end-to-end, open-sourced, self-hostabl
 https://github.com/michaelthwan/searchGPT and https://github.com/GerevAI/gerev#integrations are open-sourced packages for LLM-powered semantic search engines. However, they leverage APIs, which makes the process reliant on online resources. We aim to localize all processes to ensure self-hostability.
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Solution and Methodology}
+
 \subsection{RAG Pipeline}
 \subsubsection{Overview}
 Figure 1 shows a traditional RAG pipeline. As the name implies, the process is two-part: retrieval and generation. 
@@ -156,8 +156,7 @@ The cons are that it \textit{requires many more calls to the LLM} than the Stuff
 \href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
 
 \subsubsection{Propmting}
-Prompting strategies differ from model to model.For example, the Llama model takes system prompts.
-(add example here)
+
 \subsubsection{Other Hyperparameters}
 \begin{itemize}
     \item \textbf{Chunk Sizes} --- generally, the smallest chunk size you can get away with.
@@ -173,19 +172,23 @@ Our approach involved experimenting with various packages and strategies to deve
 This open-source library facilitates the processing of diverse document types. Utilizing its partition_pdf() function, we were able to segment a PDF document into distinct elements, enhancing the parsing process. Unstructured IO also supports "FigureCaptions" identification, potentially improving the contextual understanding of the model. We adopted their "hi-res" strategy, which converts PDF pages into images and then applying the OCR tool PyTesseract to extract text. 
 While the output for plain text was satisfactory, the library struggled with more complex documents, such as tax forms and bank statements, yielding inadequate results.
 (add example of output-original text versus output text)
+
 \subsubsection{PDFPlumber, Unstructured IO, and PyTesseract: (add more details on method here)}
 To address these challenges, we integrated PDFPlumber for parsing table elements, PyTesseract for image-based text extraction, and Unstructured IO for processing other text content. PDFPlumber demonstrated superior layout detection capabilities, offering higher accuracy in parsing tables from non-scanned documents compared to our previous method. However, it underperformed with scanned documents and exhibited inconsistent results across various PDF files.
 (add example of output - original text vs output text)
 
 \subesection{LLM implementation}
-(outline only, needs revision) Quantize model first; currently cannot run without quantization. 
+because of data privacy concerns, we could not use OpenAI APIs directly. To run models locally, llama.cpp is the best implementation as it uses a low level language with extensive backend support, such as CUDA.
+Quantize model first; currently cannot run without quantization.
 Use llama.cpp which provides quantization 
 Have text user interface (TUI) for users to easily download the model from HuggingFace and quantize
 Tested our implementation with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b
-Could use any other model
+It supports a lot of models
+Problem with llama.cpp is it's not easy to use its repo. to make the process easy, we have a script/cookbook for easy user implementation.
 
-\subsection{Graph DB implementation}
-(to be added)
+\subsection{Multi-vector Retriever}
+
+
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Results and Discussion}
 
@@ -194,7 +197,15 @@ Could use any other model
 \subsection{Data tables}
 % ------------------------------------------------------------------------------------------------------------------------
 
-\section{Discussion}
+\section{Future Work}
+
+\subsection{Graph DB implementation}
+
+Traditionally, RAG implementations uses vector databases for its retrieval process. As RAG uses vector embeddings for its processes, vector database is the optimal choice for ease of retrieval and efficiency in similarity search.
+However, since RAG simply outputs the closest vector in relation to the query vector, it leaves room for error if the database does not contain relevant information to the input prompt. This makes RAG overly reliant on the quality of the data and the embedding process.
+Graph database presents a very promising possibility due to its complex relational network - in theory, this could solve vector DB's limitation.
+There is limited existing literature comparing the performance of vector versus graph database in a RAG implementation. This paper aims to experiment with graph database for RAG, and compare its performance to traditional implementation which uses vector databases.
+
 % ------------------------------------------------------------------------------------------------------------------------
 
 \section{Conclusion}
