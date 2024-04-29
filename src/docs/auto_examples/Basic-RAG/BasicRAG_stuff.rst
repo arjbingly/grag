@@ -30,7 +30,12 @@ For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Caps
 
   Illustration of stuff chain (Source: LangChain)
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-29
+
+`Note that this cookbook assumes that you already have the` ``Llama-2-13b-chat`` `LLM ready,`
+`for more details on how to quantize and run an LLM locally,`
+`refer to the LLM section under Getting Started.`
+
+.. GENERATED FROM PYTHON SOURCE LINES 19-35
 
 .. code-block:: Python
 
@@ -39,10 +44,12 @@ For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Caps
     from grag.components.vectordb.deeplake_client import DeepLakeClient
     from grag.rag.basic_rag import BasicRAG
 
-    client = DeepLakeClient(collection_name="test")
+    client = DeepLakeClient(collection_name="grag")
     retriever = Retriever(vectordb=client)
 
-    rag = BasicRAG(doc_chain="stuff", retriever=retriever)
+    rag = BasicRAG(model_name="Llama-2-13b-chat", retriever=retriever)
+    # Note that doc_chain='stuff' is the default hence not passed to the class explicitly.
+
 
     if __name__ == "__main__":
         while True:

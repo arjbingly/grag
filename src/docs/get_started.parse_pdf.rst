@@ -34,7 +34,7 @@ Parsing Complex PDF Layouts
 While unstructured.io performed well in parsing PDFs with straightforward layouts, PDFs with complex layouts, such as nested tables or tax forms, were not parsed accurately. To address this issue, the pdfplumber and pytesseract libraries were employed.
 
 Table Parsing Methodology
-=========================
+#########################
 
 For each page in the PDF file, the find_tables method is called with specific table settings to find the tables on that page. The table settings used are:
 
@@ -55,7 +55,7 @@ After processing all the tables on the page, a dictionary is created with the `p
 Finally, the extracted_tables list is returned, which contains all the extracted tables from the PDF file, organized by page and table number.
 
 Limitations
-===========
+###########
 
 While the table parsing methodology using `pdfplumber` could process most tables, it could not parse every table layout accurately. The table settings need to be adjusted for different types of table layouts. Additionally, pdfplumber could not extract figure captions, whereas `unstructured.io` could.
 Future work may involve developing a more robust and flexible table parsing algorithm that can handle a wider range of table layouts and integrate seamlessly with the ParsePDF class to leverage the strengths of both unstructured.io and pdfplumber libraries.

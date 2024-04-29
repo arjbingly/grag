@@ -128,7 +128,7 @@ class FewShotPrompt(Prompt):
         language (str): The language of the prompt (Optional, defaults to "en") (Parent Class)
         filepath (str): The filepath of the prompt (Optional) (Parent Class)
         input_keys (List[str]): The input keys for the prompt (Parent Class)
-        output_keys (List[str]): The output keys for the prompt
+        input_keys (List[str]): The output keys for the prompt
         prefix (str): The template prefix for the prompt
         suffix (str): The template suffix for the prompt
         example_template (str): The template for formatting the examples

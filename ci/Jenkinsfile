@@ -109,6 +109,7 @@ pipeline {
         fixed{
             sshagent(credentials: ['GithubKey']){
                 sh 'git checkout main'
+                sh 'git pull'
                 sh 'python3 ci/modify_test_status.py'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'
@@ -119,6 +120,7 @@ pipeline {
         regression{
             sshagent(credentials: ['GithubKey']){
                 sh 'git checkout main'
+                sh 'git pull'
                 sh 'python3 ci/modify_test_status.py --fail'
                 sh 'git add README.md'
                 sh 'git commit -m "test status updated"'

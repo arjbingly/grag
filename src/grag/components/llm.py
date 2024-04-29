@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 import torch
+from grag.components.utils import configure_args
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
@@ -16,13 +17,8 @@ from transformers import (
     pipeline,
 )
 
-from .utils import get_config
 
-llm_conf = get_config(load_env=True)["llm"]
-
-print("CUDA: ", torch.cuda.is_available())
-
-
+@configure_args
 class LLM:
     """A class for managing and utilizing large language models (LLMs).
 
@@ -38,20 +34,20 @@ class LLM:
     """
 
     def __init__(
-        self,
-        model_name: str = llm_conf["model_name"],
-        device_map: str = llm_conf["device_map"],
-        task: str = llm_conf["task"],
-        max_new_tokens: str = llm_conf["max_new_tokens"],
-        temperature: str = llm_conf["temperature"],
-        n_batch: str = llm_conf["n_batch_gpu_cpp"],
-        n_ctx: str = llm_conf["n_ctx_cpp"],
-        n_gpu_layers: str = llm_conf["n_gpu_layers_cpp"],
-        std_out: Union[bool, str] = llm_conf["std_out"],
-        base_dir: str = llm_conf["base_dir"],
-        quantization: str = llm_conf["quantization"],
-        pipeline: str = llm_conf["pipeline"],
-        callbacks=None,
+            self,
+            model_name: str,
+            device_map: str,
+            task: str,
+            max_new_tokens: str,
+            temperature: str,
+            n_batch: str,
+            n_ctx: str,
+            n_gpu_layers: str,
+            std_out: Union[bool, str],
+            base_dir: str,
+            quantization: str,
+            pipeline: str,
+            callbacks=None,
     ):
         """Initialize the LLM class using the given parameters."""
         self.base_dir = Path(base_dir)
@@ -163,8 +159,8 @@ class LLM:
         return llm
 
     def load_model(
-        self, model_name: Optional[str] = None, pipeline: Optional[str] = None, quantization: Optional[str] = None,
-        is_local: Optional[bool] = None
+            self, model_name: Optional[str] = None, pipeline: Optional[str] = None, quantization: Optional[str] = None,
+            is_local: Optional[bool] = None
     ):
         """Loads the model based on the specified pipeline and model name.
 
