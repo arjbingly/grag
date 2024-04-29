@@ -19,7 +19,9 @@ ASYNC = True
 
 retriever = Retriever(vectordb=client)
 
-dir_path = Path(__file__).parents[2] / "data/pdf"  # path to the folder containing the pdfs
+dir_path = (
+    Path(__file__).parents[2] / "data/pdf"
+)  # path to the folder containing the pdfs
 
 if ASYNC:
     asyncio.run(retriever.aingest(dir_path))

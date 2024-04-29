@@ -12,9 +12,9 @@ For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Caps
   Illustration of refine chain (Source: LangChain)
 
 
-Note that this cookbook assumes that you already have the 'Llama-2-13b-chat' LLM ready, 
-for more details on how to quantize and fun an LLM locally,
-refer to the LLM section under Getting Started.
+`Note that this cookbook assumes that you already have the` ``Llama-2-13b-chat`` `LLM ready,`
+`for more details on how to quantize and run an LLM locally,`
+`refer to the LLM section under Getting Started.`
 """
 
 from grag.components.multivec_retriever import Retriever
@@ -23,7 +23,7 @@ from grag.rag.basic_rag import BasicRAG
 
 client = DeepLakeClient(collection_name="grag")
 retriever = Retriever(vectordb=client)
-rag = BasicRAG(model_name='Llama-2-13b-chat', doc_chain="refine", retriever=retriever)
+rag = BasicRAG(model_name="Llama-2-13b-chat", doc_chain="refine", retriever=retriever)
 
 if __name__ == "__main__":
     while True:
