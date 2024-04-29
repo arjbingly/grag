@@ -93,6 +93,6 @@ For more information refer to [Documentation](https://arjbingly.github.io/Capsto
 
 
 [Documentation-badge]: https://img.shields.io/badge/Documentation-red.svg?style=for-the-badge
-[Docuementation-url]: https://arjbingly.github.io/Capstone_5/
+[Docuementation-url]: https://g-rag.org
 [Cookbooks-badge]: https://img.shields.io/badge/Cookbooks-blue?style=for-the-badge
-[Cookbooks-url]: https://arjbingly.github.io/Capstone_5/auto_examples_index.html
+[Cookbooks-url]: https://g-rag.org/auto_examples_index.html
