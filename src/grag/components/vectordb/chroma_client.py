@@ -67,8 +67,7 @@ class ChromaClient(VectorDB):
 
         self.embedding_function = Embedding(
             embedding_model=self.embedding_model, embedding_type=self.embedding_type
-        ).embedding_function
-
+        )
         self.client = chromadb.HttpClient(host=self.host, port=self.port)  # type: ignore
         self.collection = self.client.get_or_create_collection(
             name=self.collection_name
@@ -79,6 +78,15 @@ class ChromaClient(VectorDB):
             embedding_function=self.embedding_function,
         )
         self.allowed_metadata_types = (str, int, float, bool)
+
+    def __str__(self):
+        str_string = "ChromaClient("
+        str_string += f"\thost: {self.host},\n"
+        str_string += f"\tport: {self.port},\n"
+        str_string += f"\tcollection_name: {self.collection_name},\n"
+        str_string += f"\tembedding: {self.embedding_function}\n"
+        str_string += ")"
+        return str_string
 
     def __len__(self) -> int:
         """Count the number of chunks in the database."""

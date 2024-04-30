@@ -55,7 +55,7 @@ class DeepLakeClient(VectorDB):
 
         self.embedding_function = Embedding(
             embedding_model=self.embedding_model, embedding_type=self.embedding_type
-        ).embedding_function
+        )
 
         # self.client = VectorStore(path=self.store_path / self.collection_name)
         self.langchain_client = DeepLake(
@@ -65,6 +65,15 @@ class DeepLakeClient(VectorDB):
         )
         self.client = self.langchain_client.vectorstore
         self.allowed_metadata_types = (str, int, float, bool)
+
+    def __str__(self):
+        str_string = "DeepLakeClient("
+        str_string += f"\tstore_path: {self.store_path},\n"
+        str_string += f"\tcollection_name: {self.collection_name},\n"
+        str_string += f"\tread_only: {self.read_only},\n"
+        str_string += f"\tembedding :{self.embedding_function}\n"
+        str_string += ")"
+        return str_string
 
     def __len__(self) -> int:
         """Number of chunks in the vector database."""

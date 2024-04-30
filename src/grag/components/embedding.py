@@ -42,6 +42,9 @@ class Embedding:
             case _:
                 raise Exception("embedding_type is invalid")
 
+    def __call__(self):
+        return self.embedding_function()
+
     def __str__(self):
         repr_string = "Embedding (\n"
         repr_string += f"\ttype: {self.embedding_type},\n"
@@ -53,3 +56,8 @@ class Embedding:
 
         repr_string += ")"
         return repr_string
+
+
+if __name__ == "__main__":
+    e = Embedding("instructor-embedding", "hkunlp/instructor-xl")
+    print(e)
