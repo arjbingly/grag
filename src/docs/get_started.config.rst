@@ -4,6 +4,14 @@ Configuration
 GRAG gives the user an option to use a config file, in the form of a ``config.ini``.
 The use of a config file streamlines the process of passing arguments to the various components in the code.
 
+Generate Config file
+**********************
+To generate a starters config file with default values, run the below command at the location you want the config file.
+
+``
+python -m grag.components.create_config
+``
+
 File Resolution
 ****************
 GRAG takes the closest ``config.ini`` to the file you run. This enables users to have multiple config files per project,
