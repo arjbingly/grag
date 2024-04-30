@@ -2,7 +2,7 @@
 
 This module provides:
 
-- Retriever
+— Retriever
 """
 
 import uuid
@@ -30,9 +30,10 @@ class Retriever:
     linked document, chunk, etc.
 
     Attributes:
+        vectordb: ChromaClient class instance from components.client 
+                   (Optional, if the user provides it, store_path, id_key and namespace is not considered)
         store_path: Path to the local file store
         id_key: A key prefix for identifying documents
-        vectordb: ChromaClient class instance from components.client
         store: langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file
         retriever: langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
                     langchain's multi-vector retriever
@@ -43,23 +44,23 @@ class Retriever:
     """
 
     def __init__(
-        self,
-        store_path: Union[str, Path],
-        top_k: str,
-        id_key: str,
-        vectordb: Optional[VectorDB] = None,
-        namespace: Optional[str] = None,
-        client_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            vectordb: Optional[VectorDB] = None,
+            store_path: Union[str, Path] = Path('data/doc_store'),
+            top_k: Union[str, int] = 3,
+            id_key: str = 'doc_id',
+            namespace: str = '71e4b558187b270922923569301f1039',
+            client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
         Args:
         vectordb: Vector DB client instance
-        store_path: Path to the local file store, defaults to argument from config file
-        id_key: A key prefix for identifying documents, defaults to argument from config file
-        namespace: A namespace for producing unique id, defaults to argument from congig file
-        top_k: Number of top chunks to return from similarity search, defaults to 1
-        client_kwargs: kwargs to pass to the vectordb client
+        store_path: Path to the local file store, defaults to data/doc_store
+        id_key: A key prefix for identifying documents, defaults to 'doc_id'
+        namespace: A namespace for producing unique id
+        top_k: Number of top chunks to return from similarity search, defaults to 3
+        client_kwargs: kwargs to pass to the vectordb client constructor, optional, defaults to None
         """
         self.store_path = store_path
         self.id_key = id_key
@@ -89,7 +90,7 @@ class Retriever:
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.
 
-        This ensures that a  single document always gets the same unique id.
+        This ensures that a single document always gets the same unique id.
 
         Args:
             doc: langchain_core.documents.Document
@@ -240,12 +241,12 @@ class Retriever:
                 return [d for d in docs if d is not None]
 
     def ingest(
-        self,
-        dir_path: Union[str, Path],
-        glob_pattern: str = "**/*.pdf",
-        dry_run: bool = False,
-        verbose: bool = True,
-        parser_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            dir_path: Union[str, Path],
+            glob_pattern: str = "**/*.pdf",
+            dry_run: bool = False,
+            verbose: bool = True,
+            parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Ingests the files in directory.
 
@@ -282,12 +283,12 @@ class Retriever:
                     print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
     async def aingest(
-        self,
-        dir_path: Union[str, Path],
-        glob_pattern: str = "**/*.pdf",
-        dry_run: bool = False,
-        verbose: bool = True,
-        parser_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            dir_path: Union[str, Path],
+            glob_pattern: str = "**/*.pdf",
+            dry_run: bool = False,
+            verbose: bool = True,
+            parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Asynchronously ingests the files in directory.
 

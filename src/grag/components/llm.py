@@ -22,34 +22,59 @@ from transformers import (
 class LLM:
     """A class for managing and utilizing large language models (LLMs).
 
+    This class facilitates the loading and operation of large language models using different pipelines and settings.
+    It supports both local and Hugging Face-based model management, with adjustable parameters for quantization,
+    computational specifics, and output control.
+
     Attributes:
         model_name (str): Name of the model to be loaded.
-        device_map (dict): Device mapping for model execution.
-        task (str): The task for which the model is being used.
-        max_new_tokens (int): Maximum new tokens to be generated.
-        temperature (float): Sampling temperature for generation.
-        n_batch (int): Number of batches for GPU CPP.
-        n_ctx (int): Context size for CPP.
-        n_gpu_layers (int): Number of GPU layers for CPP.
+        quantization (str): Quantization setting for the model, affecting performance and memory usage.
+        pipeline (str): Type of pipeline ('llama_cpp' or 'hf') used for model operations.
+        device_map (str): Device mapping for model execution, defaults to 'auto'.
+        task (str): The task for which the model is being used, defaults to 'text-generation'.
+        max_new_tokens (int): Maximum number of new tokens to be generated, defaults to 1024.
+        temperature (float): Sampling temperature for generation, affecting randomness.
+        n_batch (int): Number of batches for GPU CPP, impacting batch processing.
+        n_ctx (int): Context size for CPP, defining the extent of context considered.
+        n_gpu_layers (int): Number of GPU layers for CPP, specifying computational depth.
+        std_out (bool or str): Flag or descriptor for standard output during operations.
+        base_dir (str or Path): Base directory path for model files, defaults to 'models'.
+        callbacks (list or None): List of callback functions for additional processing.
     """
 
     def __init__(
-            self,
-            model_name: str,
-            device_map: str,
-            task: str,
-            max_new_tokens: str,
-            temperature: str,
-            n_batch: str,
-            n_ctx: str,
-            n_gpu_layers: str,
-            std_out: Union[bool, str],
-            base_dir: str,
-            quantization: str,
-            pipeline: str,
-            callbacks=None,
+        self,
+        model_name: str,
+        quantization: str,
+        pipeline: str,
+        device_map: str = 'auto',
+        task: str = 'text-generation',
+        max_new_tokens: str = '1024',
+        temperature: Union[str, int] = 0.1,
+        n_batch: Union[str, int] = 1024,
+        n_ctx: Union[str, int] = 6000,
+        n_gpu_layers: Union[str, int] = -1,
+        std_out: Union[bool, str] = True,
+        base_dir: Union[str, Path] = Path('models'),
+        callbacks=None,
     ):
-        """Initialize the LLM class using the given parameters."""
+        """Initialize the LLM class using the given parameters.
+
+        Args:
+            model_name (str): Specifies the model name.
+            quantization (str): Sets the model's quantization configuration.
+            pipeline (str): Determines which pipeline to use for model operations.
+            device_map (str, optional): Device configuration for model deployment.
+            task (str, optional): Defines the specific task or use-case of the model.
+            max_new_tokens (int, optional): Limits the number of tokens generated in one operation.
+            temperature (float, optional): Controls the generation randomness.
+            n_batch (int, optional): Adjusts batch processing size.
+            n_ctx (int, optional): Configures the context size used in model operations.
+            n_gpu_layers (int, optional): Sets the depth of computation in GPU layers.
+            std_out (bool or str, optional): Manages standard output settings.
+            base_dir (str or Path, optional): Specifies the directory for storing model files.
+            callbacks (list, optional): Provides custom callback functions for runtime.
+        """
         self.base_dir = Path(base_dir)
         self._model_name = model_name
         self.quantization = quantization
@@ -159,8 +184,8 @@ class LLM:
         return llm
 
     def load_model(
-            self, model_name: Optional[str] = None, pipeline: Optional[str] = None, quantization: Optional[str] = None,
-            is_local: Optional[bool] = None
+        self, model_name: Optional[str] = None, pipeline: Optional[str] = None, quantization: Optional[str] = None,
+        is_local: Optional[bool] = None
     ):
         """Loads the model based on the specified pipeline and model name.
 

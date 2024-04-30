@@ -2,13 +2,15 @@
 
 This module provides:
 
-- stuff_docs: concats langchain documents into string
+— stuff_docs: concats langchain documents into string
 
-- load_prompt: loads json prompt to langchain prompt
+— load_prompt: loads json prompt to langchain prompt
 
-- find_config_path: finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
+— find_config_path: finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
 
-- get_config: retrieves and parses the configuration settings from the 'config.ini' file.
+— get_config: retrieves and parses the configuration settings from the 'config.ini' file.
+
+— configure_args: a decorator to configure class instantiation arguments from a 'config.ini' file.
 """
 
 import os
@@ -38,7 +40,7 @@ def find_config_path(current_path: Path):
     """Finds the path of the 'config.ini' file by traversing up the directory tree from the current path.
 
     This function starts at the current path and moves up the directory tree until it finds a file named 'config.ini'.
-    If 'config.ini' is not found by the time the root of the directory tree is reached, a FileNotFoundError is raised.
+    If 'config.ini' is not found by the time the root of the directory tree is reached, None is returned.
 
     Args:
         current_path (Path): The starting point for the search, typically the location of the script being executed.
@@ -61,6 +63,7 @@ def get_config(load_env=False):
     This function locates the 'config.ini' file by calling `find_config_path` using the script's current location.
     It initializes a `ConfigParser` object to read the configuration settings from the located 'config.ini' file.
     Optionally, it can also load environment variables from a `.env` file specified in the config.
+    If a config file cannot be read, a default dictionary is returned.
 
     Args:
         load_env (bool): If True, load environment variables from the path specified in the 'config.ini'. Defaults to False.

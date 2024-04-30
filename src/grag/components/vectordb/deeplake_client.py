@@ -2,7 +2,7 @@
 
 This module provides:
 
-- DeepLakeClient
+— DeepLakeClient
 """
 
 from pathlib import Path
@@ -32,21 +32,31 @@ class DeepLakeClient(VectorDB):
             a function of the embedding model, derived from the embedding_type and embedding_modelname
         client: deeplake.core.vectorstore.VectorStore
             DeepLake API
-        collection
-            Chroma API for the collection
+        collection_name: str
+             The name of the collection where the vectors are stored.
         langchain_client: langchain_community.vectorstores.DeepLake
-            LangChain wrapper for DeepLake API
+            LangChain wrapper for DeepLake API.
     """
 
     def __init__(
             self,
-            collection_name: str,
-            store_path: Union[str, Path],
-            embedding_type: str,
-            embedding_model: str,
+            store_path: Union[str, Path] = Path('data/vectordb'),
+            collection_name: str = 'grag',
+            embedding_type: str = 'instructor-embedding',
+            embedding_model: str = 'kunlp/instructor-xl',
             read_only: bool = False,
     ):
-        """Initialize DeepLake client object."""
+        """Initialize a DeepLakeClient object.
+
+        Args:
+            store_path: path to the deeplake vectorstore, defaults to 'data/vectordb'
+            collection_name: name of the collection in the DeepLake Vectorstore, defaults to 'grag'
+            embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding', 
+                            defaults to instructor-embedding
+            embedding_model: model name of embedding used, should correspond to the embedding_type, 
+                             defaults to hkunlp/instructor-xl
+            read_only: flag indicating whether the client is read-only, defaults to False.
+        """
         self.store_path = Path(store_path)
         self.collection_name = collection_name
         self.read_only = read_only

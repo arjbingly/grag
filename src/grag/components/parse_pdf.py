@@ -2,8 +2,10 @@
 
 This module provides:
 
-- ParsePDF
+— ParsePDF
 """
+
+from typing import Optional
 
 from grag.components.utils import configure_args
 from langchain_core.documents import Document
@@ -17,25 +19,27 @@ class ParsePDF:
     Attributes:
         single_text_out (bool): Whether to combine all text elements into a single output document.
         strategy (str): The strategy for PDF partitioning; default is "hi_res" for better accuracy.
-        extract_image_block_types (list): Elements to be extracted as image blocks.
         infer_table_structure (bool): Whether to extract tables during partitioning.
         extract_images (bool): Whether to extract images.
         image_output_dir (str): Directory to save extracted images, if any.
         add_captions_to_text (bool): Whether to include figure captions in text output. Default is True.
         add_captions_to_blocks (bool): Whether to add captions to table and image blocks. Default is True.
-        add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. Default is True.
+        add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. 
+                                  Default is True.
+        table_as_html (bool): Whether to add table elements as HTML. Default is False.
     """
 
     def __init__(
             self,
-            single_text_out,
-            strategy,
-            infer_table_structure,
-            extract_images,
-            image_output_dir,
-            add_captions_to_text,
-            add_captions_to_blocks,
-            table_as_html,
+            single_text_out: bool = True,
+            strategy: str = "hi_res",
+            infer_table_structure: bool = True,
+            extract_images: bool = True,
+            image_output_dir: Optional[str] = None,
+            add_captions_to_text: bool = True,
+            add_captions_to_blocks: bool = True,
+            add_caption_first: bool = True,
+            table_as_html: bool = False,
     ):
         """Initialize instance variables with parameters."""
         self.strategy = strategy
@@ -51,7 +55,7 @@ class ParsePDF:
         self.add_captions_to_blocks = add_captions_to_blocks
         self.image_output_dir = image_output_dir
         self.single_text_out = single_text_out
-        self.add_caption_first = True
+        self.add_caption_first = add_caption_first
         self.table_as_html = table_as_html
 
     def partition(self, path: str):
