@@ -61,7 +61,7 @@
 \newpage
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Introduction}
-Retriever-Augmented Generation (RAG) is a method natural language processing (NLP) that combines the retrieval of informational documents from a large database (the "retriever" part) and the generation of coherent, contextual text based on the information retrieved (the "generation" part). 
+Retriever-Augmented Generation (RAG) is a method in natural language processing (NLP) that combines the retrieval of informational documents from a large database (the "retriever" part) and the generation of coherent, contextual text based on the information retrieved (the "generation" part).
 It was introduced as an enhancement to Large Language Models (LLMs), as RAG provides the LLM with real-time data access, preserves data privacy, and mitigate "hallucination" (Lewis et al., 2020).
 RAG has become very popular since its introduction in 2020, with its most-known implementation, ChatGPT, creating a huge impact in all industries and
 
@@ -79,6 +79,24 @@ The original inspiration was to create an end-to-end, open-sourced, self-hostabl
 https://github.com/michaelthwan/searchGPT and https://github.com/GerevAI/gerev#integrations are open-sourced packages for LLM-powered semantic search engines. However, they leverage APIs, which makes the process reliant on online resources. We aim to localize all processes to ensure self-hostability.
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Solution and Methodology}
+
+\subsection {PDF Parser}
+Parsing PDF documents presents a significant challenge due to their complex structure. PDFs often contain unstructured data, which lacks a predefined organization, making accurate recognition and processing arduous. A notable difficulty arises when handling tables, as PDFs do not inherently understand table columns, complicating the task of recognizing table layouts. This complexity is particularly evident in documents like tax forms, which feature intricate nested table structures. Additionally, scanned PDFs require Optical Character Recognition (OCR) tools to convert images back into text, introducing another layer of complexity.
+Our approach involved experimenting with various packages and strategies to develop a program capable of parsing and processing PDF documents. Despite our efforts, we encountered limitations in parsing tables, where the results were inconsistent.
+
+Primarily, this feature uses the
+
+
+\subesection{LLM implementation}
+because of data privacy concerns, we could not use OpenAI APIs directly. To run models locally, llama.cpp is the best implementation as it uses a low level language with extensive backend support, such as CUDA.
+Quantize model first; currently cannot run without quantization.
+Use llama.cpp which provides quantization
+Have text user interface (TUI) for users to easily download the model from HuggingFace and quantize
+Tested our implementation with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b
+It supports a lot of models
+Problem with llama.cpp is it's not easy to use its repo. to make the process easy, we have a script/cookbook for easy user implementation.
+
+\subsection{Multi-vector Retriever}
 
 \subsection{RAG Pipeline}
 \subsubsection{Overview}
@@ -164,37 +182,6 @@ The cons are that it \textit{requires many more calls to the LLM} than the Stuff
     \item \textbf{Embedding} --- a representation of text in a high-dimensional vector space, which allows for capturing the semantic meaning of words or phrases.
 \end{itemize}
 
-\subsection {PDF Parser}
-Parsing PDF documents presents a significant challenge due to their complex structure. PDFs often contain unstructured data, which lacks a predefined organization, making accurate recognition and processing arduous. A notable difficulty arises when handling tables, as PDFs do not inherently understand table columns, complicating the task of recognizing table layouts. This complexity is particularly evident in documents like tax forms, which feature intricate nested table structures. Additionally, scanned PDFs require Optical Character Recognition (OCR) tools to convert images back into text, introducing another layer of complexity.
-Our approach involved experimenting with various packages and strategies to develop a program capable of parsing and processing PDF documents. Despite our efforts, we encountered limitations in parsing tables, where the results were inconsistent.
-
-\subsubsection{Unstructured IO} 
-This open-source library facilitates the processing of diverse document types. Utilizing its partition_pdf() function, we were able to segment a PDF document into distinct elements, enhancing the parsing process. Unstructured IO also supports "FigureCaptions" identification, potentially improving the contextual understanding of the model. We adopted their "hi-res" strategy, which converts PDF pages into images and then applying the OCR tool PyTesseract to extract text. 
-While the output for plain text was satisfactory, the library struggled with more complex documents, such as tax forms and bank statements, yielding inadequate results.
-(add example of output-original text versus output text)
-
-\subsubsection{PDFPlumber, Unstructured IO, and PyTesseract: (add more details on method here)}
-To address these challenges, we integrated PDFPlumber for parsing table elements, PyTesseract for image-based text extraction, and Unstructured IO for processing other text content. PDFPlumber demonstrated superior layout detection capabilities, offering higher accuracy in parsing tables from non-scanned documents compared to our previous method. However, it underperformed with scanned documents and exhibited inconsistent results across various PDF files.
-(add example of output - original text vs output text)
-
-\subesection{LLM implementation}
-because of data privacy concerns, we could not use OpenAI APIs directly. To run models locally, llama.cpp is the best implementation as it uses a low level language with extensive backend support, such as CUDA.
-Quantize model first; currently cannot run without quantization.
-Use llama.cpp which provides quantization 
-Have text user interface (TUI) for users to easily download the model from HuggingFace and quantize
-Tested our implementation with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b
-It supports a lot of models
-Problem with llama.cpp is it's not easy to use its repo. to make the process easy, we have a script/cookbook for easy user implementation.
-
-\subsection{Multi-vector Retriever}
-
-
-% ------------------------------------------------------------------------------------------------------------------------
-\section{Results and Discussion}
-
-\subsection{Experimentation protocol}
-
-\subsection{Data tables}
 % ------------------------------------------------------------------------------------------------------------------------
 
 \section{Future Work}
