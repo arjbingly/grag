@@ -30,7 +30,12 @@ For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Caps
 
   Illustration of refine chain (Source: LangChain)
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-28
+
+`Note that this cookbook assumes that you already have` ``Llama-2-13b-chat`` `LLM ready,`
+`for more details on how to quantize and run an LLM locally,`
+`refer to the LLM section under Getting Started.`
+
+.. GENERATED FROM PYTHON SOURCE LINES 19-32
 
 .. code-block:: Python
 
@@ -39,9 +44,9 @@ For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Caps
     from grag.components.vectordb.deeplake_client import DeepLakeClient
     from grag.rag.basic_rag import BasicRAG
 
-    client = DeepLakeClient(collection_name="test")
+    client = DeepLakeClient(collection_name="grag")
     retriever = Retriever(vectordb=client)
-    rag = BasicRAG(doc_chain="refine")
+    rag = BasicRAG(model_name="Llama-2-13b-chat", doc_chain="refine", retriever=retriever)
 
     if __name__ == "__main__":
         while True:

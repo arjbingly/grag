@@ -18,10 +18,10 @@ Below is an example, demonstrating a simple GUI of the Retriever using Streamlit
 
 .. only:: html
 
-  .. image:: /auto_examples/Retriver-GUI/images/thumb/sphx_glr_retriever_app_thumb.png
+  .. image:: /auto_examples/Retriever-GUI/images/thumb/sphx_glr_retriever_app_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_Retriver-GUI_retriever_app.py`
+  :ref:`sphx_glr_auto_examples_Retriever-GUI_retriever_app.py`
 
 .. raw:: html
 
@@ -37,7 +37,7 @@ Below is an example, demonstrating a simple GUI of the Retriever using Streamlit
 .. toctree::
    :hidden:
 
-   /auto_examples/Retriver-GUI/retriever_app
+   /auto_examples/Retriever-GUI/retriever_app
 
 
 .. only:: html
@@ -46,11 +46,11 @@ Below is an example, demonstrating a simple GUI of the Retriever using Streamlit
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
-      :download:`Download all examples in Python source code: Retriver-GUI_python.zip </auto_examples/Retriver-GUI/Retriver-GUI_python.zip>`
+      :download:`Download all examples in Python source code: Retriever-GUI_python.zip </auto_examples/Retriever-GUI/Retriever-GUI_python.zip>`
 
     .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-      :download:`Download all examples in Jupyter notebooks: Retriver-GUI_jupyter.zip </auto_examples/Retriver-GUI/Retriver-GUI_jupyter.zip>`
+      :download:`Download all examples in Jupyter notebooks: Retriever-GUI_jupyter.zip </auto_examples/Retriever-GUI/Retriever-GUI_jupyter.zip>`
 
 
 .. only:: html
