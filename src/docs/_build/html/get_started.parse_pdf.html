@@ -96,26 +96,27 @@
              
   <section id="parse-pdf">
 <h1>Parse PDF<a class="headerlink" href="#parse-pdf" title="Link to this heading"></a></h1>
-<p>The parsing and partitioning were primarily done using the unstructured.io library, which is designed for this purpose. However, for PDFs with complex layouts, such as nested tables or tax forms, the pdfplumber and pytesseract libraries were employed to improve the parsing accuracy.</p>
+<p>The parsing and partitioning were primarily done using the <cite>unstructured.io</cite> library, which is designed for this purpose. However, for PDFs with complex layouts, such as nested tables or tax forms, <cite>pdfplumber</cite> and <cite>pytesseract</cite> were employed to improve the parsing accuracy.</p>
 <p>The class has several attributes that control the behavior of the parsing and partitioning process.</p>
 <section id="attributes">
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>single_text_out (bool): If True, all text elements are combined into a single output document. The default value is True.</p></li>
-<li><p>strategy (str): The strategy for PDF partitioning. The default is “hi_res” for better accuracy</p></li>
-<li><p>extract_image_block_types (list): A list of elements to be extracted as image blocks. By default, it includes “Image” and “Table”.The default value is True.</p></li>
-<li><p>infer_table_structure (bool): Whether to extract tables during partitioning. The default value is True.</p></li>
-<li><p>extract_images (bool): Whether to extract images. The default value is True.</p></li>
-<li><p>image_output_dir (str): The directory to save extracted images, if any.</p></li>
-<li><p>add_captions_to_text (bool): Whether to include figure captions in the text output. The default value is True.</p></li>
-<li><p>add_captions_to_blocks (bool): Whether to add captions to table and image blocks. The default value is True.</p></li>
-<li><p>add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. The default value is True.</p></li>
-<li><p>table_as_html (bool): Whether to represent tables as HTML.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">single_text_out</span> <span class="pre">(bool)</span></code>: If True, all text elements are combined into a single output document. The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strategy</span> <span class="pre">(str)</span></code>: The strategy for PDF partitioning. The default is “hi_res” for better accuracy</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extract_image_block_types</span> <span class="pre">(list)</span></code>: A list of elements to be extracted as image blocks. By default, it includes “Image” and “Table”.The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">infer_table_structure</span> <span class="pre">(bool)</span></code>: Whether to extract tables during partitioning. The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extract_images</span> <span class="pre">(bool)</span></code>: Whether to extract images. The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image_output_dir</span> <span class="pre">(str)</span></code>: The directory to save extracted images, if any.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add_captions_to_text</span> <span class="pre">(bool)</span></code>: Whether to include figure captions in the text output. The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add_captions_to_blocks</span> <span class="pre">(bool)</span></code>: Whether to add captions to table and image blocks. The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add_caption_first</span> <span class="pre">(bool)</span></code>: Whether to place captions before their corresponding image or table in the output. The default value is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table_as_html</span> <span class="pre">(bool)</span></code>: Whether to represent tables as HTML.</p></li>
 </ul>
 </section>
 <section id="parsing-complex-pdf-layouts">
 <h2>Parsing Complex PDF Layouts<a class="headerlink" href="#parsing-complex-pdf-layouts" title="Link to this heading"></a></h2>
-<p>While unstructured.io performed well in parsing PDFs with straightforward layouts, PDFs with complex layouts, such as nested tables or tax forms, were not parsed accurately. To address this issue, the pdfplumber and pytesseract libraries were employed.</p>
+<p>While <cite>unstructured.io</cite> performed well in parsing PDFs with straightforward layouts, PDFs with complex layouts such as nested tables or tax forms, were not parsed accurately.
+To address this issue, <cite>pdfplumber</cite> and <cite>pytesseract</cite> libraries were employed.</p>
 </section>
 <section id="table-parsing-methodology">
 <h2>Table Parsing Methodology<a class="headerlink" href="#table-parsing-methodology" title="Link to this heading"></a></h2>
@@ -128,16 +129,17 @@
 <p><strong>For each table found on the page, the following steps are performed:</strong></p>
 <ol class="arabic simple">
 <li><p>The table area is cropped from the page using the crop method and the bbox (bounding box) of the table.</p></li>
-<li><p>The text content of the cropped table area is extracted using the <cite>extract_text</cite> method with <cite>layout=True</cite>.</p></li>
+<li><p>The text content of the cropped table area is extracted using the <code class="docutils literal notranslate"><span class="pre">extract_text</span></code> method with <cite>layout=True</cite>.</p></li>
 </ol>
-<p>3. A dictionary is created with the <cite>table_number</cite> and <cite>extracted_text</cite> of the table, and it is appended to the <cite>extracted_tables_in_page</cite> list.
-After processing all the tables on the page, a dictionary is created with the <cite>page_number</cite> and the list of <cite>extracted_tables_in_page</cite>, and it is appended to the <cite>extracted_tables</cite> list.
-Finally, the extracted_tables list is returned, which contains all the extracted tables from the PDF file, organized by page and table number.</p>
+<p>3. A dictionary is created with the <code class="docutils literal notranslate"><span class="pre">table_number</span></code> and <code class="docutils literal notranslate"><span class="pre">extracted_text</span></code> of the table, and it is appended to the <code class="docutils literal notranslate"><span class="pre">extracted_tables_in_page</span></code> list.
+After processing all the tables on the page, a dictionary is created with the <code class="docutils literal notranslate"><span class="pre">page_number</span></code> and the list of <code class="docutils literal notranslate"><span class="pre">extracted_tables_in_page</span></code>, and it is appended to the <code class="docutils literal notranslate"><span class="pre">extracted_tables</span></code> list.
+Finally, the <code class="docutils literal notranslate"><span class="pre">extracted_tables</span></code> list is returned, which contains all the extracted tables from the PDF file, organized by page and table number.</p>
 </section>
 <section id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
-<p>While the table parsing methodology using <cite>pdfplumber</cite> could process most tables, it could not parse every table layout accurately. The table settings need to be adjusted for different types of table layouts. Additionally, pdfplumber could not extract figure captions, whereas <cite>unstructured.io</cite> could.
-Future work may involve developing a more robust and flexible table parsing algorithm that can handle a wider range of table layouts and integrate seamlessly with the ParsePDF class to leverage the strengths of both unstructured.io and pdfplumber libraries.</p>
+<p>While the table parsing methodology using <cite>pdfplumber</cite> could process most tables, it could not parse every table layout accurately. The table settings need to be adjusted for different types of table layouts.
+Additionally, <cite>pdfplumber</cite> could not extract figure captions, whereas <cite>unstructured.io</cite> could.</p>
+<p>Future work will involve developing a more robust and flexible table parsing algorithm that can handle a wider range of table layouts.</p>
 </section>
 </section>
 
