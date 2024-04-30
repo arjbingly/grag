@@ -1,52 +1,66 @@
 """Interactive file for quantizing models."""
 
+import platform
 from pathlib import Path
 
 from grag.components.utils import get_config
 from grag.quantize.utils import (
-    building_llamacpp,
+    download_release_asset,
     fetch_model_repo,
+    get_asset_download_url,
     get_llamacpp_repo,
     quantize_model,
 )
 
 config = get_config()
-root_path = Path(config["quantize"]["llama_cpp_path"])
 
 if __name__ == "__main__":
     user_input = input(
-        "Enter the path to the llama_cpp cloned repo, or where you'd like to clone it. Press Enter to use the default config path: "
-    ).strip()
+        "Enter the path which you want to download all the source files. Press Enter to use the default path: ").strip()
 
-    if user_input != "":
+    if user_input == "":
+        try:
+            root_path = Path(config["quantize"]["llama_cpp_path"])
+        except KeyError:
+            root_path = Path('./grag-quantize')
+    else:
         root_path = Path(user_input)
 
-    res = get_llamacpp_repo(root_path)
+    get_llamacpp_repo(destination_folder=root_path)
+    os_name = platform.system()
+    architecture = platform.machine()
+    asset_name_pattern = 'bin'
+    match os_name, architecture:
+        case ('Darwin', 'x86_64'):
+            asset_name_pattern += '-macos-x64'
+        case ('Darwin', 'arm64'):
+            asset_name_pattern += '-macos-arm64'
+        case ('Windows', 'x86_64'):
+            asset_name_pattern += '-win-arm64-x64'
+        case ('Windows', 'arm64'):
+            asset_name_pattern += '-win-arm64-x64'
+        case ('Linux', 'x86_64'):
+            asset_name_pattern += '-ubuntu-x64'
+        case _:
+            raise ValueError(f"{os_name=}, {architecture=} is not supported by llama.cpp releases.")
 
-    if "Already up to date." in str(res.stdout):
-        print("Repository is already up to date. Skipping build.")
-    else:
-        print("Updates found. Starting build...")
-        building_llamacpp(root_path)
+    download_url = get_asset_download_url(asset_name_pattern)
+    if download_url:
+        download_release_asset(download_url, root_path)
 
-    response = (
-        input("Do you want us to download the model? (y/n) [Enter for yes]: ")
-        .strip()
-        .lower()
-    )
+    response = input("Do you want us to download the model? (y/n) [Enter for yes]: ").strip().lower()
     if response == "n":
-        print("Please copy the model folder to 'llama.cpp/models/' folder.")
-        _ = input("Enter if you have already copied the model:")
-        model_dir = Path(input("Enter the model directory name: "))
+        model_dir = Path(input("Enter path to the model directory: "))
     elif response == "y" or response == "":
         repo_id = input(
             "Please enter the repo_id for the model (you can check on https://huggingface.co/models): "
         ).strip()
-        fetch_model_repo(repo_id, root_path)
-        # model_dir = repo_id.split('/')[1]
-        model_dir = root_path / "llama.cpp" / "models" / repo_id.split("/")[1]
+        model_dir = fetch_model_repo(repo_id, root_path / 'models')
 
     quantization = input(
         "Enter quantization, recommended - Q5_K_M or Q4_K_M for more check https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19 : "
-    )
-    quantize_model(model_dir, quantization, root_path)
+    ).strip()
+    output_dir = input(
+        f"Enter path where you want to save the quantized model, else the following path will be used [{model_dir}]: ").strip()
+
+    quantize_model(model_dir, quantization, root_path, output_dir)
