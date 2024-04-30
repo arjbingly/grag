@@ -37,7 +37,7 @@ To address this issue, `pdfplumber` and `pytesseract` libraries were employed.
 Table Parsing Methodology
 #########################
 
-For each page in the PDF file, the find_tables method is called with specific table settings to find the tables on that page. The table settings used are:
+For each page in the PDF file, the ``find_tables`` method is called with specific table settings to find the tables on that page. The table settings used are:
 
 - ``"vertical_strategy": "text"``: This setting tells the function to detect tables based on the text content.
 
