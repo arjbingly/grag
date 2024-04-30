@@ -1,4 +1,10 @@
-"""A cookbook demonstrating how to run RAG app on streamlit."""
+"""
+RAG-GUI
+=======
+
+A cookbook demonstrating how to run a RAG app on streamlit.
+
+"""
 
 import os
 import sys

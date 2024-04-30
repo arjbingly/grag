@@ -31,7 +31,7 @@ For more information, refer to `RAG-PIPELINES <https://github.com/arjbingly/Caps
   Illustration of refine chain (Source: LangChain)
 
 
-`Note that this cookbook assumes that you already have the` ``Llama-2-13b-chat`` `LLM ready,`
+`Note that this cookbook assumes that you already have` ``Llama-2-13b-chat`` `LLM ready,`
 `for more details on how to quantize and run an LLM locally,`
 `refer to the LLM section under Getting Started.`
 
