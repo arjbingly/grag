@@ -41,3 +41,15 @@ class Embedding:
                 self.embedding_function.embed_instruction = self.embedding_instruction  # type: ignore
             case _:
                 raise Exception("embedding_type is invalid")
+
+    def __str__(self):
+        repr_string = "Embedding (\n"
+        repr_string += f"\ttype: {self.embedding_type},\n"
+        repr_string += f"\tmodel: {self.embedding_model},\n"
+        repr_string += f"\tmax_seq_len: {self.embedding_function.client.max_seq_length},\n"
+        repr_string += f"\tdevice: {self.embedding_function.client.device},\n"
+        if self.embedding_type == "instructor-embedding":
+            repr_string += f"\tembedding_instruction: {self.embedding_function.embed_instruction}"
+
+        repr_string += ")"
+        return repr_string
