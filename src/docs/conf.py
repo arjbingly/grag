@@ -50,9 +50,9 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-    'examples_dirs': ['../../cookbook/Basic-RAG', '../../cookbook/Retriver-GUI'],  # path to your example scripts
+    'examples_dirs': ['../../cookbook/Basic-RAG', '../../cookbook/RAG-GUI', '../../cookbook/Retriever-GUI'],  # path to your example scripts
     # 'examples_dirs': '../../cookbook',
-    'gallery_dirs': ['auto_examples/Basic-RAG', 'auto_examples/Retriver-GUI'],
+    'gallery_dirs': ['auto_examples/Basic-RAG', 'auto_examples/RAG-GUI', 'auto_examples/Retriever-GUI'],
     # path to where to save gallery generated output
     'filename_pattern': '.py',
     'plot_gallery': 'False',

@@ -16,23 +16,6 @@ Below is a gallery of examples, demonstrating the use of Basic-RAG.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Custom Prompts">
-
-.. only:: html
-
-  .. image:: /auto_examples/Basic-RAG/images/thumb/sphx_glr_BasicRAG_CustomPrompt_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_Basic-RAG_BasicRAG_CustomPrompt.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Custom Prompts</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="  Illustration of refine chain (Source: LangChain)">
 
 .. only:: html
@@ -84,7 +67,24 @@ Below is a gallery of examples, demonstrating the use of Basic-RAG.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Custom Few-Shot Prompts">
+    <div class="sphx-glr-thumbcontainer" tooltip=" Note that this cookbook assumes that you already have the Llama-2-13b-chat LLM ready, `for mor...">
+
+.. only:: html
+
+  .. image:: /auto_examples/Basic-RAG/images/thumb/sphx_glr_BasicRAG_CustomPrompt_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_Basic-RAG_BasicRAG_CustomPrompt.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Custom Prompts</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Note that this cookbook assumes that you already have the Llama-2-13b-chat LLM ready,  `for mor...">
 
 .. only:: html
 
@@ -107,10 +107,10 @@ Below is a gallery of examples, demonstrating the use of Basic-RAG.
 .. toctree::
    :hidden:
 
-   /auto_examples/Basic-RAG/BasicRAG_CustomPrompt
    /auto_examples/Basic-RAG/BasicRAG_refine
    /auto_examples/Basic-RAG/BasicRAG_stuff
    /auto_examples/Basic-RAG/BasicRAG_ingest
+   /auto_examples/Basic-RAG/BasicRAG_CustomPrompt
    /auto_examples/Basic-RAG/BasicRAG_FewShotPrompt
 
 
