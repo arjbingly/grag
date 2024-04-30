@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Components &mdash; GRAG 0.0.1b0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cc386672"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="VectorDB" href="grag.components.vectordb.html" />
+    <link rel="prev" title="GRAG" href="grag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GRAG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="get_started.html">Get Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="grag.html">GRAG</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vectordb">VectorDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html">VectorDB</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.embedding">Embedding</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.embedding.Embedding"><code class="docutils literal notranslate"><span class="pre">Embedding</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.llm">LLM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.LLM"><code class="docutils literal notranslate"><span class="pre">LLM()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.model_name"><code class="docutils literal notranslate"><span class="pre">model_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.device_map"><code class="docutils literal notranslate"><span class="pre">device_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.task"><code class="docutils literal notranslate"><span class="pre">task</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.max_new_tokens"><code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.n_batch"><code class="docutils literal notranslate"><span class="pre">n_batch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.n_ctx"><code class="docutils literal notranslate"><span class="pre">n_ctx</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.llm.n_gpu_layers"><code class="docutils literal notranslate"><span class="pre">n_gpu_layers</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.multivec_retriever">Retriever</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.Retriever"><code class="docutils literal notranslate"><span class="pre">Retriever()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.store_path"><code class="docutils literal notranslate"><span class="pre">store_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.id_key"><code class="docutils literal notranslate"><span class="pre">id_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.vectordb"><code class="docutils literal notranslate"><span class="pre">vectordb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.store"><code class="docutils literal notranslate"><span class="pre">store</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.retriever"><code class="docutils literal notranslate"><span class="pre">retriever</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.splitter"><code class="docutils literal notranslate"><span class="pre">splitter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.namespace"><code class="docutils literal notranslate"><span class="pre">namespace</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.multivec_retriever.top_k"><code class="docutils literal notranslate"><span class="pre">top_k</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.parse_pdf">Parse PDF</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.ParsePDF"><code class="docutils literal notranslate"><span class="pre">ParsePDF()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.single_text_out"><code class="docutils literal notranslate"><span class="pre">single_text_out</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.strategy"><code class="docutils literal notranslate"><span class="pre">strategy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.extract_image_block_types"><code class="docutils literal notranslate"><span class="pre">extract_image_block_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.infer_table_structure"><code class="docutils literal notranslate"><span class="pre">infer_table_structure</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.extract_images"><code class="docutils literal notranslate"><span class="pre">extract_images</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.image_output_dir"><code class="docutils literal notranslate"><span class="pre">image_output_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.add_captions_to_text"><code class="docutils literal notranslate"><span class="pre">add_captions_to_text</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.add_captions_to_blocks"><code class="docutils literal notranslate"><span class="pre">add_captions_to_blocks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.parse_pdf.add_caption_first"><code class="docutils literal notranslate"><span class="pre">add_caption_first</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.prompt">Prompt</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.prompt.FewShotPrompt"><code class="docutils literal notranslate"><span class="pre">FewShotPrompt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.prompt.Prompt"><code class="docutils literal notranslate"><span class="pre">Prompt</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.text_splitter">Text Splitter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.text_splitter.TextSplitter"><code class="docutils literal notranslate"><span class="pre">TextSplitter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.text_splitter.chunk_size"><code class="docutils literal notranslate"><span class="pre">chunk_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.text_splitter.chunk_overlap"><code class="docutils literal notranslate"><span class="pre">chunk_overlap</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components.utils">Utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.configure_args"><code class="docutils literal notranslate"><span class="pre">configure_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.find_config_path"><code class="docutils literal notranslate"><span class="pre">find_config_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grag.components.utils.stuff_docs"><code class="docutils literal notranslate"><span class="pre">stuff_docs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-grag.components">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.prompts.html">Prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.quantize.html">Quantize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.rag.html">RAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.html#module-grag">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples_index.html">Cookbooks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GRAG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="grag.html">GRAG</a></li>
+      <li class="breadcrumb-item active">Components</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/arjbingly/grag/blob/main/src/grag.components.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="components">
+<h1>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h1>
+<section id="vectordb">
+<h2>VectorDB<a class="headerlink" href="#vectordb" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="grag.components.vectordb.html">VectorDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb.base">Base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB"><code class="docutils literal notranslate"><span class="pre">VectorDB</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.aadd_docs"><code class="docutils literal notranslate"><span class="pre">VectorDB.aadd_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.add_docs"><code class="docutils literal notranslate"><span class="pre">VectorDB.add_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.aget_chunk"><code class="docutils literal notranslate"><span class="pre">VectorDB.aget_chunk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.delete"><code class="docutils literal notranslate"><span class="pre">VectorDB.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB.get_chunk"><code class="docutils literal notranslate"><span class="pre">VectorDB.get_chunk()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb.chroma_client">Chroma Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.ChromaClient"><code class="docutils literal notranslate"><span class="pre">ChromaClient()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.port"><code class="docutils literal notranslate"><span class="pre">port</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.collection_name"><code class="docutils literal notranslate"><span class="pre">collection_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.embedding_type"><code class="docutils literal notranslate"><span class="pre">embedding_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.embedding_model"><code class="docutils literal notranslate"><span class="pre">embedding_model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.embedding_function"><code class="docutils literal notranslate"><span class="pre">embedding_function</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.client"><code class="docutils literal notranslate"><span class="pre">client</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.collection"><code class="docutils literal notranslate"><span class="pre">collection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.chroma_client.langchain_client"><code class="docutils literal notranslate"><span class="pre">langchain_client</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb.deeplake_client">Deeplake Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.DeepLakeClient"><code class="docutils literal notranslate"><span class="pre">DeepLakeClient()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.store_path"><code class="docutils literal notranslate"><span class="pre">store_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.embedding_type"><code class="docutils literal notranslate"><span class="pre">embedding_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.embedding_model"><code class="docutils literal notranslate"><span class="pre">embedding_model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.embedding_function"><code class="docutils literal notranslate"><span class="pre">embedding_function</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.client"><code class="docutils literal notranslate"><span class="pre">client</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.collection"><code class="docutils literal notranslate"><span class="pre">collection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.deeplake_client.langchain_client"><code class="docutils literal notranslate"><span class="pre">langchain_client</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grag.components.vectordb.html#module-grag.components.vectordb">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-grag.components.embedding">
+<span id="embedding"></span><h2>Embedding<a class="headerlink" href="#module-grag.components.embedding" title="Link to this heading"></a></h2>
+<p>Class for embedding.</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>Embedding</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.embedding.</span></span><span class="sig-name descname"><span class="pre">Embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for vector embeddings.</p>
+<dl class="simple">
+<dt>Supports:</dt><dd><p>huggingface sentence transformers -&gt; model_type = ‘sentence-transformers’
+huggingface instructor embeddings -&gt; model_type = ‘instructor-embedding’</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding.embedding_type">
+<span class="sig-name descname"><span class="pre">embedding_type</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding.embedding_type" title="Link to this definition"></a></dt>
+<dd><p>embedding model type, refer above for supported types</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding.embedding_model">
+<span class="sig-name descname"><span class="pre">embedding_model</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding.embedding_model" title="Link to this definition"></a></dt>
+<dd><p>huggingface model name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.embedding.Embedding.embedding_function">
+<span class="sig-name descname"><span class="pre">embedding_function</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/embedding.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.embedding.Embedding.embedding_function" title="Link to this definition"></a></dt>
+<dd><p>langchain embedding type</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.llm">
+<span id="llm"></span><h2>LLM<a class="headerlink" href="#module-grag.components.llm" title="Link to this heading"></a></h2>
+<p>Class for LLM.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.llm.LLM">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">LLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_new_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_gpu_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.LLM" title="Link to this definition"></a></dt>
+<dd><p>A class for managing and utilizing large language models (LLMs).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.model_name">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">model_name</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.model_name" title="Link to this definition"></a></dt>
+<dd><p>Name of the model to be loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.device_map">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">device_map</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.device_map" title="Link to this definition"></a></dt>
+<dd><p>Device mapping for model execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.task">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">task</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.task" title="Link to this definition"></a></dt>
+<dd><p>The task for which the model is being used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.max_new_tokens">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">max_new_tokens</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.max_new_tokens" title="Link to this definition"></a></dt>
+<dd><p>Maximum new tokens to be generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.temperature">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">temperature</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.temperature" title="Link to this definition"></a></dt>
+<dd><p>Sampling temperature for generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.n_batch">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">n_batch</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.n_batch" title="Link to this definition"></a></dt>
+<dd><p>Number of batches for GPU CPP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.n_ctx">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">n_ctx</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.n_ctx" title="Link to this definition"></a></dt>
+<dd><p>Context size for CPP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.llm.n_gpu_layers">
+<span class="sig-prename descclassname"><span class="pre">grag.components.llm.</span></span><span class="sig-name descname"><span class="pre">n_gpu_layers</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/llm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.llm.n_gpu_layers" title="Link to this definition"></a></dt>
+<dd><p>Number of GPU layers for CPP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.multivec_retriever">
+<span id="retriever"></span><h2>Retriever<a class="headerlink" href="#module-grag.components.multivec_retriever" title="Link to this heading"></a></h2>
+<p>Class for retriever.</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>Retriever</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.Retriever">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">Retriever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectordb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="grag.components.vectordb.html#grag.components.vectordb.base.VectorDB" title="grag.components.vectordb.base.VectorDB"><span class="pre">VectorDB</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.Retriever" title="Link to this definition"></a></dt>
+<dd><p>A class for multi vector retriever.</p>
+<p>It connects to a vector database and a local file store.
+It is used to return most similar chunks from a vector store but has the additional functionality to return a
+linked document, chunk, etc.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.store_path">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">store_path</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.store_path" title="Link to this definition"></a></dt>
+<dd><p>Path to the local file store</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.id_key">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">id_key</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.id_key" title="Link to this definition"></a></dt>
+<dd><p>A key prefix for identifying documents</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.vectordb">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">vectordb</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.vectordb" title="Link to this definition"></a></dt>
+<dd><p>ChromaClient class instance from components.client</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.store">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">store</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.store" title="Link to this definition"></a></dt>
+<dd><p>langchain.storage.LocalFileStore object, stores the key value pairs of document id and parent file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.retriever">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">retriever</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.retriever" title="Link to this definition"></a></dt>
+<dd><p>langchain.retrievers.multi_vector.MultiVectorRetriever class instance,
+langchain’s multi-vector retriever</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.splitter">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">splitter</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.splitter" title="Link to this definition"></a></dt>
+<dd><p>TextSplitter class instance from components.text_splitter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.namespace">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">namespace</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.namespace" title="Link to this definition"></a></dt>
+<dd><p>Namespace for producing unique id</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.multivec_retriever.top_k">
+<span class="sig-prename descclassname"><span class="pre">grag.components.multivec_retriever.</span></span><span class="sig-name descname"><span class="pre">top_k</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/multivec_retriever.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.multivec_retriever.top_k" title="Link to this definition"></a></dt>
+<dd><p>Number of top chunks to return from similarity search.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.parse_pdf">
+<span id="parse-pdf"></span><h2>Parse PDF<a class="headerlink" href="#module-grag.components.parse_pdf" title="Link to this heading"></a></h2>
+<p>Classes for parsing files.</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>ParsePDF</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.ParsePDF">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">ParsePDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_text_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_table_structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract_images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_captions_to_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_captions_to_blocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_as_html</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.ParsePDF" title="Link to this definition"></a></dt>
+<dd><p>Parsing and partitioning PDF documents into Text, Table or Image elements.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.single_text_out">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">single_text_out</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.single_text_out" title="Link to this definition"></a></dt>
+<dd><p>Whether to combine all text elements into a single output document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.strategy">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">strategy</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.strategy" title="Link to this definition"></a></dt>
+<dd><p>The strategy for PDF partitioning; default is “hi_res” for better accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.extract_image_block_types">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">extract_image_block_types</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.extract_image_block_types" title="Link to this definition"></a></dt>
+<dd><p>Elements to be extracted as image blocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.infer_table_structure">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">infer_table_structure</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.infer_table_structure" title="Link to this definition"></a></dt>
+<dd><p>Whether to extract tables during partitioning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.extract_images">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">extract_images</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.extract_images" title="Link to this definition"></a></dt>
+<dd><p>Whether to extract images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.image_output_dir">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">image_output_dir</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.image_output_dir" title="Link to this definition"></a></dt>
+<dd><p>Directory to save extracted images, if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.add_captions_to_text">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">add_captions_to_text</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.add_captions_to_text" title="Link to this definition"></a></dt>
+<dd><p>Whether to include figure captions in text output. Default is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.add_captions_to_blocks">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">add_captions_to_blocks</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.add_captions_to_blocks" title="Link to this definition"></a></dt>
+<dd><p>Whether to add captions to table and image blocks. Default is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.parse_pdf.add_caption_first">
+<span class="sig-prename descclassname"><span class="pre">grag.components.parse_pdf.</span></span><span class="sig-name descname"><span class="pre">add_caption_first</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/parse_pdf.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.parse_pdf.add_caption_first" title="Link to this definition"></a></dt>
+<dd><p>Whether to place captions before their corresponding image or table in the output. Default is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.prompt">
+<span id="prompt"></span><h2>Prompt<a class="headerlink" href="#module-grag.components.prompt" title="Link to this heading"></a></h2>
+<p>Classes for prompts.</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>Prompt - for generic prompts</p></li>
+<li><p>FewShotPrompt - for few-shot prompts</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.prompt.</span></span><span class="sig-name descname"><span class="pre">FewShotPrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'custom_prompt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'QA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NoSource'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stuff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">example_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#grag.components.prompt.Prompt" title="grag.components.prompt.Prompt"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a></p>
+<p>A class for generic prompts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.name" title="Link to this definition"></a></dt>
+<dd><p>The prompt name (Optional, defaults to “custom_prompt”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.llm_type">
+<span class="sig-name descname"><span class="pre">llm_type</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.llm_type" title="Link to this definition"></a></dt>
+<dd><p>The type of llm, llama2, etc (Optional, defaults to “None”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.task">
+<span class="sig-name descname"><span class="pre">task</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.task" title="Link to this definition"></a></dt>
+<dd><p>The task (Optional, defaults to QA) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.source" title="Link to this definition"></a></dt>
+<dd><p>The source of the prompt (Optional, defaults to “NoSource”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.doc_chain">
+<span class="sig-name descname"><span class="pre">doc_chain</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.doc_chain" title="Link to this definition"></a></dt>
+<dd><p>The doc chain for the prompt (“stuff”, “refine”) (Optional, defaults to “stuff”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.language" title="Link to this definition"></a></dt>
+<dd><p>The language of the prompt (Optional, defaults to “en”) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.filepath">
+<span class="sig-name descname"><span class="pre">filepath</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.filepath" title="Link to this definition"></a></dt>
+<dd><p>The filepath of the prompt (Optional) (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.input_keys">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.input_keys" title="Link to this definition"></a></dt>
+<dd><p>The input keys for the prompt (Parent Class)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>The output keys for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.prefix" title="Link to this definition"></a></dt>
+<dd><p>The template prefix for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.suffix">
+<span class="sig-name descname"><span class="pre">suffix</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.suffix" title="Link to this definition"></a></dt>
+<dd><p>The template suffix for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.example_template">
+<span class="sig-name descname"><span class="pre">example_template</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.example_template" title="Link to this definition"></a></dt>
+<dd><p>The template for formatting the examples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.examples">
+<span class="sig-name descname"><span class="pre">examples</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.examples" title="Link to this definition"></a></dt>
+<dd><p>The list of examples, each example is a dictionary with respective keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">example_template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">examples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'doc_chain':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='stuff'),</span> <span class="pre">'example_template':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'examples':</span> <span class="pre">FieldInfo(annotation=List[Dict[str,</span> <span class="pre">Any]],</span> <span class="pre">required=True),</span> <span class="pre">'filepath':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">exclude=True),</span> <span class="pre">'input_keys':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True),</span> <span class="pre">'language':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='en'),</span> <span class="pre">'llm_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='None'),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='custom_prompt'),</span> <span class="pre">'output_keys':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True),</span> <span class="pre">'prefix':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'prompt':</span> <span class="pre">FieldInfo(annotation=Union[PromptTemplate,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">exclude=True,</span> <span class="pre">repr=False),</span> <span class="pre">'source':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='NoSource'),</span> <span class="pre">'suffix':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'task':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='QA'),</span> <span class="pre">'template':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.output_keys">
+<span class="sig-name descname"><span class="pre">output_keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.output_keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">suffix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.validate_examples">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_examples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.validate_examples" title="Link to this definition"></a></dt>
+<dd><p>Validate the examples field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.FewShotPrompt.validate_output_keys">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_output_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.FewShotPrompt.validate_output_keys" title="Link to this definition"></a></dt>
+<dd><p>Validate the output_keys field.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grag.components.prompt.</span></span><span class="sig-name descname"><span class="pre">Prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'custom_prompt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'QA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NoSource'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stuff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A class for generic prompts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.name" title="Link to this definition"></a></dt>
+<dd><p>The prompt name (Optional, defaults to “custom_prompt”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.llm_type">
+<span class="sig-name descname"><span class="pre">llm_type</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.llm_type" title="Link to this definition"></a></dt>
+<dd><p>The type of llm, llama2, etc (Optional, defaults to “None”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.task">
+<span class="sig-name descname"><span class="pre">task</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.task" title="Link to this definition"></a></dt>
+<dd><p>The task (Optional, defaults to QA)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.source" title="Link to this definition"></a></dt>
+<dd><p>The source of the prompt (Optional, defaults to “NoSource”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.doc_chain">
+<span class="sig-name descname"><span class="pre">doc_chain</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.doc_chain" title="Link to this definition"></a></dt>
+<dd><p>The doc chain for the prompt (“stuff”, “refine”) (Optional, defaults to “stuff”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.language" title="Link to this definition"></a></dt>
+<dd><p>The language of the prompt (Optional, defaults to “en”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.filepath">
+<span class="sig-name descname"><span class="pre">filepath</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.filepath" title="Link to this definition"></a></dt>
+<dd><p>The filepath of the prompt (Optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.input_keys">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.input_keys" title="Link to this definition"></a></dt>
+<dd><p>The input keys for the prompt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>template (str): The template for the prompt</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">doc_chain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.format" title="Link to this definition"></a></dt>
+<dd><p>Formats the prompt with provided keys and returns a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">input_keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">llm_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.load" title="Link to this definition"></a></dt>
+<dd><p>Loads a json file and returns a Prompt class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'doc_chain':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='stuff'),</span> <span class="pre">'filepath':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">exclude=True),</span> <span class="pre">'input_keys':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True),</span> <span class="pre">'language':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='en'),</span> <span class="pre">'llm_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='None'),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='custom_prompt'),</span> <span class="pre">'prompt':</span> <span class="pre">FieldInfo(annotation=Union[PromptTemplate,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">exclude=True,</span> <span class="pre">repr=False),</span> <span class="pre">'source':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='NoSource'),</span> <span class="pre">'task':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='QA'),</span> <span class="pre">'template':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.prompt">
+<span class="sig-name descname"><span class="pre">prompt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PromptTemplate</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.prompt" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ValueError</span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.save" title="Link to this definition"></a></dt>
+<dd><p>Saves the prompt class into a json file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.template">
+<span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.template" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.validate_doc_chain">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_doc_chain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.validate_doc_chain" title="Link to this definition"></a></dt>
+<dd><p>Validate the doc_chain field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.validate_input_keys">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_input_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.validate_input_keys" title="Link to this definition"></a></dt>
+<dd><p>Validate the input_keys field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="grag.components.prompt.Prompt.validate_task">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/prompt.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.prompt.Prompt.validate_task" title="Link to this definition"></a></dt>
+<dd><p>Validate the task field.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.text_splitter">
+<span id="text-splitter"></span><h2>Text Splitter<a class="headerlink" href="#module-grag.components.text_splitter" title="Link to this heading"></a></h2>
+<p>Class for splitting/chunking text.</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>TextSplitter</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.text_splitter.TextSplitter">
+<span class="sig-prename descclassname"><span class="pre">grag.components.text_splitter.</span></span><span class="sig-name descname"><span class="pre">TextSplitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.TextSplitter" title="Link to this definition"></a></dt>
+<dd><p>Class for recursively chunking text, it prioritizes ‘/n/n then ‘/n’ and so on.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.text_splitter.chunk_size">
+<span class="sig-prename descclassname"><span class="pre">grag.components.text_splitter.</span></span><span class="sig-name descname"><span class="pre">chunk_size</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.chunk_size" title="Link to this definition"></a></dt>
+<dd><p>maximum size of chunk</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="grag.components.text_splitter.chunk_overlap">
+<span class="sig-prename descclassname"><span class="pre">grag.components.text_splitter.</span></span><span class="sig-name descname"><span class="pre">chunk_overlap</span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/text_splitter.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.text_splitter.chunk_overlap" title="Link to this definition"></a></dt>
+<dd><p>chunk overlap size</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-grag.components.utils">
+<span id="utils"></span><h2>Utils<a class="headerlink" href="#module-grag.components.utils" title="Link to this heading"></a></h2>
+<p>Utils functions.</p>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>stuff_docs: concats langchain documents into string</p></li>
+<li><p>load_prompt: loads json prompt to langchain prompt</p></li>
+<li><p>find_config_path: finds the path of the ‘config.ini’ file by traversing up the directory tree from the current path.</p></li>
+<li><p>get_config: retrieves and parses the configuration settings from the ‘config.ini’ file.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.configure_args">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">configure_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.configure_args" title="Link to this definition"></a></dt>
+<dd><p>Decorator to configure class instantiation arguments from a ‘config.ini’ file, based on the class’s module name.</p>
+<p>This function reads configuration specific to a class’s module from ‘config.ini’, then uses it to override or
+provide defaults for keyword arguments passed during class instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> (<em>class</em>) – The class whose instantiation is to be configured.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A wrapped class constructor that uses modified arguments based on the configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If there is a mismatch in provided arguments and class constructor requirements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.find_config_path">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">find_config_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.find_config_path" title="Link to this definition"></a></dt>
+<dd><p>Finds the path of the ‘config.ini’ file by traversing up the directory tree from the current path.</p>
+<p>This function starts at the current path and moves up the directory tree until it finds a file named ‘config.ini’.
+If ‘config.ini’ is not found by the time the root of the directory tree is reached, a FileNotFoundError is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_path</strong> (<em>Path</em>) – The starting point for the search, typically the location of the script being executed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None or the path to the found ‘config.ini’ file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.get_config">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.get_config" title="Link to this definition"></a></dt>
+<dd><p>Retrieves and parses the configuration settings from the ‘config.ini’ file.</p>
+<p>This function locates the ‘config.ini’ file by calling <cite>find_config_path</cite> using the script’s current location.
+It initializes a <cite>ConfigParser</cite> object to read the configuration settings from the located ‘config.ini’ file.
+Optionally, it can also load environment variables from a <cite>.env</cite> file specified in the config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>load_env</strong> (<em>bool</em>) – If True, load environment variables from the path specified in the ‘config.ini’. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A parser object containing the configuration settings from ‘config.ini’, or a defaultdict</dt><dd><p>with None if the file is not found or an empty dict{dict{}}.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConfigParser</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="grag.components.utils.stuff_docs">
+<span class="sig-prename descclassname"><span class="pre">grag.components.utils.</span></span><span class="sig-name descname"><span class="pre">stuff_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Document</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/arjbingly/grag/blob/main//src//grag/components/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#grag.components.utils.stuff_docs" title="Link to this definition"></a></dt>
+<dd><p>Concatenates langchain documents into a string using ‘nn’ seperator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docs</strong> – List of langchain_core.documents.Document</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string of document page content joined by ‘nn’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-grag.components">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-grag.components" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="grag.html" class="btn btn-neutral float-left" title="GRAG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="grag.components.vectordb.html" class="btn btn-neutral float-right" title="VectorDB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

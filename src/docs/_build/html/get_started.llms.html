@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLMs &mdash; GRAG 0.0.1b0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cc386672"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Vector Stores" href="get_started.vectordb.html" />
+    <link rel="prev" title="Parse PDF" href="get_started.parse_pdf.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GRAG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="get_started.html">Get Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="get_started.introduction.html">GRAG Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_started.installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_started.parse_pdf.html">Parse PDF</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">LLMs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#to-run-llms-using-huggingface">To run LLMs using HuggingFace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-run-llms-using-llamacpp">To run LLMs using LlamaCPP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-quantize-models">How to quantize models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="get_started.vectordb.html">Vector Stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_started.config.html">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grag.html">GRAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples_index.html">Cookbooks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GRAG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="get_started.html">Get Started</a></li>
+      <li class="breadcrumb-item active">LLMs</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/arjbingly/grag/blob/main/src/get_started.llms.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="llms">
+<h1>LLMs<a class="headerlink" href="#llms" title="Link to this heading"></a></h1>
+<p>GRAG offers two ways to run LLMs locally:</p>
+<ol class="arabic simple">
+<li><p>LlamaCPP</p></li>
+<li><p>HuggingFace</p></li>
+</ol>
+<section id="to-run-llms-using-huggingface">
+<h2>To run LLMs using HuggingFace<a class="headerlink" href="#to-run-llms-using-huggingface" title="Link to this heading"></a></h2>
+<p>This is the easiest way to get started, but does not offer as much
+flexibility.
+If using a config file (<em>config.ini</em>), just change the <cite>model_name</cite> to
+to the HuggingFace repo id. <em>Note that if the models are gated, make sure to
+provide an auth token</em></p>
+</section>
+<section id="to-run-llms-using-llamacpp">
+<h2>To run LLMs using LlamaCPP<a class="headerlink" href="#to-run-llms-using-llamacpp" title="Link to this heading"></a></h2>
+<p>LlamaCPP requires models in the form of <cite>.gguf</cite> file. You can either download these model files online,
+or <strong>quantize</strong> the model yourself following the instructions below.</p>
+<section id="how-to-quantize-models">
+<h3>How to quantize models<a class="headerlink" href="#how-to-quantize-models" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>To quantize the model, run:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">grag.quantize.quantize</span></code></p>
+</dd>
+</dl>
+<p>After running the above command, user will be prompted with the following:</p>
+<ol class="arabic simple">
+<li><p><strong>Path</strong> where the user wants to clone the <cite>llama.cpp</cite> repo. You can find the repository, <a class="reference external" href="https://github.com/ggerganov/llama.cpp">llama.cpp</a>.</p></li>
+<li><p>Input the <strong>model path</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>If user wants to download a model from <a class="reference external" href="https://huggingface.co/models">HuggingFace</a>, the user should provide the repository path from HuggingFace.</p></li>
+<li><p>If the user has the model downloaded locally, then user will be instructed to copy the model and input the name of the model directory.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Finally, the user will be prompted to enter <strong>quantization</strong> settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check <a class="reference external" href="https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19">llama.cpp/examples/quantize/quantize.cpp</a>.</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="get_started.parse_pdf.html" class="btn btn-neutral float-left" title="Parse PDF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="get_started.vectordb.html" class="btn btn-neutral float-right" title="Vector Stores" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
