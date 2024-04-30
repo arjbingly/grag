@@ -51,7 +51,7 @@ To install with OpenBLAS, set the ``LLAMA_BLAS`` and ``LLAMA_BLAS_VENDOR`` envir
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
+    export CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
     pip install grag
 
 
@@ -61,7 +61,7 @@ To install with CUDA support, set the ``LLAMA_CUDA=on`` environment variable bef
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_CUDA=on"
+    export CMAKE_ARGS="-DLLAMA_CUDA=on"
     pip install grag
 
 
@@ -71,7 +71,7 @@ To install with Metal (MPS), set the ``LLAMA_METAL=on`` environment variable bef
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_METAL=on"
+    export CMAKE_ARGS="-DLLAMA_METAL=on"
     pip install grag
 
 
@@ -81,7 +81,7 @@ To install with CLBlast, set the ``LLAMA_CLBLAST=on`` environment variable befor
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_CLBLAST=on"
+    export CMAKE_ARGS="-DLLAMA_CLBLAST=on"
     pip install grag
 
 
@@ -91,7 +91,7 @@ To install with hipBLAS / ROCm support for AMD cards, set the ``LLAMA_HIPBLAS=on
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_HIPBLAS=on"
+    export CMAKE_ARGS="-DLLAMA_HIPBLAS=on"
     pip install grag
 
 
@@ -101,7 +101,7 @@ To install with Vulkan support, set the ``LLAMA_VULKAN=on`` environment variable
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_VULKAN=on"
+    export CMAKE_ARGS="-DLLAMA_VULKAN=on"
     pip install grag
 
 
@@ -111,7 +111,7 @@ To install with Kompute support, set the ``LLAMA_KOMPUTE=on`` environment variab
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_KOMPUTE=on"
+    export CMAKE_ARGS="-DLLAMA_KOMPUTE=on"
     pip install grag
 
 
@@ -121,7 +121,7 @@ To install with SYCL support, set the ``LLAMA_SYCL=on`` environment variable bef
 
 .. code-block:: bash
 
-    CMAKE_ARGS="-DLLAMA_SYCL=on -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx"
+    export CMAKE_ARGS="-DLLAMA_SYCL=on -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx"
     pip install grag
 
 
