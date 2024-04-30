@@ -111,6 +111,13 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
     return local_dir
 
 
+def exec_quantize(quantized_model_file: Union[str, Path], cmd: list):
+    if not os.path.exists(quantized_model_file):
+        subprocess.run(cmd, check=True)
+    else:
+        print("Quantized model already exists for given quantization, skipping...")
+
+
 def quantize_model(
     model_dir_path: Union[str, Path],
     quantization: str,
@@ -155,23 +162,39 @@ def quantize_model(
                 convert(args_list)
             else:
                 raise e
+    else:
+        print('f32 gguf file already exists, skipping conversion...')
 
     model_file = output_dir / "ggml-model-f32.gguf"
     quantized_model_file = output_dir / f"ggml-model-{quantization}.gguf"
     binary_path = target_path / 'build' / 'bin' / 'quantize'
-    main_path = target_path / 'build' / 'bin' / 'main'
-    # cmd = f'{binary_path} {str(model_file)} {str(quantized_model_file)} {quantization}'
-    # os.system(cmd)
+
     cmd = [str(binary_path), str(model_file), str(quantized_model_file), quantization]
-    run_cmd = [str(binary_path), '-m', str(quantized_model_file)]
 
     try:
-        subprocess.run(cmd, check=True)
+        exec_quantize(quantized_model_file, cmd)
     except PermissionError:
         os.chmod(binary_path, 0o777)
-        os.chmod(main_path, 0o777)
-        subprocess.run(cmd, check=True)
-        subprocess.run(run_cmd, check=True)
+        exec_quantize(quantized_model_file, cmd)
+
     print(f"Quantized model present at {output_dir}")
 
     os.chdir(Path(__file__).parent)  # Return to the root path after operation
+
+    return target_path, quantized_model_file
+
+
+def inference_quantized_model(target_path: Union[str, Path], quantized_model_file: Union[str, Path]):
+    main_path = target_path / 'build' / 'bin' / 'main'
+    run_cmd = [str(main_path), '-m', str(quantized_model_file)]
+    try:
+        res = subprocess.run(run_cmd, check=True, text=True, capture_output=True)
+    except PermissionError:
+        os.chmod(main_path, 0o777)
+        res = subprocess.run(run_cmd, check=True, text=True, capture_output=True)
+
+    if subprocess.CalledProcessError:
+        raise RuntimeError(subprocess.CalledProcessError.stderr)
+    else:
+        print('Inference successfull for this quantized model.')
+        # print(res.stdout)

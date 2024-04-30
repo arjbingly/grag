@@ -9,6 +9,7 @@ from grag.quantize.utils import (
     fetch_model_repo,
     get_asset_download_url,
     get_llamacpp_repo,
+    inference_quantized_model,
     quantize_model,
 )
 
@@ -55,6 +56,8 @@ if __name__ == "__main__":
         repo_id = input(
             "Please enter the repo_id for the model (you can check on https://huggingface.co/models): "
         ).strip()
+        if repo_id == "":
+            raise ValueError("Repo ID you entered was empty. Please enter the repo_id for the model.")
         model_dir = fetch_model_repo(repo_id, root_path / 'models')
 
     quantization = input(
@@ -63,4 +66,9 @@ if __name__ == "__main__":
     output_dir = input(
         f"Enter path where you want to save the quantized model, else the following path will be used [{model_dir}]: ").strip()
 
-    quantize_model(model_dir, quantization, root_path, output_dir)
+    target_path, quantized_model_file = quantize_model(model_dir, quantization, root_path, output_dir)
+
+    inference = input(
+        "Do you want to inference the quantized model to check if quantization is successful? (y/n) [Enter for yes]: ").strip().lower()
+    inference = True if inference == "y" or inference == "" else False
+    inference_quantized_model(target_path, quantized_model_file)
