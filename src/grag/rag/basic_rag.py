@@ -45,7 +45,7 @@ class BasicRAG:
         """Initialize BasicRAG."""
         if retriever is None:
             if retriever_kwargs is None:
-                self.retriever = Retriever(client_kwargs={'read_only': True})
+                self.retriever = Retriever(client_kwargs={"read_only": True})
             else:
                 self.retriever = Retriever(**retriever_kwargs)
         else:
@@ -216,7 +216,7 @@ class BasicRAG:
         prompt = self.refine_prompt.format(
             context=retrieved_docs[-1].page_content,
             question=query,
-            existing_answer=responses[-1]
+            existing_answer=responses[-1],
         )
         return prompt, retrieved_docs, responses
 
