@@ -44,13 +44,13 @@ class Retriever:
     """
 
     def __init__(
-        self,
-        vectordb: Optional[VectorDB] = None,
-        store_path: Union[str, Path] = Path("data/doc_store"),
-        top_k: Union[str, int] = 3,
-        id_key: str = "doc_id",
-        namespace: str = "71e4b558187b270922923569301f1039",
-        client_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            store_path: Union[str, Path],
+            top_k: str,
+            id_key: str,
+            vectordb: Optional[VectorDB] = None,
+            namespace: Optional[str] = None,
+            client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
@@ -88,6 +88,13 @@ class Retriever:
         self.splitter = TextSplitter()
         self.top_k: int = int(top_k)
         self.retriever.search_kwargs = {"k": self.top_k}
+
+    def __str__(self):
+        str_string = "Retriever("
+        str_string += f"\ttop_k: {self.top_k},\n"
+        str_string += f"\tid_key: {self.id_key},\n"
+        str_string += f"\tnamespace: {self.namespace},\n"
+        str_string += f"\tvectordb: {self.vectordb},\n"
 
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.
@@ -243,12 +250,12 @@ class Retriever:
                 return [d for d in docs if d is not None]
 
     def ingest(
-        self,
-        dir_path: Union[str, Path],
-        glob_pattern: str = "**/*.pdf",
-        dry_run: bool = False,
-        verbose: bool = True,
-        parser_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            dir_path: Union[str, Path],
+            glob_pattern: str = "**/*.pdf",
+            dry_run: bool = False,
+            verbose: bool = True,
+            parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Ingests the files in directory.
 
@@ -285,12 +292,12 @@ class Retriever:
                     print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
     async def aingest(
-        self,
-        dir_path: Union[str, Path],
-        glob_pattern: str = "**/*.pdf",
-        dry_run: bool = False,
-        verbose: bool = True,
-        parser_kwargs: Optional[Dict[str, Any]] = None,
+            self,
+            dir_path: Union[str, Path],
+            glob_pattern: str = "**/*.pdf",
+            dry_run: bool = False,
+            verbose: bool = True,
+            parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Asynchronously ingests the files in directory.
 
