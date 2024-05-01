@@ -69,6 +69,5 @@ if __name__ == "__main__":
     target_path, quantized_model_file = quantize_model(model_dir, quantization, root_path, output_dir)
 
     inference = input(
-        "Do you want to inference the quantized model to check if quantization is successful? (y/n) [Enter for yes]: ").strip().lower()
-    inference = True if inference == "y" or inference == "" else False
-    inference_quantized_model(target_path, quantized_model_file)
+        "Do you want to inference the quantized model to check if quantization is successful? Warning: It takes time as it inferences on CPU. (y/n) [Enter for yes]: ").strip().lower()
+    inference_quantized_model(target_path, quantized_model_file) if inference == "y" or inference == "" else None

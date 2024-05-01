@@ -91,7 +91,7 @@ def download_release_asset(download_url: str, target_path: Union[Path, str] = '.
         print(f"Failed to download file: {response.status_code}")
 
 
-def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quantize/models') -> None:
+def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quantize/models') -> Union[str, Path]:
     """Download model from huggingface.co/models.
 
     Args:
@@ -111,7 +111,7 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
     return local_dir
 
 
-def exec_quantize(quantized_model_file: Union[str, Path], cmd: list):
+def exec_quantize(quantized_model_file: Union[str, Path], cmd: list) -> None:
     if not os.path.exists(quantized_model_file):
         subprocess.run(cmd, check=True)
     else:
@@ -188,13 +188,8 @@ def inference_quantized_model(target_path: Union[str, Path], quantized_model_fil
     main_path = target_path / 'build' / 'bin' / 'main'
     run_cmd = [str(main_path), '-m', str(quantized_model_file)]
     try:
-        res = subprocess.run(run_cmd, check=True, text=True, capture_output=True)
+        subprocess.run(run_cmd, check=True, text=True, capture_output=True)
     except PermissionError:
         os.chmod(main_path, 0o777)
-        res = subprocess.run(run_cmd, check=True, text=True, capture_output=True)
-
-    if subprocess.CalledProcessError:
-        raise RuntimeError(subprocess.CalledProcessError.stderr)
-    else:
-        print('Inference successfull for this quantized model.')
-        # print(res.stdout)
+        subprocess.run(run_cmd, check=True, text=True, capture_output=True)
+    print('Inference successfull for this quantized model.')
