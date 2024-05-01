@@ -39,21 +39,21 @@ class DeepLakeClient(VectorDB):
     """
 
     def __init__(
-            self,
-            store_path: Union[str, Path] = Path('data/vectordb'),
-            collection_name: str = 'grag',
-            embedding_type: str = 'instructor-embedding',
-            embedding_model: str = 'kunlp/instructor-xl',
-            read_only: bool = False,
+        self,
+        store_path: Union[str, Path] = Path("data/vectordb"),
+        collection_name: str = "grag",
+        embedding_type: str = "instructor-embedding",
+        embedding_model: str = "kunlp/instructor-xl",
+        read_only: bool = False,
     ):
         """Initialize a DeepLakeClient object.
 
         Args:
             store_path: path to the deeplake vectorstore, defaults to 'data/vectordb'
             collection_name: name of the collection in the DeepLake Vectorstore, defaults to 'grag'
-            embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding', 
+            embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding',
                             defaults to instructor-embedding
-            embedding_model: model name of embedding used, should correspond to the embedding_type, 
+            embedding_model: model name of embedding used, should correspond to the embedding_type,
                              defaults to hkunlp/instructor-xl
             read_only: flag indicating whether the client is read-only, defaults to False.
         """
@@ -96,7 +96,7 @@ class DeepLakeClient(VectorDB):
         """
         docs = self._filter_metadata(docs)
         for doc in (
-                tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
+            tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
             _id = self.langchain_client.add_documents([doc])
 
@@ -113,9 +113,9 @@ class DeepLakeClient(VectorDB):
         docs = self._filter_metadata(docs)
         if verbose:
             for doc in atqdm(
-                    docs,
-                    desc=f"Adding documents to {self.collection_name}",
-                    total=len(docs),
+                docs,
+                desc=f"Adding documents to {self.collection_name}",
+                total=len(docs),
             ):
                 await self.langchain_client.aadd_documents([doc])
         else:
@@ -123,7 +123,7 @@ class DeepLakeClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-            self, query: str, with_score: bool = False, top_k: Optional[int] = None
+        self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database.
 
@@ -146,7 +146,7 @@ class DeepLakeClient(VectorDB):
             )
 
     async def aget_chunk(
-            self, query: str, with_score=False, top_k=None
+        self, query: str, with_score=False, top_k=None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database, asynchronously.
 

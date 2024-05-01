@@ -21,9 +21,7 @@ class TextSplitter:
     """
 
     def __init__(
-            self,
-            chunk_size: Union[int, str] = 2000,
-            chunk_overlap: Union[int, str] = 400
+        self, chunk_size: Union[int, str] = 2000, chunk_overlap: Union[int, str] = 400
     ):
         """Initialize TextSplitter using chunk_size and chunk_overlap."""
         self.text_splitter = RecursiveCharacterTextSplitter(

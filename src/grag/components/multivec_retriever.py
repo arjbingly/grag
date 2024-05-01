@@ -30,7 +30,7 @@ class Retriever:
     linked document, chunk, etc.
 
     Attributes:
-        vectordb: ChromaClient class instance from components.client 
+        vectordb: ChromaClient class instance from components.client
                    (Optional, if the user provides it, store_path, id_key and namespace is not considered)
         store_path: Path to the local file store
         id_key: A key prefix for identifying documents
@@ -44,13 +44,13 @@ class Retriever:
     """
 
     def __init__(
-            self,
-            vectordb: Optional[VectorDB] = None,
-            store_path: Union[str, Path] = Path('data/doc_store'),
-            top_k: Union[str, int] = 3,
-            id_key: str = 'doc_id',
-            namespace: str = '71e4b558187b270922923569301f1039',
-            client_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        vectordb: Optional[VectorDB] = None,
+        store_path: Union[str, Path] = Path("data/doc_store"),
+        top_k: Union[str, int] = 3,
+        id_key: str = "doc_id",
+        namespace: str = "71e4b558187b270922923569301f1039",
+        client_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the Retriever.
 
@@ -66,10 +66,12 @@ class Retriever:
         self.id_key = id_key
         self.namespace = uuid.UUID(namespace)
         if vectordb is None:
-            if any([self.store_path is None,
-                    self.id_key is None,
-                    self.namespace is None]):
-                raise TypeError("Arguments [store_path, id_key, namespace] or vectordb must be provided.")
+            if any(
+                [self.store_path is None, self.id_key is None, self.namespace is None]
+            ):
+                raise TypeError(
+                    "Arguments [store_path, id_key, namespace] or vectordb must be provided."
+                )
             if client_kwargs is not None:
                 self.vectordb = DeepLakeClient(**client_kwargs)
             else:
@@ -241,12 +243,12 @@ class Retriever:
                 return [d for d in docs if d is not None]
 
     def ingest(
-            self,
-            dir_path: Union[str, Path],
-            glob_pattern: str = "**/*.pdf",
-            dry_run: bool = False,
-            verbose: bool = True,
-            parser_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Ingests the files in directory.
 
@@ -283,12 +285,12 @@ class Retriever:
                     print(f"DRY RUN: found - {filepath.relative_to(dir_path)}")
 
     async def aingest(
-            self,
-            dir_path: Union[str, Path],
-            glob_pattern: str = "**/*.pdf",
-            dry_run: bool = False,
-            verbose: bool = True,
-            parser_kwargs: Optional[Dict[str, Any]] = None,
+        self,
+        dir_path: Union[str, Path],
+        glob_pattern: str = "**/*.pdf",
+        dry_run: bool = False,
+        verbose: bool = True,
+        parser_kwargs: Optional[Dict[str, Any]] = None,
     ):
         """Asynchronously ingests the files in directory.
 

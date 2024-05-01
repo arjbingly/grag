@@ -76,7 +76,7 @@ def get_config(load_env=False):
     if config_path_:
         config_path = Path(config_path_)
     else:
-        script_location = Path('.').resolve()
+        script_location = Path(".").resolve()
         config_path = find_config_path(script_location)
         if config_path is not None:
             os.environ["CONFIG_PATH"] = str(config_path)
@@ -86,9 +86,9 @@ def get_config(load_env=False):
         config = ConfigParser(interpolation=ExtendedInterpolation())
         config.read(config_path)
         print(f"Loaded config from {config_path}.")
-        # Load .env 
+        # Load .env
         if load_env:
-            env_path = Path(config['env']['env_path'])
+            env_path = Path(config["env"]["env_path"])
             if env_path.exists():
                 load_dotenv(env_path)
                 print(f"Loaded environment variables from {env_path}")
@@ -112,7 +112,7 @@ def configure_args(cls):
     Raises:
         TypeError: If there is a mismatch in provided arguments and class constructor requirements.
     """
-    module_namespace = cls.__module__.split('.')[-1]
+    module_namespace = cls.__module__.split(".")[-1]
 
     config = get_config()[module_namespace]
 

@@ -8,7 +8,7 @@ import grag.resources
 from importlib_resources import files
 
 
-def create_config(path: Union[str, Path] = '.') -> None:
+def create_config(path: Union[str, Path] = ".") -> None:
     """Create a configuration file if it doesn't exist.
 
     This function checks for the existence of a 'config.ini' file at the given path.
@@ -17,8 +17,8 @@ def create_config(path: Union[str, Path] = '.') -> None:
     and does not overwrite the existing file.
 
     Args:
-        path (Union[str, Path]): The directory path where the 'config.ini' should be 
-                                 located. If not specified, defaults to the current 
+        path (Union[str, Path]): The directory path where the 'config.ini' should be
+                                 located. If not specified, defaults to the current
                                  directory ('.').
 
     Returns:
@@ -29,15 +29,15 @@ def create_config(path: Union[str, Path] = '.') -> None:
         PermissionError: If the process does not have permission to write to the specified
                          directory.
     """
-    default_config_path = files(grag.resources).joinpath('default_config.ini')
-    path = Path(path) / 'config.ini'
+    default_config_path = files(grag.resources).joinpath("default_config.ini")
+    path = Path(path) / "config.ini"
     path = path.resolve()
     if path.exists():
-        print('Config file already exists')
+        print("Config file already exists")
     else:
         shutil.copyfile(default_config_path, path, follow_symlinks=True)
         print(f"Created config file at {path}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     create_config()

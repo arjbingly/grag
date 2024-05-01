@@ -1,5 +1,4 @@
-"""
-RAG-GUI
+"""RAG-GUI
 =======
 
 A cookbook demonstrating how to run a RAG app on streamlit.

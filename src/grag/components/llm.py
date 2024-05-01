@@ -47,15 +47,15 @@ class LLM:
         model_name: str,
         quantization: str,
         pipeline: str,
-        device_map: str = 'auto',
-        task: str = 'text-generation',
-        max_new_tokens: str = '1024',
+        device_map: str = "auto",
+        task: str = "text-generation",
+        max_new_tokens: str = "1024",
         temperature: Union[str, int] = 0.1,
         n_batch: Union[str, int] = 1024,
         n_ctx: Union[str, int] = 6000,
         n_gpu_layers: Union[str, int] = -1,
         std_out: Union[bool, str] = True,
-        base_dir: Union[str, Path] = Path('models'),
+        base_dir: Union[str, Path] = Path("models"),
         callbacks=None,
     ):
         """Initialize the LLM class using the given parameters.
@@ -184,8 +184,11 @@ class LLM:
         return llm
 
     def load_model(
-        self, model_name: Optional[str] = None, pipeline: Optional[str] = None, quantization: Optional[str] = None,
-        is_local: Optional[bool] = None
+        self,
+        model_name: Optional[str] = None,
+        pipeline: Optional[str] = None,
+        quantization: Optional[str] = None,
+        is_local: Optional[bool] = None,
     ):
         """Loads the model based on the specified pipeline and model name.
 

@@ -24,22 +24,22 @@ class ParsePDF:
         image_output_dir (str): Directory to save extracted images, if any.
         add_captions_to_text (bool): Whether to include figure captions in text output. Default is True.
         add_captions_to_blocks (bool): Whether to add captions to table and image blocks. Default is True.
-        add_caption_first (bool): Whether to place captions before their corresponding image or table in the output. 
+        add_caption_first (bool): Whether to place captions before their corresponding image or table in the output.
                                   Default is True.
         table_as_html (bool): Whether to add table elements as HTML. Default is False.
     """
 
     def __init__(
-            self,
-            single_text_out: bool = True,
-            strategy: str = "hi_res",
-            infer_table_structure: bool = True,
-            extract_images: bool = True,
-            image_output_dir: Optional[str] = None,
-            add_captions_to_text: bool = True,
-            add_captions_to_blocks: bool = True,
-            add_caption_first: bool = True,
-            table_as_html: bool = False,
+        self,
+        single_text_out: bool = True,
+        strategy: str = "hi_res",
+        infer_table_structure: bool = True,
+        extract_images: bool = True,
+        image_output_dir: Optional[str] = None,
+        add_captions_to_text: bool = True,
+        add_captions_to_blocks: bool = True,
+        add_caption_first: bool = True,
+        table_as_html: bool = False,
     ):
         """Initialize instance variables with parameters."""
         self.strategy = strategy
@@ -98,7 +98,7 @@ class ParsePDF:
             if element.category == "Table":
                 if self.add_captions_to_blocks and i + 1 < len(partitions):
                     if (
-                            partitions[i + 1].category == "FigureCaption"
+                        partitions[i + 1].category == "FigureCaption"
                     ):  # check for caption
                         caption_element = partitions[i + 1]
                     else:
@@ -109,7 +109,7 @@ class ParsePDF:
             elif element.category == "Image":
                 if self.add_captions_to_blocks and i + 1 < len(partitions):
                     if (
-                            partitions[i + 1].category == "FigureCaption"
+                        partitions[i + 1].category == "FigureCaption"
                     ):  # check for caption
                         caption_element = partitions[i + 1]
                     else:
@@ -197,7 +197,7 @@ class ParsePDF:
 
             if caption_element:
                 if (
-                        self.add_caption_first
+                    self.add_caption_first
                 ):  # if there is a caption, add that before the element
                     content = "\n\n".join([str(caption_element), table_data])
                 else:

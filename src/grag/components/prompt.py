@@ -86,7 +86,7 @@ class Prompt(BaseModel):
         )
 
     def save(
-            self, filepath: Union[Path, str, None], overwrite=False
+        self, filepath: Union[Path, str, None], overwrite=False
     ) -> Union[None, ValueError]:
         """Saves the prompt class into a json file."""
         dump = self.model_dump_json(indent=2, exclude_defaults=True, exclude_none=True)
