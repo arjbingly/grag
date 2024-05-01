@@ -2,7 +2,7 @@
 
 This module provides:
 
-- VectorDB
+— VectorDB
 """
 
 from abc import ABC, abstractmethod

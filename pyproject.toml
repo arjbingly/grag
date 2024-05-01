@@ -56,7 +56,7 @@ dev = [
     "mypy",
     "ruff",
     "sphinx",
-    "sphinx-rtd-theme",
+    "pydata-sphinx-theme",
     "sphinx-gallery",
 ]
 

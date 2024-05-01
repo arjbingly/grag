@@ -2,7 +2,7 @@
 
 This module provides:
 
-- ChromaClient
+— ChromaClient
 """
 
 from typing import List, Optional, Tuple, Union
@@ -24,7 +24,7 @@ class ChromaClient(VectorDB):
     Attributes:
         host : str
             IP Address of hosted Chroma Vectorstore
-        port : str
+        port : str or int
             port address of hosted Chroma Vectorstore
         collection_name : str
             name of the collection in the Chroma Vectorstore, each ChromaClient connects to a single collection
@@ -43,21 +43,23 @@ class ChromaClient(VectorDB):
     """
 
     def __init__(
-            self,
-            host: str,
-            port: str,
-            collection_name: str,
-            embedding_type: str,
-            embedding_model: str,
+        self,
+        host: str = "localhost",
+        port: Union[str, int] = 8000,
+        collection_name: str = "grag",
+        embedding_type: str = "instructor-embedding",
+        embedding_model: str = "hkunlp/instructor-xl",
     ):
         """Initialize a ChromaClient object.
 
         Args:
-        host: IP Address of hosted Chroma Vectorstore, defaults to argument from config file
-        port: port address of hosted Chroma Vectorstore, defaults to argument from config file
-        collection_name: name of the collection in the Chroma Vectorstore, defaults to argument from config file
-        embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding', defaults to argument from config file
-        embedding_model: model name of embedding used, should correspond to the embedding_type, defaults to argument from config file
+            host: IP Address of hosted Chroma Vectorstore, defaults to localhost
+            port: port address of hosted Chroma Vectorstore, defaults to 8000
+            collection_name: name of the collection in the Chroma Vectorstore, defaults to 'grag'
+            embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding',
+                            defaults to instructor-embedding
+            embedding_model: model name of embedding used, should correspond to the embedding_type,
+                             defaults to hkunlp/instructor-xl.
         """
         self.host = host
         self.port = port
@@ -133,7 +135,7 @@ class ChromaClient(VectorDB):
         """
         docs = self._filter_metadata(docs)
         for doc in (
-                tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
+            tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
             _id = self.langchain_client.add_documents([doc])
 
@@ -150,9 +152,9 @@ class ChromaClient(VectorDB):
         docs = self._filter_metadata(docs)
         if verbose:
             for doc in atqdm(
-                    docs,
-                    desc=f"Adding documents to {self.collection_name}",
-                    total=len(docs),
+                docs,
+                desc=f"Adding documents to {self.collection_name}",
+                total=len(docs),
             ):
                 await self.langchain_client.aadd_documents([doc])
         else:
@@ -160,7 +162,7 @@ class ChromaClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-            self, query: str, with_score: bool = False, top_k: Optional[int] = None
+        self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the chroma database.
 
@@ -183,7 +185,7 @@ class ChromaClient(VectorDB):
             )
 
     async def aget_chunk(
-            self, query: str, with_score=False, top_k=None
+        self, query: str, with_score=False, top_k=None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most (cosine) similar chunks from the vector database, asynchronously.
 

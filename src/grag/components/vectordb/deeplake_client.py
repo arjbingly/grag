@@ -2,7 +2,7 @@
 
 This module provides:
 
-- DeepLakeClient
+— DeepLakeClient
 """
 
 from pathlib import Path
@@ -32,21 +32,31 @@ class DeepLakeClient(VectorDB):
             a function of the embedding model, derived from the embedding_type and embedding_modelname
         client: deeplake.core.vectorstore.VectorStore
             DeepLake API
-        collection
-            Chroma API for the collection
+        collection_name: str
+             The name of the collection where the vectors are stored.
         langchain_client: langchain_community.vectorstores.DeepLake
-            LangChain wrapper for DeepLake API
+            LangChain wrapper for DeepLake API.
     """
 
     def __init__(
-            self,
-            collection_name: str,
-            store_path: Union[str, Path],
-            embedding_type: str,
-            embedding_model: str,
-            read_only: bool = False,
+        self,
+        store_path: Union[str, Path] = Path("data/vectordb"),
+        collection_name: str = "grag",
+        embedding_type: str = "instructor-embedding",
+        embedding_model: str = "kunlp/instructor-xl",
+        read_only: bool = False,
     ):
-        """Initialize DeepLake client object."""
+        """Initialize a DeepLakeClient object.
+
+        Args:
+            store_path: path to the deeplake vectorstore, defaults to 'data/vectordb'
+            collection_name: name of the collection in the DeepLake Vectorstore, defaults to 'grag'
+            embedding_type: type of embedding used, supported 'sentence-transformers' and 'instructor-embedding',
+                            defaults to instructor-embedding
+            embedding_model: model name of embedding used, should correspond to the embedding_type,
+                             defaults to hkunlp/instructor-xl
+            read_only: flag indicating whether the client is read-only, defaults to False.
+        """
         self.store_path = Path(store_path)
         self.collection_name = collection_name
         self.read_only = read_only
@@ -95,7 +105,7 @@ class DeepLakeClient(VectorDB):
         """
         docs = self._filter_metadata(docs)
         for doc in (
-                tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
+            tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
             _id = self.langchain_client.add_documents([doc])
 
@@ -112,9 +122,9 @@ class DeepLakeClient(VectorDB):
         docs = self._filter_metadata(docs)
         if verbose:
             for doc in atqdm(
-                    docs,
-                    desc=f"Adding documents to {self.collection_name}",
-                    total=len(docs),
+                docs,
+                desc=f"Adding documents to {self.collection_name}",
+                total=len(docs),
             ):
                 await self.langchain_client.aadd_documents([doc])
         else:
@@ -122,7 +132,7 @@ class DeepLakeClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-            self, query: str, with_score: bool = False, top_k: Optional[int] = None
+        self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database.
 
@@ -145,7 +155,7 @@ class DeepLakeClient(VectorDB):
             )
 
     async def aget_chunk(
-            self, query: str, with_score=False, top_k=None
+        self, query: str, with_score=False, top_k=None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database, asynchronously.
 

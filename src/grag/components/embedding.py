@@ -2,7 +2,7 @@
 
 This module provides:
 
-- Embedding
+— Embedding
 """
 
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings

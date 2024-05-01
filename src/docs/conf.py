@@ -22,14 +22,14 @@ copyright = '2024, Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
 author = 'Arjun Bingly, Sanchit Vijay, Erika Pham, Kunal Inglunkar'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.0.1b0'
 
 # -- General configuration ---------------------------------------------------
 
 html_context = {
     "display_github": True,  # Integrate GitHub
     "github_user": "arjbingly",  # Username
-    "github_repo": "Capstone_5",  # Repo name
+    "github_repo": "grag",  # Repo name
     "github_version": "main",  # Version
     "conf_py_path": "/src/",  # Path in the checkout to the docs root
 }
@@ -50,9 +50,10 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-    'examples_dirs': ['../../cookbook/Basic-RAG', '../../cookbook/Retriver-GUI'],  # path to your example scripts
+    'examples_dirs': ['../../cookbook/Basic-RAG', '../../cookbook/RAG-GUI', '../../cookbook/Retriever-GUI'],
+    # path to your example scripts
     # 'examples_dirs': '../../cookbook',
-    'gallery_dirs': ['auto_examples/Basic-RAG', 'auto_examples/Retriver-GUI'],
+    'gallery_dirs': ['auto_examples/Basic-RAG', 'auto_examples/RAG-GUI', 'auto_examples/Retriever-GUI'],
     # path to where to save gallery generated output
     'filename_pattern': '.py',
     'plot_gallery': 'False',
@@ -89,10 +90,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-

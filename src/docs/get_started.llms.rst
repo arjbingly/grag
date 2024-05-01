@@ -12,7 +12,7 @@ This is the easiest way to get started, but does not offer as much
 flexibility.
 If using a config file (*config.ini*), just change the `model_name` to
 to the HuggingFace repo id. *Note that if the models are gated, make sure to
-provide an auth token*
+provide an auth token*.
 
 To run LLMs using LlamaCPP
 #############################
