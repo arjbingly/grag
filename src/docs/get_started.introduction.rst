@@ -11,8 +11,9 @@ Retrieval-Augmented Generation (RAG)
 Retrieval-Augmented Generation (RAG) is a technique in machine learning that helps to enhance large-language models (LLM) by incorporating external data.
 
 In RAG, a model first retrieves relevant documents or data from a large corpus and then uses this information to guide the generation of new text. This approach allows the model to produce more informed, accurate, and contextually appropriate responses.
+Traditionally, it uses a vector database/vector store for both retrieval and generation processes.
 
-By leveraging both the retrieval of existing knowledge and the generative capabilities of neural networks, RAG models can improve over traditional generation methods, particularly in tasks requiring deep domain-specific knowledge or factual accuracy.
+By leveraging both the retrieval of existing knowledge and the generative capabilities of neural networks, RAG models can improve over traditional generation methods, particularly in tasks requiring domain-specific knowledge or factual accuracy.
 
 .. figure:: ../../_static/basic_RAG_pipeline.png
   :width: 800
@@ -21,4 +22,3 @@ By leveraging both the retrieval of existing knowledge and the generative capabi
 
   Illustration of a basic RAG pipeline
 
-Traditionally, it uses a vector database/vector store for both retrieval and generation processes.

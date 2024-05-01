@@ -1,4 +1,9 @@
-"""A cookbook demonstrating how to run RAG app on streamlit."""
+"""RAG-GUI
+=======
+
+A cookbook demonstrating how to run a RAG app on streamlit.
+
+"""
 
 import os
 import sys
@@ -12,11 +17,13 @@ from grag.rag.basic_rag import BasicRAG
 
 sys.path.insert(1, str(Path(os.getcwd()).parents[1]))
 
-st.set_page_config(page_title="GRAG",
-                   menu_items={
-                       "Get Help": "https://github.com/arjbingly/Capstone_5",
-                       "About": "This is a simple GUI for GRAG"
-                   })
+st.set_page_config(
+    page_title="GRAG",
+    menu_items={
+        "Get Help": "https://github.com/arjbingly/Capstone_5",
+        "About": "This is a simple GUI for GRAG",
+    },
+)
 
 
 def spinner(text):
@@ -87,51 +94,64 @@ class RAGApp:
     def render_sidebar(self):
         """Renders the sidebar in the application interface with model selection and parameters."""
         with st.sidebar:
-            st.title('GRAG')
-            st.subheader('Models and parameters')
-            st.sidebar.selectbox('Choose a model',
-                                 ['Llama-2-13b-chat', 'Llama-2-7b-chat',
-                                  'Mixtral-8x7B-Instruct-v0.1', 'gemma-7b-it'],
-                                 key='selected_model')
-            st.sidebar.slider('Temperature',
-                              min_value=0.1,
-                              max_value=1.0,
-                              value=0.1,
-                              step=0.1,
-                              key='temperature')
-            st.sidebar.slider('Top-k',
-                              min_value=1,
-                              max_value=5,
-                              value=3,
-                              step=1,
-                              key='top_k')
-            st.button('Load Model', on_click=self.load_rag)
-            st.checkbox('Show sources', key='show_sources')
+            st.title("GRAG")
+            st.subheader("Models and parameters")
+            st.sidebar.selectbox(
+                "Choose a model",
+                [
+                    "Llama-2-13b-chat",
+                    "Llama-2-7b-chat",
+                    "Mixtral-8x7B-Instruct-v0.1",
+                    "gemma-7b-it",
+                ],
+                key="selected_model",
+            )
+            st.sidebar.slider(
+                "Temperature",
+                min_value=0.1,
+                max_value=1.0,
+                value=0.1,
+                step=0.1,
+                key="temperature",
+            )
+            st.sidebar.slider(
+                "Top-k", min_value=1, max_value=5, value=3, step=1, key="top_k"
+            )
+            st.button("Load Model", on_click=self.load_rag)
+            st.checkbox("Show sources", key="show_sources")
 
-    @spinner(text='Loading model...')
+    @spinner(text="Loading model...")
     def load_rag(self):
         """Loads the specified RAG model based on the user's selection and settings in the sidebar."""
-        if 'rag' in st.session_state:
-            del st.session_state['rag']
+        if "rag" in st.session_state:
+            del st.session_state["rag"]
 
-        llm_kwargs = {"temperature": st.session_state['temperature'], }
-        if st.session_state['selected_model'] == "Mixtral-8x7B-Instruct-v0.1":
-            llm_kwargs['n_gpu_layers'] = 16
-            llm_kwargs['quantization'] = 'Q4_K_M'
-        elif st.session_state['selected_model'] == "gemma-7b-it":
-            llm_kwargs['n_gpu_layers'] = 18
-            llm_kwargs['quantization'] = 'f16'
+        llm_kwargs = {
+            "temperature": st.session_state["temperature"],
+        }
+        if st.session_state["selected_model"] == "Mixtral-8x7B-Instruct-v0.1":
+            llm_kwargs["n_gpu_layers"] = 16
+            llm_kwargs["quantization"] = "Q4_K_M"
+        elif st.session_state["selected_model"] == "gemma-7b-it":
+            llm_kwargs["n_gpu_layers"] = 18
+            llm_kwargs["quantization"] = "f16"
 
         retriever_kwargs = {
-            "client_kwargs": {"read_only": True, },
-            "top_k": st.session_state['top_k']
+            "client_kwargs": {
+                "read_only": True,
+            },
+            "top_k": st.session_state["top_k"],
         }
         client = DeepLakeClient(collection_name="usc", read_only=True)
         retriever = Retriever(vectordb=client)
 
-        st.session_state['rag'] = BasicRAG(model_name=st.session_state['selected_model'], stream=True,
-                                           llm_kwargs=llm_kwargs, retriever=retriever,
-                                           retriever_kwargs=retriever_kwargs)
+        st.session_state["rag"] = BasicRAG(
+            model_name=st.session_state["selected_model"],
+            stream=True,
+            llm_kwargs=llm_kwargs,
+            retriever=retriever,
+            retriever_kwargs=retriever_kwargs,
+        )
         st.success(
             f"""Model Loaded !!!
     
@@ -147,7 +167,7 @@ class RAGApp:
     def render_main(self):
         """Renders the main chat interface for user interaction with the loaded RAG model."""
         st.title(":us: US Constitution Expert! :mortar_board:")
-        if 'rag' not in st.session_state:
+        if "rag" not in st.session_state:
             st.warning("You have not loaded any model")
         else:
             user_input = st.chat_input("Ask me anything about the US Constitution.")
@@ -156,14 +176,16 @@ class RAGApp:
                 with st.chat_message("user"):
                     st.write(user_input)
                 with st.chat_message("assistant"):
-                    _ = st.write_stream(
-                        st.session_state['rag'](user_input)[0]
-                    )
-                    if st.session_state['show_sources']:
-                        retrieved_docs = st.session_state['rag'].retriever.get_chunk(user_input)
+                    _ = st.write_stream(st.session_state["rag"](user_input)[0])
+                    if st.session_state["show_sources"]:
+                        retrieved_docs = st.session_state["rag"].retriever.get_chunk(
+                            user_input
+                        )
                         for index, doc in enumerate(retrieved_docs):
                             with st.expander(f"Source {index + 1}"):
-                                st.markdown(f"**{index + 1}. {doc.metadata['source']}**")
+                                st.markdown(
+                                    f"**{index + 1}. {doc.metadata['source']}**"
+                                )
                                 # if st.session_state['show_content']:
                                 st.text(f"**{doc.page_content}**")
 

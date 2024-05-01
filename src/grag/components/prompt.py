@@ -2,9 +2,9 @@
 
 This module provides:
 
-- Prompt - for generic prompts
+— Prompt: for generic prompts
 
-- FewShotPrompt - for few-shot prompts
+— FewShotPrompt: for few-shot prompts
 """
 
 import json
