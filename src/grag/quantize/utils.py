@@ -5,7 +5,7 @@ import subprocess
 import sys
 import zipfile
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Tuple, Union
 
 import requests
 from git import Repo
@@ -17,11 +17,11 @@ config = get_config()
 
 def get_llamacpp_repo(repo_url: str = 'https://github.com/ggerganov/llama.cpp.git',
                       destination_folder: Union[str, Path] = './grag-quantize') -> None:
-    """Clones a GitHub repository to a specified local directory or updates it if it already exists using GitPython.
+    """Clones a GitHub repository to a specified local directory or updates it if it already exists. The directory is created if it does not exist. If the repository is already cloned, it pulls updates.
 
     Args:
-        repo_url (str): The URL of the repository to clone.
-        destination_folder (str, Path): The local path where the repository should be cloned or updated.
+        repo_url: The URL of the repository to clone.
+        destination_folder: The local path where the repository should be cloned or updated.
 
     Returns:
         None
@@ -48,12 +48,12 @@ def get_asset_download_url(asset_name_pattern: str, user: str = 'ggerganov', rep
     """Fetches the download URL of the first asset that matches a given name pattern in the latest release of the specified repository.
 
     Args:
-        user (str): GitHub username or organization of the repository.
-        repo (str): Repository name.
-        asset_name_pattern (str): Substring to match in the asset's name.
+        asset_name_pattern: Substring to match in the asset's name.
+        user: GitHub username or organization of the repository.
+        repo: Repository name.
 
     Returns:
-        str: The download URL of the matching asset, or None if no match is found.
+        The download URL of the matching asset, or None if no match is found.
     """
     url = f"https://api.github.com/repos/{user}/{repo}/releases/latest"
     response = requests.get(url)
@@ -68,35 +68,41 @@ def get_asset_download_url(asset_name_pattern: str, user: str = 'ggerganov', rep
     return None
 
 
-def download_release_asset(download_url: str, target_path: Union[Path, str] = './grag-quantize') -> None:
-    """Downloads a file from a given URL and saves it to a specified path.
+def download_release_asset(download_url: str, root_quantize: Union[Path, str] = './grag-quantize') -> None:
+    """Downloads a file from a given URL and saves it to a specified path. It also attempts to extract the file if it is a ZIP archive.
 
     Args:
-        download_url (str): The URL of the file to download.
-        target_path (str, Path): Path where the file will be saved.
+        download_url: The URL of the file to download.
+        root_quantize: Path where the file will be saved.
+
+    Returns:
+        None
     """
-    target_path = Path(target_path)
-    target_path.mkdir(parents=True, exist_ok=True)
+    root_quantize = Path(root_quantize)
+    root_quantize.mkdir(parents=True, exist_ok=True)
     response = requests.get(download_url, stream=True)
     if response.status_code == 200:
-        with open(target_path / 'llamacpp_release.zip', 'wb') as f:
+        with open(root_quantize / 'llamacpp_release.zip', 'wb') as f:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
-        print(f"Downloaded successfully to {target_path}")
-        with zipfile.ZipFile(target_path / 'llamacpp_release.zip', 'r') as zip_ref:
+        print(f"Downloaded successfully to {root_quantize}")
+        with zipfile.ZipFile(root_quantize / 'llamacpp_release.zip', 'r') as zip_ref:
             # Extract all the contents into the destination directory
-            zip_ref.extractall(target_path)
-            print(f"Files extracted to {target_path}")
+            zip_ref.extractall(root_quantize)
+            print(f"Files extracted to {root_quantize}")
     else:
         print(f"Failed to download file: {response.status_code}")
 
 
 def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quantize/models') -> Union[str, Path]:
-    """Download model from huggingface.co/models.
+    """Downloads a model from huggingface.co/models to a specified directory.
 
     Args:
-        repo_id (str): Repository ID of the model to download.
-        model_path (str): The root path where the model should be downloaded or copied.
+        repo_id: Repository ID of the model to download (e.g., 'huggingface/gpt2').
+        model_path: The local directory where the model should be downloaded.
+
+    Returns:
+        The path to the directory where the model is downloaded.
     """
     model_path = Path(model_path)
     local_dir = model_path / f"{repo_id.split('/')[1]}"
@@ -111,42 +117,41 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
     return local_dir
 
 
-def exec_quantize(quantized_model_file: Union[str, Path], cmd: list) -> None:
-    if not os.path.exists(quantized_model_file):
-        subprocess.run(cmd, check=True)
-    else:
-        print("Quantized model already exists for given quantization, skipping...")
-
-
 def quantize_model(
     model_dir_path: Union[str, Path],
     quantization: str,
-    target_path: Union[str, Path] = './grag-quantize',  # path with both bulid and llamacpp
-    output_dir: Optional[Union[str, Path]] = None,
-) -> None:
-    """Quantizes a specified model using a given quantization level.
+    root_quantize: Union[str, Path] = './grag-quantize',  # path with both build and llamacpp
+    output_dir: Optional[Path] = None,
+) -> Tuple[Path, Path]:
+    """Quantizes a specified model using a given quantization level and saves it to an optional directory. If the output directory is not specified, it defaults to a subdirectory under the provided model directory. The function also handles specific exceptions during the conversion process and ensures the creation of the necessary directories.
 
     Args:
-        output_dir (str, Path, optional): Directory to save quantized model. Defaults to None
-        model_dir_path (str, Path): The directory path of the model to be quantized.
-        quantization (str): The quantization level to apply.
-        root_path (str, Path): The root directory path of the project.
+        model_dir_path: The directory path of the model to be quantized. This path must exist and contain the model files.
+        quantization: The quantization level to apply (e.g., 'f32', 'f16'). This affects the precision and size of the model.
+        root_quantize: The root directory containing the quantization tools and scripts. This directory should have the necessary binary files and scripts for the quantization process.
+        output_dir: Optional directory to save the quantized model. If not specified, the function uses a default directory based on the model directory path.
+
+    Returns:
+        Tuple[Path, Path]: Returns a tuple containing the path to the root of the quantization tools and the path to the quantized model file.
+        
+    Raises:
+        PermissionError: If the function lacks permissions to execute the quantization binaries, it will attempt to modify permissions and retry.
+        TypeError: If there are issues with the provided model directory or quantization parameters.
     """
-    # os.chdir(f"{root_path}/llama.cpp/")
     model_dir_path = Path(model_dir_path).resolve()
     if output_dir is None:
         try:
-            output_dir = config["llm"]["base_dir"]
+            output_dir = Path(config["llm"]["base_dir"])
         except KeyError:
             output_dir = Path('.')
 
-    output_dir = Path(output_dir) / model_dir_path.name
+    output_dir = Path(output_dir) / model_dir_path.name if output_dir.stem != model_dir_path.name else output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
     output_dir = output_dir.resolve()
 
-    target_path = Path(target_path).resolve()
-    os.chdir(target_path / 'llama.cpp')
-    convert_script_path = os.path.join(target_path, 'llama.cpp')
+    root_quantize = Path(root_quantize).resolve()
+    os.chdir(root_quantize / 'llama.cpp')
+    convert_script_path = os.path.join(root_quantize, 'llama.cpp')
     sys.path.append(convert_script_path)
 
     from convert import main as convert
@@ -165,31 +170,43 @@ def quantize_model(
     else:
         print('f32 gguf file already exists, skipping conversion...')
 
-    model_file = output_dir / "ggml-model-f32.gguf"
     quantized_model_file = output_dir / f"ggml-model-{quantization}.gguf"
-    binary_path = target_path / 'build' / 'bin' / 'quantize'
+    if not os.path.exists(quantized_model_file):
+        converted_model_file = output_dir / "ggml-model-f32.gguf"
+        binary_path = root_quantize / 'build' / 'bin' / 'quantize'
+        cmd = [str(binary_path), str(converted_model_file), str(quantized_model_file), quantization]
 
-    cmd = [str(binary_path), str(model_file), str(quantized_model_file), quantization]
-
-    try:
-        exec_quantize(quantized_model_file, cmd)
-    except PermissionError:
-        os.chmod(binary_path, 0o777)
-        exec_quantize(quantized_model_file, cmd)
-
-    print(f"Quantized model present at {output_dir}")
-
+        try:
+            subprocess.run(cmd, check=True)
+        except PermissionError:
+            os.chmod(binary_path, 0o777)
+            subprocess.run(cmd, check=True)
+        print(f"Quantized model present at {output_dir}")
+    else:
+        print("Quantized model already exists for given quantization, skipping...")
     os.chdir(Path(__file__).parent)  # Return to the root path after operation
 
-    return target_path, quantized_model_file
+    return root_quantize, quantized_model_file
 
 
-def inference_quantized_model(target_path: Union[str, Path], quantized_model_file: Union[str, Path]):
-    main_path = target_path / 'build' / 'bin' / 'main'
-    run_cmd = [str(main_path), '-m', str(quantized_model_file)]
+def inference_quantized_model(root_quantize: Union[str, Path],
+                              quantized_model_file: Union[str, Path]) -> subprocess.CompletedProcess:
+    """Runs inference using a quantized model binary.
+
+    Args:
+        root_quantize: The root directory containing the compiled inference executable.
+        quantized_model_file: The file path to the quantized model to use for inference.
+
+    Returns:
+        The subprocess.CompletedProcess object containing the inference execution result.
+    """
+    root_quantize = Path(root_quantize)
+    main_path = root_quantize / 'build' / 'bin' / 'main'
+    run_cmd = [str(main_path), '-m', str(quantized_model_file), '-ngl', '-1']
     try:
-        subprocess.run(run_cmd, check=True, text=True, capture_output=True)
+        res = subprocess.run(run_cmd, check=True, text=True, capture_output=True)
     except PermissionError:
         os.chmod(main_path, 0o777)
-        subprocess.run(run_cmd, check=True, text=True, capture_output=True)
+        res = subprocess.run(run_cmd, check=True, text=True, capture_output=True)
     print('Inference successfull for this quantized model.')
+    return res
