@@ -5,6 +5,7 @@ This module provides:
 — Embedding
 """
 
+from grag.components.utils import gen_str
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain_community.embeddings.sentence_transformer import (
     SentenceTransformerEmbeddings,
@@ -43,21 +44,28 @@ class Embedding:
                 raise Exception("embedding_type is invalid")
 
     def __call__(self):
+        """Embed the document."""
         return self.embedding_function()
 
+    # def __str__(self):
+    #     repr_string = "Embedding (\n"
+    #     repr_string += f"\ttype: {self.embedding_type},\n"
+    #     repr_string += f"\tmodel: {self.embedding_model},\n"
+    #     repr_string += f"\tmax_seq_len: {self.embedding_function.client.max_seq_length},\n"
+    #     repr_string += f"\tdevice: {self.embedding_function.client.device},\n"
+    #     if self.embedding_type == "instructor-embedding":
+    #         repr_string += f"\tembedding_instruction: {self.embedding_function.embed_instruction},\n"
+    #     repr_string += ")"
+    #     return repr_string
+
     def __str__(self):
-        repr_string = "Embedding (\n"
-        repr_string += f"\ttype: {self.embedding_type},\n"
-        repr_string += f"\tmodel: {self.embedding_model},\n"
-        repr_string += f"\tmax_seq_len: {self.embedding_function.client.max_seq_length},\n"
-        repr_string += f"\tdevice: {self.embedding_function.client.device},\n"
-        if self.embedding_type == "instructor-embedding":
-            repr_string += f"\tembedding_instruction: {self.embedding_function.embed_instruction}"
-
-        repr_string += ")"
-        return repr_string
-
-
-if __name__ == "__main__":
-    e = Embedding("instructor-embedding", "hkunlp/instructor-xl")
-    print(e)
+        """Return a string representation of the object."""
+        dict = {
+            "embedding_type": self.embedding_type,
+            "embedding_model": self.embedding_model,
+            "max_seq_length": self.embedding_function.client.max_seq_length,
+            "device": self.embedding_function.client.device,
+        }
+        if self.embedding_type == "sentence-transformers":
+            dict["embedding_instruction"] = self.embedding_function.embedding_instruction
+        return gen_str(self, dict)

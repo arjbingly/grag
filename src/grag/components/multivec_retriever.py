@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
-from grag.components.utils import configure_args
+from grag.components.utils import configure_args, get_str
 from grag.components.vectordb.base import VectorDB
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
@@ -67,7 +67,7 @@ class Retriever:
         self.namespace = uuid.UUID(namespace)
         if vectordb is None:
             if any(
-                [self.store_path is None, self.id_key is None, self.namespace is None]
+                    [self.store_path is None, self.id_key is None, self.namespace is None]
             ):
                 raise TypeError(
                     "Arguments [store_path, id_key, namespace] or vectordb must be provided."
@@ -90,11 +90,15 @@ class Retriever:
         self.retriever.search_kwargs = {"k": self.top_k}
 
     def __str__(self):
-        str_string = "Retriever("
-        str_string += f"\ttop_k: {self.top_k},\n"
-        str_string += f"\tid_key: {self.id_key},\n"
-        str_string += f"\tnamespace: {self.namespace},\n"
-        str_string += f"\tvectordb: {self.vectordb},\n"
+        """String representation of the Retriever."""
+        dict = {
+            "top_k": self.top_k,
+            "id_key": self.id_key,
+            "namespace": self.namespace,
+            "store_path": self.store_path,
+            "vectordb": self.vectordb,
+        }
+        return get_str(self, dict)
 
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.

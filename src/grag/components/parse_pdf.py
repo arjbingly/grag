@@ -7,7 +7,7 @@ This module provides:
 
 from typing import Optional
 
-from grag.components.utils import configure_args
+from grag.components.utils import configure_args, gen_str
 from langchain_core.documents import Document
 from unstructured.partition.pdf import partition_pdf
 
@@ -30,16 +30,16 @@ class ParsePDF:
     """
 
     def __init__(
-        self,
-        single_text_out: bool = True,
-        strategy: str = "hi_res",
-        infer_table_structure: bool = True,
-        extract_images: bool = True,
-        image_output_dir: Optional[str] = None,
-        add_captions_to_text: bool = True,
-        add_captions_to_blocks: bool = True,
-        add_caption_first: bool = True,
-        table_as_html: bool = False,
+            self,
+            single_text_out: bool = True,
+            strategy: str = "hi_res",
+            infer_table_structure: bool = True,
+            extract_images: bool = True,
+            image_output_dir: Optional[str] = None,
+            add_captions_to_text: bool = True,
+            add_captions_to_blocks: bool = True,
+            add_caption_first: bool = True,
+            table_as_html: bool = False,
     ):
         """Initialize instance variables with parameters."""
         self.strategy = strategy
@@ -57,6 +57,21 @@ class ParsePDF:
         self.single_text_out = single_text_out
         self.add_caption_first = add_caption_first
         self.table_as_html = table_as_html
+
+    def __str__(self):
+        """Return string representation of object."""
+        dict = {
+            "single_text_out": self.single_text_out,
+            "strategy": self.strategy,
+            "infer_table_structure": self.infer_table_structure,
+            "extract_images": self.extract_image_block_types,
+            "image_output_dir": self.image_output_dir,
+            "add_captions_to_text": self.add_captions_to_text,
+            "add_captions_to_blocks": self.add_captions_to_blocks,
+            "add_caption_first": self.add_caption_first,
+            "table_as_html": self.table_as_html,
+        }
+        return gen_str(self, dict)
 
     def partition(self, path: str):
         """Partitions a PDF document into elements based on the instance's configuration.
@@ -98,7 +113,7 @@ class ParsePDF:
             if element.category == "Table":
                 if self.add_captions_to_blocks and i + 1 < len(partitions):
                     if (
-                        partitions[i + 1].category == "FigureCaption"
+                            partitions[i + 1].category == "FigureCaption"
                     ):  # check for caption
                         caption_element = partitions[i + 1]
                     else:
@@ -109,7 +124,7 @@ class ParsePDF:
             elif element.category == "Image":
                 if self.add_captions_to_blocks and i + 1 < len(partitions):
                     if (
-                        partitions[i + 1].category == "FigureCaption"
+                            partitions[i + 1].category == "FigureCaption"
                     ):  # check for caption
                         caption_element = partitions[i + 1]
                     else:
@@ -197,7 +212,7 @@ class ParsePDF:
 
             if caption_element:
                 if (
-                    self.add_caption_first
+                        self.add_caption_first
                 ):  # if there is a caption, add that before the element
                     content = "\n\n".join([str(caption_element), table_data])
                 else:

@@ -125,3 +125,77 @@ def configure_args(cls):
             raise TypeError(f"{e}, or create a config.ini file. ") from e
 
     return wrapper
+
+
+def intend_obj_str(obj):
+    r"""Formats the string representation of an object by indenting each line.
+
+    This function takes the `__str__` output of an object, and indents every
+    new line to improve readability, particularly useful for nested object 
+    structures.
+
+    Args:
+        obj (object): The object whose string representation will be indented.
+
+    Returns:
+        str: The indented string representation of `obj`.
+
+    Examples:
+        class MyClass:
+            def __str__(self):
+                return "MyClass:\nattribute: value"
+
+        my_object = MyClass()
+        print(intend_obj_str(my_object))
+        # Output:
+        # MyClass:
+        #    attribute: value
+    """
+    return obj.__str__().replace('\n', '\n\t')
+
+
+def gen_str(obj, dict):
+    """Generates a formatted string representation for an object based on a dictionary of its attributes.
+
+    This function constructs a string that represents an object in a more readable form, where each attribute
+    from the provided dictionary is presented in a line, prefixed by its key. String values are added directly, 
+    while objects are intended using `intend_obj_str`.
+
+    Args:
+        obj (object): The object for which the string representation is being generated.
+        dict (dict): A dictionary where keys are attribute names and values are attribute values of `obj`.
+
+    Returns:
+        str: A formatted string representation of `obj` showing its class name and attributes.
+
+    Raises:
+        TypeError: If a value in `dict` is neither a string nor an object with a valid `__str__` method.
+
+    Examples:
+        class MyClass:
+            def __init__(self, name, details):
+                self.name = name
+                self.details = details
+
+            def __str__(self):
+                return "MyClass details"
+
+        my_object = MyClass("Example", {"key": "value"})
+        attributes = {'name': 'Example', 'details': my_object}
+        print(gen_str(my_object, attributes))
+        # Output:
+        # MyClass(
+        #     name: Example,
+        #     details: MyClass details
+        # )
+    """
+    str_string = f"{type(obj).__name__}(\n"
+    for key, value in dict.items():
+        if isinstance(value, str):
+            str_string += f"\t{key}: {value},\n"
+        elif isinstance(value, object):
+            str_string += f"\t{key}: {intend_obj_str(value)},\n"
+        else:
+            raise TypeError(f"{value}, is neither a string or object with __str__ ") from value
+    str_string += ")"
+    return str_string

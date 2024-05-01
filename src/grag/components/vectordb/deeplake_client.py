@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
 from grag.components.embedding import Embedding
-from grag.components.utils import configure_args
+from grag.components.utils import configure_args, gen_str
 from grag.components.vectordb.base import VectorDB
 from langchain_community.vectorstores import DeepLake
 from langchain_core.documents import Document
@@ -39,12 +39,12 @@ class DeepLakeClient(VectorDB):
     """
 
     def __init__(
-        self,
-        store_path: Union[str, Path] = Path("data/vectordb"),
-        collection_name: str = "grag",
-        embedding_type: str = "instructor-embedding",
-        embedding_model: str = "kunlp/instructor-xl",
-        read_only: bool = False,
+            self,
+            store_path: Union[str, Path] = Path("data/vectordb"),
+            collection_name: str = "grag",
+            embedding_type: str = "instructor-embedding",
+            embedding_model: str = "kunlp/instructor-xl",
+            read_only: bool = False,
     ):
         """Initialize a DeepLakeClient object.
 
@@ -76,14 +76,24 @@ class DeepLakeClient(VectorDB):
         self.client = self.langchain_client.vectorstore
         self.allowed_metadata_types = (str, int, float, bool)
 
+    # def __str__(self):
+    #     str_string = "DeepLakeClient(\n"
+    #     str_string += f"\tstore_path: {self.store_path},\n"
+    #     str_string += f"\tcollection_name: {self.collection_name},\n"
+    #     str_string += f"\tread_only: {self.read_only},\n"
+    #     str_string += f"\tembedding: {intend_obj_str(self.embedding_function)}\n"
+    #     str_string += ")"
+    #     return str_string
+
     def __str__(self):
-        str_string = "DeepLakeClient("
-        str_string += f"\tstore_path: {self.store_path},\n"
-        str_string += f"\tcollection_name: {self.collection_name},\n"
-        str_string += f"\tread_only: {self.read_only},\n"
-        str_string += f"\tembedding :{self.embedding_function}\n"
-        str_string += ")"
-        return str_string
+        """Return a string representation of the object."""
+        dict = {
+            "collection_name": self.collection_name,
+            "store_path": self.store_path,
+            "read_only": self.read_only,
+            "embedding_function": self.embedding_function,
+        }
+        return gen_str(self, dict)
 
     def __len__(self) -> int:
         """Number of chunks in the vector database."""
@@ -105,7 +115,7 @@ class DeepLakeClient(VectorDB):
         """
         docs = self._filter_metadata(docs)
         for doc in (
-            tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
+                tqdm(docs, desc=f"Adding to {self.collection_name}:") if verbose else docs
         ):
             _id = self.langchain_client.add_documents([doc])
 
@@ -122,9 +132,9 @@ class DeepLakeClient(VectorDB):
         docs = self._filter_metadata(docs)
         if verbose:
             for doc in atqdm(
-                docs,
-                desc=f"Adding documents to {self.collection_name}",
-                total=len(docs),
+                    docs,
+                    desc=f"Adding documents to {self.collection_name}",
+                    total=len(docs),
             ):
                 await self.langchain_client.aadd_documents([doc])
         else:
@@ -132,7 +142,7 @@ class DeepLakeClient(VectorDB):
                 await self.langchain_client.aadd_documents([doc])
 
     def get_chunk(
-        self, query: str, with_score: bool = False, top_k: Optional[int] = None
+            self, query: str, with_score: bool = False, top_k: Optional[int] = None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database.
 
@@ -155,7 +165,7 @@ class DeepLakeClient(VectorDB):
             )
 
     async def aget_chunk(
-        self, query: str, with_score=False, top_k=None
+            self, query: str, with_score=False, top_k=None
     ) -> Union[List[Document], List[Tuple[Document, float]]]:
         """Returns the most similar chunks from the deeplake database, asynchronously.
 

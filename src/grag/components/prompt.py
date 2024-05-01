@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
+from grag.components.utils import gen_str
 from langchain.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts import PromptTemplate
 from pydantic import BaseModel, Field, field_validator
@@ -46,6 +47,21 @@ class Prompt(BaseModel):
     input_keys: List[str]
     template: str
     prompt: Optional[PromptTemplate] = Field(exclude=True, repr=False, default=None)
+
+    def __str__(self):
+        """Return string representation of object."""
+        dict = {
+            "name": self.name,
+            "llm_type": self.llm_type,
+            "task": self.task,
+            "source": self.source,
+            "doc_chain": self.doc_chain,
+            "language": self.language,
+            "filepath": self.filepath,
+            "input_keys": self.input_keys,
+            "template": f"\n\n'''{self.template}'''",
+        }
+        return gen_str(self, dict)
 
     @field_validator("input_keys")
     @classmethod
@@ -86,7 +102,7 @@ class Prompt(BaseModel):
         )
 
     def save(
-        self, filepath: Union[Path, str, None], overwrite=False
+            self, filepath: Union[Path, str, None], overwrite=False
     ) -> Union[None, ValueError]:
         """Saves the prompt class into a json file."""
         dump = self.model_dump_json(indent=2, exclude_defaults=True, exclude_none=True)
@@ -155,6 +171,26 @@ class FewShotPrompt(Prompt):
             suffix=self.suffix,
             input_variables=self.input_keys,
         )
+
+        def __str__(self):
+            """Return string representation of the object."""
+            dict = {
+                "name": self.name,
+                "llm_type": self.llm_type,
+                "task": self.task,
+                "source": self.source,
+                "doc_chain": self.doc_chain,
+                "language": self.language,
+                "filepath": self.filepath,
+                "input_keys": self.input_keys,
+                "output_keys": self.output_keys,
+                "examples": self.examples,
+                "prefix": f"\n\n'''{self.prefix}'''",
+                "suffix": f"\n\n'''{self.suffix}'''",
+                "example_template": f"\n\n'''{self.example_template}'''",
+                "template": f"\n\n'''{self.template}'''",
+            }
+            return gen_str(self, dict)
 
     @field_validator("output_keys")
     @classmethod
