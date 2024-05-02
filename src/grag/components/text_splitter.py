@@ -7,7 +7,7 @@ This module provides:
 
 from typing import Union
 
-from grag.components.utils import configure_args, get_str
+from grag.components.utils import configure_args, gen_str
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
@@ -39,4 +39,4 @@ class TextSplitter:
             "chunk_size": self.chunk_size,
             "chunk_overlap": self.chunk_overlap,
         }
-        return get_str(self, dict)
+        return gen_str(self, dict)

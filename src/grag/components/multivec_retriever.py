@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from grag.components.parse_pdf import ParsePDF
 from grag.components.text_splitter import TextSplitter
-from grag.components.utils import configure_args, get_str
+from grag.components.utils import configure_args, gen_str
 from grag.components.vectordb.base import VectorDB
 from grag.components.vectordb.deeplake_client import DeepLakeClient
 from langchain.retrievers.multi_vector import MultiVectorRetriever
@@ -98,7 +98,7 @@ class Retriever:
             "store_path": self.store_path,
             "vectordb": self.vectordb,
         }
-        return get_str(self, dict)
+        return gen_str(self, dict)
 
     def id_gen(self, doc: Document) -> str:
         """Takes a document and returns a unique id (uuid5) using the namespace and document source.

@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple, Union
 
 import chromadb
 from grag.components.embedding import Embedding
-from grag.components.utils import configure_args, get_str
+from grag.components.utils import configure_args, gen_str
 from grag.components.vectordb.base import VectorDB
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
@@ -89,7 +89,7 @@ class ChromaClient(VectorDB):
             "collection_name": self.collection_name,
             "embedding_function": self.embedding_function,
         }
-        return get_str(self, dict)
+        return gen_str(self, dict)
 
     def __len__(self) -> int:
         """Count the number of chunks in the database."""
