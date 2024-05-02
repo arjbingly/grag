@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 import torch
-from grag.components.utils import configure_args
+from grag.components.utils import configure_args, gen_str
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.llms import LlamaCpp
@@ -43,20 +43,20 @@ class LLM:
     """
 
     def __init__(
-        self,
-        model_name: str,
-        quantization: str,
-        pipeline: str,
-        device_map: str = "auto",
-        task: str = "text-generation",
-        max_new_tokens: str = "1024",
-        temperature: Union[str, int] = 0.1,
-        n_batch: Union[str, int] = 1024,
-        n_ctx: Union[str, int] = 6000,
-        n_gpu_layers: Union[str, int] = -1,
-        std_out: Union[bool, str] = True,
-        base_dir: Union[str, Path] = Path("models"),
-        callbacks=None,
+            self,
+            model_name: str,
+            quantization: str,
+            pipeline: str,
+            device_map: str = "auto",
+            task: str = "text-generation",
+            max_new_tokens: str = "1024",
+            temperature: Union[str, int] = 0.1,
+            n_batch: Union[str, int] = 1024,
+            n_ctx: Union[str, int] = 6000,
+            n_gpu_layers: Union[str, int] = -1,
+            std_out: Union[bool, str] = True,
+            base_dir: Union[str, Path] = Path("models"),
+            callbacks=None,
     ):
         """Initialize the LLM class using the given parameters.
 
@@ -86,10 +86,30 @@ class LLM:
         self.n_batch = n_batch
         self.n_ctx = n_ctx
         self.n_gpu_layers = n_gpu_layers
-        if std_out:
+        self.std_out = std_out
+        if self.std_out:
             self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         else:
             self.callback_manager = callbacks  # type: ignore
+
+    def __str__(self):
+        """String representation of the LLM class."""
+        dict = {
+            "model_name": self._model_name,
+            "quantization": self.quantization,
+            "pipeline": self.pipeline,
+            "base_dir": self.base_dir,
+            "device_map": self.device_map,
+            "task": self.task,
+            "max_new_tokens": self.max_new_tokens,
+            "temperature": self.temperature,
+            "n_batch": self.n_batch,
+            "n_ctx": self.n_ctx,
+            "n_gpu_layers": self.n_gpu_layers,
+            "std_out": self.std_out,
+            "callback_manager": self.callback_manager,
+        }
+        return gen_str(self, dict)
 
     @property
     def model_name(self):
@@ -184,11 +204,11 @@ class LLM:
         return llm
 
     def load_model(
-        self,
-        model_name: Optional[str] = None,
-        pipeline: Optional[str] = None,
-        quantization: Optional[str] = None,
-        is_local: Optional[bool] = None,
+            self,
+            model_name: Optional[str] = None,
+            pipeline: Optional[str] = None,
+            quantization: Optional[str] = None,
+            is_local: Optional[bool] = None,
     ):
         """Loads the model based on the specified pipeline and model name.
 
