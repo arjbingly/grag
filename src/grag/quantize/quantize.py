@@ -22,7 +22,7 @@ if __name__ == "__main__":
     if user_input == "":
         try:
             root_path = Path(config["quantize"]["llama_cpp_path"])
-        except KeyError:
+        except KeyError or TypeError:
             root_path = Path('./grag-quantize')
     else:
         root_path = Path(user_input)
