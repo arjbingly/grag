@@ -136,10 +136,10 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
 
 
 def quantize_model(
-    model_dir_path: Union[str, Path],
-    quantization: str,
-    root_quantize: Union[str, Path] = './grag-quantize',  # path with both build and llamacpp
-    output_dir: Optional[Path] = None,
+        model_dir_path: Union[str, Path],
+        quantization: str,
+        root_quantize: Union[str, Path] = './grag-quantize',  # path with both build and llamacpp
+        output_dir: Optional[Union[Path, str]] = None,
 ) -> Tuple[Path, Path]:
     """Quantizes a specified model using a given quantization level and saves it to an optional directory. If the output directory is not specified, it defaults to a subdirectory under the provided model directory. The function also handles specific exceptions during the conversion process and ensures the creation of the necessary directories.
 
@@ -160,10 +160,11 @@ def quantize_model(
     if output_dir is None:
         try:
             output_dir = Path(config["llm"]["base_dir"])
-        except KeyError:
+        except (KeyError, TypeError):
             output_dir = Path('.')
-
-    output_dir = Path(output_dir) / model_dir_path.name if output_dir.stem != model_dir_path.name else output_dir
+    else:
+        output_dir = Path(output_dir)
+    output_dir = output_dir / model_dir_path.name if output_dir.stem != model_dir_path.name else output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
     output_dir = output_dir.resolve()
 
