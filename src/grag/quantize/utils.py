@@ -119,18 +119,20 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
     except GatedRepoError:
         print(
             "This model comes under gated repository. You must be authenticated to download the model. For more: https://huggingface.co/docs/hub/en/models-gated")
-        resp = input("If you have auth token, please provide it here ['n' or enter to exit]: ")
-        if resp == 'n' or resp == '':
-            print("No token provided, exiting.")
+        resp = input("You will be redirected to hugginface-cli to login. [To exit, enter 'n']: ")
+        if resp.lower() == "n":
+            print("User exited.")
             exit(0)
-        else:
-            login(resp)
+        elif resp == "":
+            login()
             snapshot_download(
                 repo_id=repo_id,
                 local_dir=local_dir,
                 local_dir_use_symlinks="auto",
                 resume_download=True,
             )
+        else:
+            raise ValueError('Invalid response received.')
     print(f"Model downloaded in {local_dir}")
     return local_dir
 
