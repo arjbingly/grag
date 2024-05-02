@@ -7,7 +7,7 @@ name = "grag"
 dynamic = ["version"]
 description = 'A simple package for implementing RAG'
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = { file = 'LICENSE' }
 keywords = ["RAG", "Retrieval Augmented Generation", "LLM", "retrieval", "quantization"]
 authors = [
@@ -17,8 +17,6 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
