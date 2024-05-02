@@ -51,16 +51,20 @@ if __name__ == "__main__":
     if download_url:
         download_release_asset(download_url, root_path)
 
-    response = input("Do you want us to download the model? (y/n) [Enter for yes]: ").strip().lower()
-    if response == "n":
+    response = input("Do you want us to download the model? (yes[y]/no[n]) [Enter for yes]: ").strip().lower()
+    if response == '':
+        response = 'yes'
+    if response.lower()[0] == "n":
         model_dir = Path(input("Enter path to the model directory: "))
-    elif response == "y" or response == "":
+    elif response.lower()[0] == "y":
         repo_id = input(
             "Please enter the repo_id for the model (you can check on https://huggingface.co/models): "
         ).strip()
         if repo_id == "":
             raise ValueError("Repo ID you entered was empty. Please enter the repo_id for the model.")
         model_dir = fetch_model_repo(repo_id, root_path / 'models')
+    else:
+        raise ValueError("Please enter either 'yes', 'y' or 'no', 'n'.")
 
     quantization = input(
         "Enter quantization, recommended - Q5_K_M or Q4_K_M for more check https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19 : "
