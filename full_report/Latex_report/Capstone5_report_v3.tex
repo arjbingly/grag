@@ -50,10 +50,10 @@
 
 	\vfill
 	\begin{abstract}
-	    We introduce GRAG (Good RAG), an open-sourced Python package providing an end-to-end implementation of Retrieval-Augmented Generation (RAG).
+	    This report introduces GRAG (Good RAG), an open-sourced Python package providing an end-to-end implementation of Retrieval-Augmented Generation (RAG).
 	    The package provides easy integration with various LLMs locally, and support for vector databases such as Chroma and DeepLake. It also provides a simple GUI implementation. This report details GRAG and its features.
 	    Future work includes enhancement of the PDF parsing features, possible integration for other document types, as well as testing GRAG performance on a graph data structure versus a traditional vector database and producing an evaluation suite for this test.
-
+	    Our documentation can be accessed at \url{https://g-rag.org/} and Git repo at \url{https://github.com/arjbingly/grag}.
 	\vfill
 % Bottom of the page
 \end{titlepage}
@@ -61,52 +61,15 @@
 \newpage
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Introduction}
-Retriever-Augmented Generation (RAG) is a method in natural language processing (NLP) that combines the retrieval of informational documents from a large database (the "retriever" part) and the generation of coherent, contextual text based on the information retrieved (the "generation" part).
-It was introduced as an enhancement to Large Language Models (LLMs), as RAG provides the LLM with real-time data access, preserves data privacy, and mitigate "hallucination" (Lewis et al., 2020).
-RAG has become very popular since its introduction in 2020, with its most-known implementation, ChatGPT, creating a huge impact in all industries and
 
-% ------------------------------------------------------------------------------------------------------------------------
-\section{Problem Statement}
-Our current main challenges include:
-1. Parsing tables in PDF documents accurately.
-2. Traditional performance evaluation metrics (list them) for RAG are not informative on our process (add why?). 
-3. Implementation of graph database for RAG is difficult, existing literature and experiments employ non-open sourced products such as OpenAI (cite) which we lack resources for.
-
-% ------------------------------------------------------------------------------------------------------------------------
-
-\section{Related Work}
-The original inspiration was to create an end-to-end, open-sourced, self-hostable search engine. Companies that need an internal search engine would benefit from this implementation, as it requires no access to online resources.
-https://github.com/michaelthwan/searchGPT and https://github.com/GerevAI/gerev#integrations are open-sourced packages for LLM-powered semantic search engines. However, they leverage APIs, which makes the process reliant on online resources. We aim to localize all processes to ensure self-hostability.
-% ------------------------------------------------------------------------------------------------------------------------
-\section{Solution and Methodology}
-
-\subsection {PDF Parser}
-Parsing PDF documents presents a significant challenge due to their complex structure. PDFs often contain unstructured data, which lacks a predefined organization, making accurate recognition and processing arduous. A notable difficulty arises when handling tables, as PDFs do not inherently understand table columns, complicating the task of recognizing table layouts. This complexity is particularly evident in documents like tax forms, which feature intricate nested table structures. Additionally, scanned PDFs require Optical Character Recognition (OCR) tools to convert images back into text, introducing another layer of complexity.
-Our approach involved experimenting with various packages and strategies to develop a program capable of parsing and processing PDF documents. Despite our efforts, we encountered limitations in parsing tables, where the results were inconsistent.
-
-Primarily, this feature uses the
-
-
-\subesection{LLM implementation}
-because of data privacy concerns, we could not use OpenAI APIs directly. To run models locally, llama.cpp is the best implementation as it uses a low level language with extensive backend support, such as CUDA.
-Quantize model first; currently cannot run without quantization.
-Use llama.cpp which provides quantization
-Have text user interface (TUI) for users to easily download the model from HuggingFace and quantize
-Tested our implementation with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b
-It supports a lot of models
-Problem with llama.cpp is it's not easy to use its repo. to make the process easy, we have a script/cookbook for easy user implementation.
-
-\subsection{Multi-vector Retriever}
-
-\subsection{RAG Pipeline}
-\subsubsection{Overview}
-Figure 1 shows a traditional RAG pipeline. As the name implies, the process is two-part: retrieval and generation. 
-The input query and documents are first preprocessed into vectors through the embedding process. 
+Figure 1 shows a basic Retrieval-Augmented Generation (RAG) pipeline. As the name implies, the process is two-part: retrieval and generation.
+The input query and documents are first preprocessed into vectors through the embedding process.
 The pipeline then retrieves data relevant to the query, performing a similarity search in the vector database. Once the retrieval process is complete, RAG utilizes an LLM to understand and preserve context. Then, RAG system integrates the retrieved information with the original query to provide a richer context for the generation phase.
-In the generation step, the augmented query is processed by the LLM, which synthesizes the information into a coherent and contextually appropriate response. The final output is then post-processed, if necessary, to ensure it meets the required specifications, such as correctness, coherence, and relevance. 
+In the generation step, the augmented query is processed by a large-language model (LLM), which synthesizes the information into a coherent and contextually appropriate response. The final output is then post-processed, if necessary, to ensure it meets the required specifications, such as correctness, coherence, and relevance.
+
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.7]{basic_RAG_pipeline.drawio.svg}
+		\includegraphics[scale=0.7]{basic_RAG_pipeline.png}
 	\end{center}
 	\caption{Figure 1: Basic Retrieval-Augmented Generation (RAG) Pipeline (better illustration coming)}
 	\label{fig:ascent}
@@ -115,12 +78,68 @@ In the generation step, the augmented query is processed by the LLM, which synth
 RAG provides several advantages and solutions to LLMs caveats:
 \begin{itemize}
 	\item 1. Empowering LLM solutions with real-time data access
-	LLMs are typically trained on vast datasets that may quickly become outdated as new information emerges. RAG technology addresses this limitation by allowing LLMs to access and incorporate real-time data into their responses. Through the retrieval component, RAG systems can query up-to-date databases or the internet to find the most current information, ensuring that the generated output reflects the latest developments. 
+	LLMs are typically trained on vast datasets that may quickly become outdated as new information emerges. RAG technology addresses this limitation by allowing LLMs to access and incorporate real-time data into their responses. Through the retrieval component, RAG systems can query up-to-date databases or the internet to find the most current information, ensuring that the generated output reflects the latest developments.
 	\item 2. Preserving data privacy
-	RAG can retrieve information from a controlled, secure dataset or environment rather than relying on direct access to private data. By designing the retrieval component to operate within privacy-preserving parameters, RAG can ensure that the LLM will not directly access or expose sensitive data. 
+	RAG can retrieve information from a controlled, secure dataset or environment rather than relying on direct access to private data. By designing the retrieval component to operate within privacy-preserving parameters, RAG can ensure that the LLM will not directly access or expose sensitive data.
 	\item 3. Mitigating LLM hallucinations
 	"Hallucination" in the context of LLMs refers to the generation of plausible but inaccurate or entirely fabricated information. This is a known challenge with LLMs, where the model might confidently produce incorrect data or statements.(cite) RAG helps mitigate this issue by grounding the LLM's responses in retrieved documents that are verified or deemed reliable. By leveraging external sources of information, RAG reduces the model's reliance on potentially flawed internal representations and biases, leading to more accurate outputs.
 \end{itemize}
+
+RAG has become very popular since its introduction in Lewis et al. 2020, with its most-known implementation, ChatGPT (powered by GPT-4), creating a sizeable and long-term impact in all industries and academic institutions.
+Its versatility in several fields has fueled interest in research and development to develop more RAG implementations. Our package, GRAG (Good RAG), aims to add to the RAG literature.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Problem Statement}
+
+While RAG APIs such as OpenAI are very powerful, they usually have usage limits at the free tier, which could be a barrier for extensive commercial use.
+Dependence on APIs could limit customization and integration to existing software, which is not ideal for institutions or individuals who have specific needs for their application.
+Furthermore, sensitive data being stored on external servers, on top of data usage policy dependent on API providers; raise concerns of data privacy.
+GRAG aims to provide a customizable, easy-to-use, end-to-end, open-sourced solution that resolves cost and data privacy issues. The package could be implemented locally, allowing for control over data storage and maximizing personalization.
+
+% ------------------------------------------------------------------------------------------------------------------------
+
+\section{Related Work}
+
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Methodology & Features}
+
+\subsection {PDF Parser}
+Parsing PDF documents presents a significant challenge due to their complex structure. PDFs often contain unstructured data, which lacks a predefined organization, making accurate recognition and processing arduous. A notable difficulty arises when handling tables, as PDFs do not inherently understand table columns, complicating the task of recognizing table layouts. This complexity is particularly evident in documents like tax forms, which feature intricate nested table structures. Additionally, scanned PDFs require Optical Character Recognition (OCR) tools to convert images back into text, introducing another layer of complexity.
+
+Initially, we tried only using \textit{unstructured.io} and \textit{pdfplumber}, respectively. Neither libraries could consistently parse all PDF files with high accuracy.
+The current strategy is to primarily use the \textit{unstructured.io} library for partitioning and parsing.
+For documents containing more complex table structures, such as nested tables or tax forms, \textit{pdfplumber} and \textit{pytesseract} are deployed.
+The table structures on the documents are detected, then cropped out before the contained text is extracted from the tables.
+
+The results are still inconsistent, however; and more experimentation is needed for a more robust parsing tool for PDFs.
+
+\subsection{Vector Stores}
+
+Vector store or vector database is a type of database that stores data in high-dimensional vectors. This is a crucial component of RAG, storing embeddings for both retrieval and generation processes.
+Currently, GRAG supports \textit{Chroma} and \textit{DeepLake}. By default, our embedding model is \textit{instructor-xl}, but any \textit{HuggingFace} embeddings can be used.
+
+\subsection{LLMs}
+As explained above, cost and data privacy concerns mean we could not use OpenAI APIs. To run models locally, \textit{llama.cpp} is the best implementation as it uses a low-level language, with extensive backend support, such as CUDA.
+Currently, GRAG provides two options to run LLMs locally:
+
+1. Run LLMs using HuggingFace:
+This is the easiest way to get started, but does not offer as much flexibility. If using a config file (\textit{config.ini}), simply need to change the \textit{model_name} to the HuggingFace repo id.
+If the models are gated, user would need to provide an authentication token.
+
+2. Run LLMs using llama.cpp
+\textit{Llama.cpp} offers great flexibility, but its repo is not user-friendly. To streamline the process, we have a script/cookbook for ease of implementation.
+
+GRAG has been tested with Llama2 7b & 13b, Mixtral 8x7b, Gemma 13b, but could support any model from HuggingFace.
+
+\subsection{Multi-vector Retriever}
+
+We built a retriever, which employs a Langchain tool called \textit{multi-vector retriever}.
+Instead of representing each document as one vector, one document is represented by multiple vectors, with each vector being a different aspect of the text.
+For example, we could split and then embed smaller chunks of a document, which would help embeddings to better carry semantic context.
+Our retriever is used to return the most similar chunks from a vectorDB, as well as a linked document or chunk.
+
+\subsection{RAG Features}
 
 \subsubsection{RAG Document Chains}
 
@@ -135,7 +154,8 @@ Additionally, this method is \textit{only suitable for smaller amounts of data}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{path/to/stuff_chain_image.jpg}
+    \includegraphics[width=0.8\textwidth]{path/to/stuff_chain_langchain.jpg}
+    \caption{Illustration of Stuff Chain}
     \caption{Illustration of Stuff Chain}
 \end{figure}
 \href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
@@ -151,7 +171,7 @@ There may also be dependencies on the order in which the documents are analyzed,
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{path/to/refine_chain_image.jpg}
+    \includegraphics[width=0.8\textwidth]{refine_chain_langchain.jpg}
     \caption{Illustration of the Refine Chain method.}
 \end{figure}
 \href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
@@ -173,7 +193,15 @@ The cons are that it \textit{requires many more calls to the LLM} than the Stuff
 \end{figure}
 \href{https://readmedium.com/en/https:/ogre51.medium.com/types-of-chains-in-langchain-823c8878c2e9}{Source}
 
-\subsubsection{Propmting}
+\subsubsection{Prompting}
+
+Each LLM model has their own prompting strategy.
+
+In additional to model-specific prompting, GRAG provides cookbooks to implement custom prompts and few-shot prompts.
+
+\textit{Custom Prompts}: specifically designed inputs that users craft to guide a language model's response in a desired direction. For example, "Could you write a poem in the style of Edgar Allen Poe?"
+
+\textit{Few-Shot Prompts}:
 
 \subsubsection{Other Hyperparameters}
 \begin{itemize}
@@ -184,7 +212,12 @@ The cons are that it \textit{requires many more calls to the LLM} than the Stuff
 
 % ------------------------------------------------------------------------------------------------------------------------
 
-\section{Future Work}
+\section{Challenges & Future Work}
+
+\subsection{Document Parsing}
+
+While we have made improvements in parsing PDF files, the results are not consistent for different PDF layouts. More experimentation is needed to produce a more robust and accurate result.
+We also plan to implement document parsing for other document types, such as .html or .doc.
 
 \subsection{Graph DB implementation}
 
@@ -195,11 +228,11 @@ There is limited existing literature comparing the performance of vector versus 
 
 % ------------------------------------------------------------------------------------------------------------------------
 
-\section{Conclusion}
-
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-(add graph papers and Lewis et al. here)
+
+
+
 %------ To create Appendix with additional stuff -------%
 %\newpage
 %\appendix
