@@ -95,6 +95,15 @@ def download_release_asset(download_url: str, root_quantize: Union[Path, str] = 
         print(f"Failed to download file: {response.status_code}")
 
 
+def repo_id_resolver(repo_url: str) -> str:
+    """Resolves the HuggingFace repository ID given a URL."""
+    repo_url = repo_url.rstrip(' ')
+    repo_url = repo_url.lstrip(' ')
+    repo_url = repo_url.rstrip('/')
+    repo_lst = repo_url.split('/')
+    return f'{repo_lst[-2]}/{repo_lst[-1]}'
+
+
 def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quantize/models') -> Union[str, Path]:
     """Downloads a model from huggingface.co/models to a specified directory.
 

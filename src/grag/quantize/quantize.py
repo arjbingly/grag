@@ -11,6 +11,7 @@ from grag.quantize.utils import (
     get_llamacpp_repo,
     inference_quantized_model,
     quantize_model,
+    repo_id_resolver,
 )
 
 config = get_config()
@@ -58,10 +59,11 @@ if __name__ == "__main__":
         model_dir = Path(input("Enter path to the model directory: "))
     elif response.lower()[0] == "y":
         repo_id = input(
-            "Please enter the repo_id for the model (you can check on https://huggingface.co/models): "
+            "Please enter the repo_id or the url for the model (you can check on https://huggingface.co/models): "
         ).strip()
         if repo_id == "":
             raise ValueError("Repo ID you entered was empty. Please enter the repo_id for the model.")
+        repo_id = repo_id_resolver(repo_id)
         model_dir = fetch_model_repo(repo_id, root_path / 'models')
     else:
         raise ValueError("Please enter either 'yes', 'y' or 'no', 'n'.")
@@ -76,4 +78,9 @@ if __name__ == "__main__":
 
     inference = input(
         "Do you want to inference the quantized model to check if quantization is successful? Warning: It takes time as it inferences on CPU. (y/n) [Enter for yes]: ").strip().lower()
-    inference_quantized_model(target_path, quantized_model_file) if inference == "y" or inference == "" else None
+    if response == '':
+        response = 'yes'
+    if response.lower()[0] == "y":
+        inference_quantized_model(target_path, quantized_model_file)
+    else:
+        print("Model quantized, but not tested.")
