@@ -8,6 +8,7 @@ from grag.quantize.utils import (
     get_llamacpp_repo,
     get_asset_download_url,
     download_release_asset,
+    repo_id_resolver,
     fetch_model_repo,
     quantize_model,
     inference_quantized_model,
@@ -19,8 +20,9 @@ if os.path.exists(root_path):
 os.makedirs(root_path, exist_ok=True)
 
 repo_id = 'meta-llama/Llama-2-7b-chat'
+repo_url = 'https://huggingface.co/meta-llama/Llama-2-7b-chat'
 model = 'Llama-2-7b-chat'
-quantization = 'Q4_K_M'
+quantization = 'Q2_K'
 asset_pattern_list = ['-macos-x64', '-macos-arm64', '-win-arm64-x64', '-win-arm64-x64', '-ubuntu-x64']
 
 
@@ -43,6 +45,11 @@ def test_download_release_asset():
     download_release_asset(url, root_path)
     assert os.path.exists(root_path / 'build' / 'bin' / 'quantize')
     assert os.path.exists(root_path / 'build' / 'bin' / 'main')
+
+
+def test_repo_id_resolver():
+    repo_id_ = repo_id_resolver(repo_url)
+    assert repo_id == repo_id_
 
 
 def test_fetch_model_repo():
