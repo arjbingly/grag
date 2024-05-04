@@ -96,12 +96,37 @@ def download_release_asset(download_url: str, root_quantize: Union[Path, str] = 
 
 
 def repo_id_resolver(repo_url: str) -> str:
-    """Resolves the HuggingFace repository ID given a URL."""
-    repo_url = repo_url.rstrip(' ')
-    repo_url = repo_url.lstrip(' ')
-    repo_url = repo_url.rstrip('/')
-    repo_lst = repo_url.split('/')
-    return f'{repo_lst[-2]}/{repo_lst[-1]}'
+    """Resolves the HuggingFace repository ID given a full URL to a model or dataset page.
+
+    This function parses a HuggingFace URL to extract the repository ID, which typically
+    consists of a user or organization name followed by the repository name. If the URL
+    does not start with the expected HuggingFace URL prefix, it returns the input URL unchanged.
+
+    Args:
+        repo_url: The full URL string pointing to a specific HuggingFace repository.
+
+    Returns:
+        The repository ID in the format 'username/repository_name' if the URL is valid,
+        otherwise returns the original URL.
+
+    Examples:
+        Input: "https://huggingface.co/gpt2/models"
+        Output: "gpt2/models"
+
+        Input: "https://huggingface.co/facebook/bart-large"
+        Output: "facebook/bart-large"
+
+        Input: "some_other_url"
+        Output: "some_other_url"
+    """
+    if repo_url.startswith('https://huggingface'):
+        repo_url = repo_url.rstrip(' ')
+        repo_url = repo_url.lstrip(' ')
+        repo_url = repo_url.rstrip('/')
+        repo_lst = repo_url.split('/')
+        return f'{repo_lst[-2]}/{repo_lst[-1]}'
+    else:
+        return repo_url
 
 
 def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quantize/models') -> Union[str, Path]:
@@ -128,7 +153,8 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
     except GatedRepoError:
         print(
             "This model comes under gated repository. You must be authenticated to download the model. For more: https://huggingface.co/docs/hub/en/models-gated")
-        resp = input("You will be redirected to hugginface-cli to login. [To exit, enter 'n']: ")
+        resp = input(
+            "You will be redirected to hugginface-cli to login. If you don't have token checkout above link or else paste the token when prompted. [To exit, enter 'n']: ")
         if resp.lower() == "n":
             print("User exited.")
             exit(0)
@@ -147,10 +173,10 @@ def fetch_model_repo(repo_id: str, model_path: Union[str, Path] = './grag-quanti
 
 
 def quantize_model(
-        model_dir_path: Union[str, Path],
-        quantization: str,
-        root_quantize: Union[str, Path] = './grag-quantize',  # path with both build and llamacpp
-        output_dir: Optional[Union[Path, str]] = None,
+    model_dir_path: Union[str, Path],
+    quantization: str,
+    root_quantize: Union[str, Path] = './grag-quantize',  # path with both build and llamacpp
+    output_dir: Optional[Union[Path, str]] = None,
 ) -> Tuple[Path, Path]:
     """Quantizes a specified model using a given quantization level and saves it to an optional directory. If the output directory is not specified, it defaults to a subdirectory under the provided model directory. The function also handles specific exceptions during the conversion process and ensures the creation of the necessary directories.
 
@@ -168,14 +194,15 @@ def quantize_model(
         TypeError: If there are issues with the provided model directory or quantization parameters.
     """
     model_dir_path = Path(model_dir_path).resolve()
-    if output_dir is None:
+    if output_dir == '' or output_dir is None:
         try:
             output_dir = Path(config["llm"]["base_dir"])
         except (KeyError, TypeError):
-            output_dir = Path('.')
+            output_dir = model_dir_path
     else:
         output_dir = Path(output_dir)
-    output_dir = output_dir / model_dir_path.name if output_dir.stem != model_dir_path.name else output_dir
+
+    output_dir = output_dir / model_dir_path.name if output_dir.name != model_dir_path.name else output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
     output_dir = output_dir.resolve()
 

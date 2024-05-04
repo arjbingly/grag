@@ -1,6 +1,7 @@
 """Interactive file for quantizing models."""
 
 import platform
+import sys
 from pathlib import Path
 
 from grag.components.utils import get_config
@@ -68,11 +69,13 @@ if __name__ == "__main__":
     else:
         raise ValueError("Please enter either 'yes', 'y' or 'no', 'n'.")
 
+    sys.stdin.flush()
+
+    output_dir = input(
+        f"Enter path where you want to save the quantized model, else the following path will be used [{model_dir}]: ").strip()
     quantization = input(
         "Enter quantization, recommended - Q5_K_M or Q4_K_M for more check https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19 : "
     ).strip()
-    output_dir = input(
-        f"Enter path where you want to save the quantized model, else the following path will be used [{model_dir}]: ").strip()
 
     target_path, quantized_model_file = quantize_model(model_dir, quantization, root_path, output_dir)
 
