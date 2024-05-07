@@ -32,19 +32,19 @@ if __name__ == "__main__":
         root_path = Path(user_input)
 
     get_llamacpp_repo(destination_folder=root_path)
-    os_name = platform.system()
-    architecture = platform.machine()
+    os_name = str(platform.system()).lower()
+    architecture = str(platform.machine()).lower()
     asset_name_pattern = 'bin'
     match os_name, architecture:
-        case ('Darwin', 'x86_64'):
+        case ('darwin', 'x86_64'):
             asset_name_pattern += '-macos-x64'
-        case ('Darwin', 'arm64'):
+        case ('darwin', 'arm64'):
             asset_name_pattern += '-macos-arm64'
-        case ('Windows', 'x86_64'):
+        case ('windows', 'x86_64'):
             asset_name_pattern += '-win-arm64-x64'
-        case ('Windows', 'arm64'):
+        case ('windows', 'arm64'):
             asset_name_pattern += '-win-arm64-x64'
-        case ('Linux', 'x86_64'):
+        case ('linux', 'x86_64'):
             asset_name_pattern += '-ubuntu-x64'
         case _:
             raise ValueError(f"{os_name=}, {architecture=} is not supported by llama.cpp releases.")
