@@ -9,6 +9,7 @@
 ![Static Badge](https://img.shields.io/badge/buildstyle-hatchling-purple?labelColor=white)
 ![Static Badge](https://img.shields.io/badge/codestyle-pyflake-purple?labelColor=white)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/arjbingly/Capstone_5)
+![PyPI - Downloads](https://img.shields.io/pypi/dw/grag?label=PyPI%20Downloads)  
 
 [![Static Badge][Documentation-badge]][Docuementation-url]
 [![Static Badge][Cookbooks-badge]][Cookbooks-url]
