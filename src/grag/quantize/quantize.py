@@ -44,6 +44,8 @@ if __name__ == "__main__":
             asset_name_pattern += '-win-arm64-x64'
         case ('windows', 'arm64'):
             asset_name_pattern += '-win-arm64-x64'
+        case ('windows', 'amd64'):
+            asset_name_pattern += '-win-arm64-x64'
         case ('linux', 'x86_64'):
             asset_name_pattern += '-ubuntu-x64'
         case _:
