@@ -1,6 +1,7 @@
 """Utility functions for quantization."""
 
 import os
+import platform
 import subprocess
 import sys
 import zipfile
@@ -230,7 +231,11 @@ def quantize_model(
     quantized_model_file = output_dir / f"ggml-model-{quantization}.gguf"
     if not os.path.exists(quantized_model_file):
         converted_model_file = output_dir / "ggml-model-f32.gguf"
-        binary_path = root_quantize / 'build' / 'bin' / 'quantize'
+        os_name = str(platform.system()).lower()
+        if os_name == 'windows':
+            binary_path = root_quantize / 'quantize.exe'
+        else:
+            binary_path = root_quantize / 'build' / 'bin' / 'quantize'
         cmd = [str(binary_path), str(converted_model_file), str(quantized_model_file), quantization]
 
         try:
