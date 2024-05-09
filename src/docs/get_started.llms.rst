@@ -30,8 +30,14 @@ After running the above command, user will be prompted with the following:
 
 2.  Input the **model path**:
 
-* If user wants to download a model from `HuggingFace <https://huggingface.co/models>`_, the user should provide the repository path from HuggingFace.
+* If user wants to download a model from `HuggingFace <https://huggingface.co/models>`_, the user should provide the repository path or URL from HuggingFace.
 
 * If the user has the model downloaded locally, then user will be instructed to copy the model and input the name of the model directory.
 
-3. Finally, the user will be prompted to enter **quantization** settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check `llama.cpp/examples/quantize/quantize.cpp <https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19>`_.
+3. The user will be asked where to put the quantized model otherwise it will go in the directory where you downloaded model repository.
+
+4. Finally, the user will be prompted to enter **quantization** settings (recommended Q5_K_M or Q4_K_M, etc.). For more details, check `llama.cpp/examples/quantize/quantize.cpp <https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19>`_.
+
+5. Optionally, user can inference the quantized model with the next prompt. This inference will be on CPU so it takes time if model is large one.
+
+Note: Windows users have to use WSL, and follow linux guidelines for quantizing models.

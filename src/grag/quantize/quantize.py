@@ -1,52 +1,91 @@
 """Interactive file for quantizing models."""
 
+import platform
+import sys
 from pathlib import Path
 
 from grag.components.utils import get_config
 from grag.quantize.utils import (
-    building_llamacpp,
+    download_release_asset,
     fetch_model_repo,
+    get_asset_download_url,
     get_llamacpp_repo,
+    inference_quantized_model,
     quantize_model,
+    repo_id_resolver,
 )
 
 config = get_config()
-root_path = Path(config["quantize"]["llama_cpp_path"])
 
 if __name__ == "__main__":
     user_input = input(
-        "Enter the path to the llama_cpp cloned repo, or where you'd like to clone it. Press Enter to use the default config path: "
-    ).strip()
+        "Enter the path which you want to download all the source files. Press Enter to use the default path: ").strip()
 
-    if user_input != "":
+    if user_input == "":
+        try:
+            root_path = Path(config["quantize"]["llama_cpp_path"])
+            print(f'Using {root_path} from config.ini')
+        except (KeyError, TypeError):
+            root_path = Path('./grag-quantize')
+            print(f'Using {root_path}, default.')
+    else:
         root_path = Path(user_input)
 
-    res = get_llamacpp_repo(root_path)
+    get_llamacpp_repo(destination_folder=root_path)
+    os_name = str(platform.system()).lower()
+    architecture = str(platform.machine()).lower()
+    asset_name_pattern = 'bin'
+    match os_name, architecture:
+        case ('darwin', 'x86_64'):
+            asset_name_pattern += '-macos-x64'
+        case ('darwin', 'arm64'):
+            asset_name_pattern += '-macos-arm64'
+        case ('windows', 'x86_64'):
+            asset_name_pattern += '-win-arm64-x64'
+        case ('windows', 'arm64'):
+            asset_name_pattern += '-win-arm64-x64'
+        case ('windows', 'amd64'):
+            asset_name_pattern += '-win-arm64-x64'
+        case ('linux', 'x86_64'):
+            asset_name_pattern += '-ubuntu-x64'
+        case _:
+            raise ValueError(f"{os_name=}, {architecture=} is not supported by llama.cpp releases.")
 
-    if "Already up to date." in str(res.stdout):
-        print("Repository is already up to date. Skipping build.")
-    else:
-        print("Updates found. Starting build...")
-        building_llamacpp(root_path)
+    download_url = get_asset_download_url(asset_name_pattern)
+    if download_url:
+        download_release_asset(download_url, root_path)
 
-    response = (
-        input("Do you want us to download the model? (y/n) [Enter for yes]: ")
-        .strip()
-        .lower()
-    )
-    if response == "n":
-        print("Please copy the model folder to 'llama.cpp/models/' folder.")
-        _ = input("Enter if you have already copied the model:")
-        model_dir = Path(input("Enter the model directory name: "))
-    elif response == "y" or response == "":
+    response = input("Do you want us to download the model? (yes[y]/no[n]) [Enter for yes]: ").strip().lower()
+    if response == '':
+        response = 'yes'
+    if response.lower()[0] == "n":
+        model_dir = Path(input("Enter path to the model directory: "))
+    elif response.lower()[0] == "y":
         repo_id = input(
-            "Please enter the repo_id for the model (you can check on https://huggingface.co/models): "
+            "Please enter the repo_id or the url for the model (you can check on https://huggingface.co/models): "
         ).strip()
-        fetch_model_repo(repo_id, root_path)
-        # model_dir = repo_id.split('/')[1]
-        model_dir = root_path / "llama.cpp" / "models" / repo_id.split("/")[1]
+        if repo_id == "":
+            raise ValueError("Repo ID you entered was empty. Please enter the repo_id for the model.")
+        repo_id = repo_id_resolver(repo_id)
+        model_dir = fetch_model_repo(repo_id, root_path / 'models')
+    else:
+        raise ValueError("Please enter either 'yes', 'y' or 'no', 'n'.")
 
+    sys.stdin.flush()
+
+    output_dir = input(
+        f"Enter path where you want to save the quantized model, else the following path will be used [{model_dir}]: ").strip()
     quantization = input(
         "Enter quantization, recommended - Q5_K_M or Q4_K_M for more check https://github.com/ggerganov/llama.cpp/blob/master/examples/quantize/quantize.cpp#L19 : "
-    )
-    quantize_model(model_dir, quantization, root_path)
+    ).strip()
+
+    target_path, quantized_model_file = quantize_model(model_dir, quantization, root_path, output_dir)
+
+    inference = input(
+        "Do you want to inference the quantized model to check if quantization is successful? Warning: It takes time as it inferences on CPU. (y/n) [Enter for yes]: ").strip().lower()
+    if response == '':
+        response = 'yes'
+    if response.lower()[0] == "y":
+        inference_quantized_model(target_path, quantized_model_file)
+    else:
+        print("Model quantized, but not tested.")

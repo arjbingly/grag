@@ -70,6 +70,7 @@ pipeline {
             steps {
                 withPythonEnv(PYTHONPATH){
                     sh 'pip install mypy'
+                    sh 'python3 -m pip install types-requests'
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
                         sh 'python3 -m mypy -p src.grag --junit-xml mypy-report.xml'
                     }

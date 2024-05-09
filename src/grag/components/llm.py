@@ -50,7 +50,7 @@ class LLM:
         device_map: str = "auto",
         task: str = "text-generation",
         max_new_tokens: str = "1024",
-        temperature: Union[str, int] = 0.1,
+        temperature: Union[str, float] = 0.1,
         n_batch: Union[str, int] = 1024,
         n_ctx: Union[str, int] = 6000,
         n_gpu_layers: Union[str, int] = -1,
